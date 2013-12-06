@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en" ng-app="sudokuApp">
+<html lang="en" ng-app="experimentApp">
 <head>
   <meta charset="utf-8">
   <title>Sudoku</title>
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
   <script src="lib/jquery/jquery-1.10.2.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="js/sudokuBoard.js"></script>
@@ -14,7 +15,7 @@
 
   <nav class="navbar navbar-default" role="navigation">
     <div class="container">
-      <div class="navbar-header col-xs-6">
+      <div class="navbar-header col-sm-6">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -25,7 +26,7 @@
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse pull-right col-xs-6" id="navbarCollapse">
+      <div class="collapse navbar-collapse pull-right col-sm-6" id="navbarCollapse">
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Sudoku</a></li>
         </ul>
@@ -41,11 +42,9 @@
       <div class="col-xs-12 col-sm-8 col-md-6">
           <table class="table table-bordered table-sudoku">
             <col ng-repeat="row in board.getBoard()"
-              ng-class="{wrong: incorrect.col.indexOf($index) > -1}"
-              class="col{{$index}}"/>
+              ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
             <tr ng-repeat="row in board.getBoard()"
-              ng-class="{wrong: incorrect.row.indexOf($index) > -1}"
-              class="row{{$index}}">
+              ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
               <td ng-repeat="cell in row track by $index"
                 ng-click="setSelected($parent.$index, $index)"
                 ng-class="{highlighted: selectedRow === $parent.$index && selectedCol === $index,
@@ -59,7 +58,7 @@
       </div>
       <div class="col-xs-12 col-sm-4 col-md-6">
         <div class="row">
-        <div class="col-xs-8 col-sm-12 col-md-5 col-md-offset-1">
+        <div class="col-xs-8 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1">
           <table class="table table-bordered table-sudoku-select">
             <tr ng-repeat="row in [0, 1, 2]">
               <td ng-repeat="cell in [1, 2, 3]"
@@ -71,25 +70,36 @@
           </table>
         </div>
 
-        <div class="col-xs-4 col-sm-12 col-md-6">
-          <div class="btn-group-vertical">
-            <button class="btn btn-default"
-              ng-click="generate()">
-              New board
+        <div class="col-xs-4 col-sm-6 col-sm-offset-3 col-md-offset-1 col-md-4">
+          <div class="btn-group-vertical center">
+            <button class="btn btn-default" ng-click="generate()">
+              New game
+            </button>
+
+            <button class="btn btn-default" data-toggle="modal"
+              data-target="#settingsModal">
+              Settings
+            </button>
+
+            <button class="btn btn-default" ng-click="solve()">
+              Solve
             </button>
 
             <button class="btn btn-default" ng-click="reset()">
               Reset
             </button>
 
-            <button class="btn btn-default"
-              ng-click="solve()">
-              Solve
-            </button>
-
             <button class="btn btn-default" ng-click="check()">
               Check
             </button>
+            <div class="btn-group btn-group-horizontal">
+              <button type="button" class="btn btn-default btn-half">
+                <i class="fa fa-undo"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-half">
+                <i class="fa fa-repeat"></i>
+              </button>
+            </div>
           </div>
         </div>
         </div>
@@ -97,7 +107,7 @@
         <div class="row statusText col-md-10">
           <h2>
             <span ng-show="won()">
-              Well done, you have won!
+              Well done, you have completed this Sudoku!
             </span>
             <span ng-show="checked && checkBoard() && !won()">
               Correct so far

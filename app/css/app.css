@@ -6,11 +6,10 @@
 /**
  * CONTENTS............You’re reading it!
  * BASE................Base css
+ * BOOTSTRAP...........Bootstrap modifications/additions
  * SUDOKU..............Set the display of the sudoku board
  * MINISQUARES.........Borders for the inner squares on the board
  */
-
-
 
 
 
@@ -37,6 +36,29 @@ body {
 
 
 /*------------------------------------*\
+    $BOOTSTRAP
+\*------------------------------------*/
+
+.btn-group-vertical .btn-group-horizontal .btn {
+  float: left;
+  width: 50%;
+  border-top-right-radius: 0;
+}
+
+.btn-group-vertical .btn-group-horizontal .btn:last-child {
+  float: right;
+}
+
+.center{
+  margin: auto;
+}
+
+
+
+
+
+
+/*------------------------------------*\
     $SUDOKU
 \*------------------------------------*/
 
@@ -49,6 +71,10 @@ body {
   cursor: default;
   border:2px solid black;
   overflow: hidden;
+}
+
+.table-sudoku-select{
+  margin-left: auto;
 }
 
 .table-sudoku td, .table-sudoku-select td{

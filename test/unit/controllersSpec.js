@@ -5,7 +5,7 @@ describe('Sudoku controllers', function () {
 
   describe('Sudoku controller', function () {
 
-    beforeEach(module('sudokuApp'));
+    beforeEach(module('experimentApp'));
 
     it('should create "board" model with 10 by 10', inject(function ($controller) {
       var scope = {},
@@ -21,7 +21,7 @@ describe('Sudoku controllers', function () {
 
     describe('Rows', function () {
 
-      beforeEach(module('sudokuApp'));
+      beforeEach(module('experimentApp'));
 
       it('Returns true when fine', inject(function ($controller) {
         var scope = {},
@@ -65,7 +65,7 @@ describe('Sudoku controllers', function () {
 
     describe('Columns', function () {
 
-      beforeEach(module('sudokuApp'));
+      beforeEach(module('experimentApp'));
 
       it('Returns true when fine', inject(function ($controller) {
         var scope = {},
@@ -121,7 +121,7 @@ describe('Sudoku controllers', function () {
 
     describe('Squares', function () {
 
-      beforeEach(module('sudokuApp'));
+      beforeEach(module('experimentApp'));
 
       it('Returns true when fine', inject(function ($controller) {
         var scope = {},
@@ -159,7 +159,7 @@ describe('Sudoku controllers', function () {
 
   describe('Won', function () {
 
-    beforeEach(module('sudokuApp'));
+    beforeEach(module('experimentApp'));
 
     it('Returns true when fine', inject(function ($controller) {
       var scope = {},
