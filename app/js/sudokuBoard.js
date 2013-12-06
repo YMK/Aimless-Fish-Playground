@@ -33,9 +33,16 @@ function Board() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
+  self.cache = [];
+  self.futurecache = [];
 }
 
 Board.prototype.setCell = function (row, column, number) {
+  var array = [], i;
+  for (i = this.board.length - 1; i >= 0; i--) {
+    array.push(this.board[i].slice(0));
+  }
+  this.cache.push(array);
   this.board[row][column] = number;
 };
 
@@ -93,7 +100,7 @@ Board.prototype.correct = function () {
   return true;
 };
 
-Board.prototype.generate = function () {
+Board.prototype.generate = function (numberToRemove) {
   var numbers = [], row, column,
     found = false, difficulty = 10;
 
@@ -120,7 +127,7 @@ Board.prototype.generate = function () {
       }
 
       if (!found) {
-        this.generate();
+        this.generate(numberToRemove);
         return;
       }
     }
@@ -131,7 +138,7 @@ Board.prototype.generate = function () {
     this.correctBoard[row] = this.board[row].slice(0);
   }
 
-  for (difficulty = 30; difficulty > 0; difficulty--) {
+  for (difficulty = numberToRemove; difficulty > 0; difficulty--) {
     var rndRow, rndCol;
 
     rndRow = Math.floor(Math.random() * 9);
@@ -141,10 +148,36 @@ Board.prototype.generate = function () {
     }
     this.board[rndCol][rndRow] = 0;
   }
-  
+
   for (row = 0; row < 9; row++) {
     this.originalBoard[row] = this.board[row].slice(0);
   }
+};
+
+Board.prototype.undo = function () {
+  var array = [], i, temp = this.cache.pop(), redo = [];
+
+  for (i = this.board.length - 1; i >= 0; i--) {
+    redo.push(this.board[i].slice(0));
+  }
+  this.futurecache.push(redo);
+  for (i = temp.length - 1; i >= 0; i--) {
+    array.push(temp[i].slice(0));
+  }
+  this.board = array;
+};
+
+Board.prototype.redo = function () {
+  var array = [], i, temp = this.futurecache.pop(), undo = [];
+
+  for (i = this.board.length - 1; i >= 0; i--) {
+    undo.push(this.board[i].slice(0));
+  }
+  this.cache.push(undo);
+  for (i = temp.length - 1; i >= 0; i--) {
+    array.push(temp[i].slice(0));
+  }
+  this.board = array;
 };
 
 Board.prototype.setBoard = function (board) {

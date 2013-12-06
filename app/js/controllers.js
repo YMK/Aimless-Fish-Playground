@@ -9,6 +9,14 @@ experimentApp.controller('SudokuCtrl', function ($scope, $timeout) {
   $scope.locks = {"generate": false};
   $scope.checked = false;
   $scope.incorrect = {"row": [], "col": [], "square": []};
+  $scope.difficulties = [
+    {name: "Very Easy", value: 15},
+    {name: "Easy", value: 30},
+    {name: "Medium", value: 40},
+    {name: "Hard", value: 60},
+    {name: "Very hard", value: 70}
+  ];
+  $scope.difficulty = $scope.difficulties[1];
 
   $scope.selectedCell = function () {
     return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
@@ -43,7 +51,7 @@ experimentApp.controller('SudokuCtrl', function ($scope, $timeout) {
   };
 
   $scope.generate = function () {
-    $scope.board.generate();
+    $scope.board.generate($scope.difficulty.value);
   };
 
   $scope.solve = function () {
@@ -77,6 +85,14 @@ experimentApp.controller('SudokuCtrl', function ($scope, $timeout) {
 
   $scope.setUp = function () {
     $scope.generate();
+  };
+
+  $scope.undo = function () {
+    $scope.board.undo();
+  };
+
+  $scope.redo = function () {
+    $scope.board.redo();
   };
 
 
