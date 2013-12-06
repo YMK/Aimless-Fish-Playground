@@ -1,0 +1,120 @@
+@charset 'utf-8';
+
+/*------------------------------------*\
+    $CONTENTS
+\*------------------------------------*/
+/**
+ * CONTENTS............You’re reading it!
+ * BASE................Base css
+ * SUDOKU..............Set the display of the sudoku board
+ * MINISQUARES.........Borders for the inner squares on the board
+ */
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $BASE
+\*------------------------------------*/
+body {
+  padding-top: 20px;
+  background-color: white;
+}
+
+.row{
+  margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $SUDOKU
+\*------------------------------------*/
+
+.table-sudoku, .table-sudoku-select{
+  width: auto;
+  user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+  border:2px solid black;
+  overflow: hidden;
+}
+
+.table-sudoku td, .table-sudoku-select td{
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  vertical-align: middle!important;
+}
+
+.table-sudoku col, .table-sudoku tr{
+  border: 1px solid gray;
+}
+
+.table-sudoku tr:hover, .table-sudoku col:hover{
+  background-color: #F5F6CE;
+}
+
+td, th, .ff-fix {
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+}
+
+.table-sudoku
+td:hover:after,
+.table-sudoku
+.ff-fix:hover:after {
+  background-color: #F5F6CE;
+  content: ' ';
+  height: 10000px;
+  left: 0;
+  position: absolute;
+  top: -5000px;
+  width: 100%;
+  z-index:-1;
+}
+
+td.highlighted{
+  background-color: yellow;
+}
+
+td.semiHighlighted{
+  /*background-color: #F5F6CE;*/
+}
+
+.table-sudoku .wrong{
+  border: 3px solid red;
+}
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $MINISQUARES
+\*------------------------------------*/
+
+.table-sudoku .row2,
+.table-sudoku .row5{
+  border-bottom: 2px solid black;
+}
+
+.table-sudoku .col2,
+.table-sudoku .col5{
+  border-right: 2px solid black;
+}
