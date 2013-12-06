@@ -22,7 +22,6 @@
     $BASE
 \*------------------------------------*/
 body {
-  padding-top: 20px;
   background-color: white;
 }
 
@@ -117,4 +116,17 @@ td.semiHighlighted{
 .table-sudoku .col2,
 .table-sudoku .col5{
   border-right: 2px solid black;
+}
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $Status
+\*------------------------------------*/
+.statusText{
+  text-align: center;
 }

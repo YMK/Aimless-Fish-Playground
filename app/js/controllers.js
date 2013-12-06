@@ -15,17 +15,31 @@ sudokuApp.controller('SudokuCtrl', function ($scope) {
   };
 
   $scope.checkBoard = function () {
-    var correct = $scope.board.correct();
+    $scope.incorrect = $scope.getMistakes();
+    return $scope.isCorrect();
+  };
+
+  $scope.getMistakes = function () {
+    var correct = $scope.board.correct(),
+      mistakes = {"row": [], "col": [], "square": []};
     if (correct === true) {
-      $scope.incorrect = {"row": [], "col": [], "square": []};
+      return mistakes;
+    }
+    return correct;
+  };
+
+  $scope.isCorrect = function () {
+    var mistakes = $scope.getMistakes();
+    if (mistakes.row.length === 0 &&
+        mistakes.col.length === 0 &&
+        mistakes.square.length === 0) {
       return true;
     }
-    $scope.incorrect = correct;
     return false;
   };
 
   $scope.won = function () {
-    return $scope.board.isComplete() && $scope.checkBoard();
+    return $scope.board.isComplete() && $scope.isCorrect();
   };
 
   $scope.generate = function () {
@@ -34,6 +48,11 @@ sudokuApp.controller('SudokuCtrl', function ($scope) {
 
   $scope.solve = function () {
     $scope.board.solve();
+    $scope.checkBoard();
+  };
+
+  $scope.reset = function () {
+    $scope.board.reset();
   };
 
   $scope.check = function () {
@@ -64,5 +83,5 @@ sudokuApp.controller('SudokuCtrl', function ($scope) {
 
 
   $scope.setUp();
-  firefoxFix();
+  window.firefoxFix();
 });

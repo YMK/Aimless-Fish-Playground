@@ -22,6 +22,17 @@ function Board() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
+  self.originalBoard = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  ];
 }
 
 Board.prototype.setCell = function (row, column, number) {
@@ -130,6 +141,10 @@ Board.prototype.generate = function () {
     }
     this.board[rndCol][rndRow] = 0;
   }
+  
+  for (row = 0; row < 9; row++) {
+    this.originalBoard[row] = this.board[row].slice(0);
+  }
 };
 
 Board.prototype.setBoard = function (board) {
@@ -144,6 +159,13 @@ Board.prototype.solve = function () {
   var row;
   for (row = 0; row < 9; row++) {
     this.board[row] = this.correctBoard[row].slice(0);
+  }
+};
+
+Board.prototype.reset = function () {
+  var row;
+  for (row = 0; row < 9; row++) {
+    this.board[row] = this.originalBoard[row].slice(0);
   }
 };
 
@@ -165,21 +187,20 @@ Board.prototype.isComplete = function () {
 
 
 function firefoxFix() {
- 
-    if ( /firefox/.test( window.navigator.userAgent.toLowerCase() ) ) {
- 
-        var tds = document.getElementsByTagName( 'td' );
- 
-        for( var index = 0; index < tds.length; index++ ) {
-            tds[index].innerHTML = '<div class="ff-fix">' + tds[index].innerHTML + '</div>';                     
-        };
- 
-        var style = '<style>'
-            + 'td { padding: 0 !important; }'
-            + 'td:hover::before, td:hover::after { background-color: transparent !important; }'
-            + '</style>';
-        document.head.insertAdjacentHTML( 'beforeEnd', style );
- 
-    };
- 
-};
+
+  if (/firefox/.test(window.navigator.userAgent.toLowerCase())) {
+    var tds = document.getElementsByTagName('td'),
+      style = '<style>'
+        + 'td { padding: 0 !important; }'
+        + 'td:hover::before, td:hover::after { background-color: transparent !important; }'
+        + '</style>',
+      index;
+
+    for (index = 0; index < tds.length; index++) {
+      tds[index].innerHTML = '<div class="ff-fix">' + tds[index].innerHTML + '</div>';
+    }
+
+    document.head.insertAdjacentHTML('beforeEnd', style);
+  }
+
+}
