@@ -25,7 +25,7 @@ sudokuApp.controller('SudokuCtrl', function ($scope) {
   };
 
   $scope.won = function () {
-    return $scope.checkBoard() && $scope.board.isComplete();
+    return $scope.board.isComplete() && $scope.checkBoard();
   };
 
   $scope.generate = function () {

@@ -13,10 +13,10 @@
 <body ng-controller="SudokuCtrl">
   <div class="container">
     <div id="row">
-      <div class="col-sm-6">
+      <div class="col-sm-8 col-md-6">
           <table class="table table-bordered table-sudoku">
             <col ng-repeat="row in board.getBoard()"
-              ng-class="{wrong: incorrect.col.indexOf($index) > -1}" 
+              ng-class="{wrong: incorrect.col.indexOf($index) > -1}"
               class="col{{$index}}"/>
             <tr ng-repeat="row in board.getBoard()"
               ng-class="{wrong: incorrect.row.indexOf($index) > -1}"
@@ -32,35 +32,9 @@
             </tr>
           </table>
       </div>
-      <div class="col-sm-6">
-        <div class="row col-sm-12">
-          <button class="btn btn-default"
-            ng-click="generate()">
-            Start new game
-          </button>
-        </div>
-
-        <div class="row col-sm-12">
-          <button class="btn btn-default"
-            ng-click="solve()">
-            Solve
-          </button>
-        </div>
-
-        <div class="row col-sm-12">
-          <button class="btn btn-default" ng-click="check()">
-            Check
-          </button>
-          <span ng-show="checked && checkBoard()">
-            Correct so far
-          </span>
-          <span ng-show="checked && !checkBoard()">
-            Something is wrong
-          </span>
-        </div>
-
-
-        <div class="row col-sm-12">
+      <div class="col-sm-4 col-md-6">
+        <div class="row">
+        <div class="col-md-5 col-md-offset-1">
           <table class="table table-bordered table-sudoku-select">
             <tr ng-repeat="row in [0, 1, 2]">
               <td ng-repeat="cell in [1, 2, 3]"
@@ -70,6 +44,37 @@
               </td>
             </tr>
           </table>
+        </div>
+
+        <div class="col-md-6">
+          <div class="btn-group-vertical">
+            <button class="btn btn-default"
+              ng-click="generate()">
+              Start new game
+            </button>
+
+            <button class="btn btn-default"
+              ng-click="solve()">
+              Solve
+            </button>
+
+            <button class="btn btn-default" ng-click="check()">
+              Check
+            </button>
+          </div>
+        </div>
+        </div>
+
+        <div class="row col-md-offset-1">
+          <span ng-show="won()">
+            Well done, you have won!
+          </span>
+          <span ng-show="checked && checkBoard() && !won()">
+            Correct so far
+          </span>
+          <span ng-show="checked && !checkBoard()">
+            Something is wrong
+          </span>
         </div>
       </div>
     </div>
