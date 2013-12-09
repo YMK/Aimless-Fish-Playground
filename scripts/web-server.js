@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 var util = require('util'),
-    http = require('http'),
-    fs = require('fs'),
-    url = require('url'),
-    events = require('events');
+  http = require('http'),
+  fs = require('fs'),
+  url = require('url'),
+  events = require('events');
 
 var DEFAULT_PORT = 8000;
 
@@ -85,19 +85,29 @@ StaticServlet.MimeMap = {
   'svg': 'image/svg+xml'
 };
 
-StaticServlet.prototype.handleRequest = function(req, res) {
+StaticServlet.prototype.handleRequest = function(req, res, oldpath) {
   var self = this;
-  var path = ('./' + req.url.pathname).replace('//','/').replace(/%(..)/g, function(match, hex){
+  var path = oldpath || ('./' + req.url.pathname).replace('//','/').replace(/%(..)/g, function(match, hex){
     return String.fromCharCode(parseInt(hex, 16));
-  });
+  });    
+
+  if(path.substr(path.length - 1) == '/') {
+    path = path.substr(0, path.length - 1);
+  }
+  console.log("Path:" + path);
   var parts = path.split('/');
   if (parts[parts.length-1].charAt(0) === '.')
     return self.sendForbidden_(req, res, path);
   fs.stat(path, function(err, stat) {
-    if (err)
-      return self.sendMissing_(req, res, path);
+    if (err){
+      console.log("REWRITTEN: " + path.slice(1, path.length - parts[parts.length-1].length - 1));
+      if (parts[parts.length-1].indexOf(".") > -1){
+        return self.sendMissing_(req, res, path);
+      }
+      return self.sendRedirect_(req, res, path.slice(1, path.length - parts[parts.length-1].length))
+    }
     if (stat.isDirectory())
-      return self.sendDirectory_(req, res, path);
+      return self.sendFile_(req, res, path + '/index.html');
     return self.sendFile_(req, res, path);
   });
 }

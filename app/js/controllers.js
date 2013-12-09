@@ -1,8 +1,8 @@
 'use strict';
 
-var experimentApp = angular.module('experimentApp', []);
+var experimentControllers = angular.module('experimentControllers', []);
 
-experimentApp.controller('SudokuCtrl', function ($scope, $timeout) {
+experimentControllers.controller('SudokuCtrl', function ($scope, $timeout) {
   $scope.board = new Board();
   $scope.selectedRow = 0;
   $scope.selectedCol = 0;
@@ -67,7 +67,7 @@ experimentApp.controller('SudokuCtrl', function ($scope, $timeout) {
     $scope.checked = true;
     $timeout(function () {
       $scope.checked = false;
-    }, 500);
+    }, 1500);
   };
 
   $scope.setSelected = function (row, column) {

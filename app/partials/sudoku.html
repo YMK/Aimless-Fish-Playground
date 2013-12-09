@@ -1,0 +1,101 @@
+<div class="container">
+    <div id="row">
+      <div class="col-xs-12 col-sm-8 col-md-6">
+          <table class="table table-bordered table-sudoku">
+            <col ng-repeat="row in board.getBoard()"
+              ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
+            <tr ng-repeat="row in board.getBoard()"
+              ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
+              <td ng-repeat="cell in row track by $index"
+                ng-click="setSelected($parent.$index, $index)"
+                ng-class="{highlighted: selectedRow === $parent.$index && selectedCol === $index,
+                semiHighlighted: selectedCol === $index || selectedRow === $parent.$index}">
+                <span ng-show="cell">
+                  {{cell}}
+                </span>
+              </td>
+            </tr>
+          </table>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-6">
+        <div class="row">
+        <div class="col-xs-8 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1">
+          <table class="table table-bordered table-sudoku-select">
+            <tr ng-repeat="row in [0, 1, 2]">
+              <td ng-repeat="cell in [1, 2, 3]"
+                ng-class="{highlighted: (cell + row * 3) === selectedCell()}"
+                ng-click="setValueOfCell(cell + row*3)">
+                <span>{{cell + row*3}}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="col-xs-4 col-sm-6 col-sm-offset-3 col-md-offset-1 col-md-4">
+          <div class="btn-group-vertical center">
+            <button class="btn btn-default" ng-click="generate()">
+              New game
+            </button>
+
+            <button class="btn btn-default" data-toggle="modal"
+              data-target="#settingsModal">
+              Settings
+            </button>
+
+            <button class="btn btn-default" ng-click="solve()">
+              Solve
+            </button>
+
+            <button class="btn btn-default" ng-click="reset()">
+              Reset
+            </button>
+
+            <button class="btn btn-default" ng-click="check()">
+              Check
+            </button>
+            <div class="btn-group btn-group-horizontal">
+              <button type="button" class="btn btn-default btn-half" ng-click="undo()">
+                <i class="fa fa-undo"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-half" ng-click="redo()">
+                <i class="fa fa-repeat"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div class="row statusText col-md-10">
+          <h2>
+            <span ng-show="won()">
+              Well done, you have completed this Sudoku!
+            </span>
+            <span ng-show="checked && checkBoard() && !won()">
+              Correct so far
+            </span>
+            <span ng-show="checked && !checkBoard()">
+              Something is wrong
+            </span>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        
+        <h2>Difficulty:</h2>
+        <select ng-model="difficulty" ng-options="d.name for d in difficulties"></select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
