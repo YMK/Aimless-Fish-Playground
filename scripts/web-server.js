@@ -96,9 +96,12 @@ StaticServlet.prototype.handleRequest = function(req, res, oldpath) {
   }
   console.log("Path:" + path);
   var parts = path.split('/');
+
   if (parts[parts.length-1].charAt(0) === '.')
     return self.sendForbidden_(req, res, path);
+
   fs.stat(path, function(err, stat) {
+
     if (err){
       console.log("REWRITTEN: " + path.slice(1, path.length - parts[parts.length-1].length - 1));
       if (parts[parts.length-1].indexOf(".") > -1){
@@ -106,8 +109,11 @@ StaticServlet.prototype.handleRequest = function(req, res, oldpath) {
       }
       return self.sendRedirect_(req, res, path.slice(1, path.length - parts[parts.length-1].length))
     }
-    if (stat.isDirectory())
+
+    if (stat.isDirectory()){
       return self.sendFile_(req, res, path + '/index.html');
+    }
+    
     return self.sendFile_(req, res, path);
   });
 }

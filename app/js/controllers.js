@@ -1,103 +1,107 @@
 'use strict';
 
-var experimentControllers = angular.module('experimentControllers', []);
+define(['require', 'angular', 'sudokuBoard', 'fixes'], function (require, ng, Board, fix) {
 
-experimentControllers.controller('SudokuCtrl', function ($scope, $timeout) {
-  $scope.board = new Board();
-  $scope.selectedRow = 0;
-  $scope.selectedCol = 0;
-  $scope.locks = {"generate": false};
-  $scope.checked = false;
-  $scope.incorrect = {"row": [], "col": [], "square": []};
-  $scope.difficulties = [
-    {name: "Very Easy", value: 15},
-    {name: "Easy", value: 30},
-    {name: "Medium", value: 40},
-    {name: "Hard", value: 60},
-    {name: "Very hard", value: 70}
-  ];
-  $scope.difficulty = $scope.difficulties[1];
+  var experimentControllers = ng.module('experimentControllers', []);
 
-  $scope.selectedCell = function () {
-    return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
-  };
+  experimentControllers.controller('SudokuCtrl', function ($scope, $timeout) {
+    $scope.board = new Board();
+    $scope.selectedRow = 0;
+    $scope.selectedCol = 0;
+    $scope.locks = {"generate": false};
+    $scope.checked = false;
+    $scope.incorrect = {"row": [], "col": [], "square": []};
+    $scope.difficulties = [
+      {name: "Very Easy", value: 15},
+      {name: "Easy", value: 30},
+      {name: "Medium", value: 40},
+      {name: "Hard", value: 60},
+      {name: "Very hard", value: 70}
+    ];
+    $scope.difficulty = $scope.difficulties[1];
 
-  $scope.checkBoard = function () {
-    $scope.incorrect = $scope.getMistakes();
-    return $scope.isCorrect();
-  };
+    $scope.selectedCell = function () {
+      return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
+    };
 
-  $scope.getMistakes = function () {
-    var correct = $scope.board.correct(),
-      mistakes = {"row": [], "col": [], "square": []};
-    if (correct === true) {
-      return mistakes;
-    }
-    return correct;
-  };
+    $scope.checkBoard = function () {
+      $scope.incorrect = $scope.getMistakes();
+      return $scope.isCorrect();
+    };
 
-  $scope.isCorrect = function () {
-    var mistakes = $scope.getMistakes();
-    if (mistakes.row.length === 0 &&
-        mistakes.col.length === 0 &&
-        mistakes.square.length === 0) {
-      return true;
-    }
-    return false;
-  };
+    $scope.getMistakes = function () {
+      var correct = $scope.board.correct(),
+        mistakes = {"row": [], "col": [], "square": []};
+      if (correct === true) {
+        return mistakes;
+      }
+      return correct;
+    };
 
-  $scope.won = function () {
-    return $scope.board.isComplete() && $scope.isCorrect();
-  };
+    $scope.isCorrect = function () {
+      var mistakes = $scope.getMistakes();
+      if (mistakes.row.length === 0 &&
+          mistakes.col.length === 0 &&
+          mistakes.square.length === 0) {
+        return true;
+      }
+      return false;
+    };
 
-  $scope.generate = function () {
-    $scope.board.generate($scope.difficulty.value);
-  };
+    $scope.won = function () {
+      return $scope.board.isComplete() && $scope.isCorrect();
+    };
 
-  $scope.solve = function () {
-    $scope.board.solve();
-    $scope.checkBoard();
-  };
+    $scope.generate = function () {
+      $scope.board.generate($scope.difficulty.value);
+    };
 
-  $scope.reset = function () {
-    $scope.board.reset();
-  };
+    $scope.solve = function () {
+      $scope.board.solve();
+      $scope.checkBoard();
+    };
 
-  $scope.check = function () {
-    $scope.checked = true;
-    $timeout(function () {
-      $scope.checked = false;
-    }, 1500);
-  };
+    $scope.reset = function () {
+      $scope.board.reset();
+    };
 
-  $scope.setSelected = function (row, column) {
-    $scope.selectedRow = row;
-    $scope.selectedCol = column;
-  };
+    $scope.check = function () {
+      $scope.checked = true;
+      $timeout(function () {
+        $scope.checked = false;
+      }, 1500);
+    };
 
-  $scope.setValueOfCell = function (value) {
-    if ($scope.board.getCell($scope.selectedRow, $scope.selectedCol) === value) {
-      $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
-    } else {
-      $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
-    }
-  };
+    $scope.setSelected = function (row, column) {
+      $scope.selectedRow = row;
+      $scope.selectedCol = column;
+    };
 
-  $scope.setUp = function () {
-    $scope.generate();
-  };
+    $scope.setValueOfCell = function (value) {
+      if ($scope.board.getCell($scope.selectedRow, $scope.selectedCol) === value) {
+        $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
+      } else {
+        $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+      }
+    };
 
-  $scope.undo = function () {
-    $scope.board.undo();
-  };
+    $scope.setUp = function () {
+      $scope.generate();
+    };
 
-  $scope.redo = function () {
-    $scope.board.redo();
-  };
+    $scope.undo = function () {
+      $scope.board.undo();
+    };
+
+    $scope.redo = function () {
+      $scope.board.redo();
+    };
 
 
 
 
-  $scope.setUp();
-  window.firefoxFix();
+    $scope.setUp();
+    fix.firefoxFix();
+  });
+  return experimentControllers;
 });

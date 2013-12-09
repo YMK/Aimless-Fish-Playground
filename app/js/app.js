@@ -1,13 +1,33 @@
 'use strict';
+require.config({
+  paths: {
+    "angular": "../lib/angular/angular",
+    "ngroute": "../lib/angular-route/angular-route",
+    "jquery": "../lib/jquery/jquery",
+    "bootstrap.modal": "../lib/bootstrap/js/modal",
+    "bootstrap.collapse": "../lib/bootstrap/js/collapse"
+  },
 
-/* App Module */
-var experimentApp = angular.module('experimentApp', [
-  'ngRoute',
-  'experimentControllers'
-]);
+  shim: {
+    "angular": {
+      exports: "angular"
+    },
+    "ngroute": ['angular'],
+    "bootstrap.modal": ['jquery'],
+    "bootstrap.collapse": ['jquery']
+  }
+});
 
-experimentApp.config(
-  function ($routeProvider, $locationProvider) {
+define(['require',
+        'angular', 'ngroute',
+        'bootstrap.modal', 'bootstrap.collapse',
+        'controllers'], function (require, ng) {
+  var experimentApp = ng.module('experimentApp', [
+    'ngRoute',
+    'experimentControllers'
+  ]);
+
+  experimentApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.
       when('/app/sudoku', {
         templateUrl: 'partials/sudoku.html',
@@ -23,5 +43,8 @@ experimentApp.config(
         redirectTo: '/app/sudoku'
       });
 
-      $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
   });
+
+  ng.bootstrap(document, ['experimentApp']);
+});
