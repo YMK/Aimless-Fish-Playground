@@ -1,4 +1,4 @@
-define(['sudokuBoard'], function (Board) {
+define(['sudokuBoard', 'fixes'], function (Board, fix) {
   'use strict';
 
   function SudokuController($scope) {
@@ -98,7 +98,7 @@ define(['sudokuBoard'], function (Board) {
 
 
     $scope.setUp();
-    // fix.firefoxFix();
+    fix.firefoxFix();
   }
 
   SudokuController.$inject = ['$scope'];

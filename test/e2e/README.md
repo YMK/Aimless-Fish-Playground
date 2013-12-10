@@ -9,7 +9,7 @@ From the root folder of the repository run:
 node scripts/web-server.js
 ```
 
-The application should now be available at `http://localhost:8000/app/index.html`
+The application should now be available at `http://localhost:8000/test/e2e/runner.html`
 
 ## Testing with Karma
 Start the Karma test runner using the e2e configuration:

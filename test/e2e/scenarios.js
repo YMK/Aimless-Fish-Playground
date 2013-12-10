@@ -2,22 +2,22 @@
 
 /* http://docs.angularjs.org/guide/dev_guide.e2e-testing */
 
-describe('PhoneCat App', function() {
+describe('PhoneCat App', function () {
 
-  it('should redirect index.html to index.html#/phones', function() {
+  it('should redirect index.html to index.html#/phones', function () {
     browser().navigateTo('app/index.html');
     expect(browser().location().url()).toBe('/phones');
   });
 
 
-  describe('Phone list view', function() {
+  describe('Phone list view', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       browser().navigateTo('app/index.html#/phones');
     });
 
 
-    it('should filter the phone list as user types into the search box', function() {
+    it('should filter the phone list as user types into the search box', function () {
       expect(repeater('.phones li').count()).toBe(20);
 
       input('query').enter('nexus');
@@ -28,7 +28,7 @@ describe('PhoneCat App', function() {
     });
 
 
-    it('should be possible to control phone order via the drop down select box', function() {
+    it('should be possible to control phone order via the drop down select box', function () {
       input('query').enter('tablet'); //let's narrow the dataset to make the test assertions shorter
 
       expect(repeater('.phones li', 'Phone List').column('phone.name')).
