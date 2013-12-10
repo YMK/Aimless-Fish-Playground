@@ -1,31 +1,35 @@
 'use strict';
 
-/* jasmine specs for controllers go here */
-describe('Sudoku controllers', function () {
+define(['angular', 'ngmocks', 'sudokuController'], function (ng, mocks, controller) {
+  /* jasmine specs for controllers go here */
 
   describe('Sudoku controller', function () {
+    var scope, ctrl;
 
-    beforeEach(module('experimentApp'));
+    beforeEach(inject(function ($rootScope, $controller) {
+      scope = $rootScope.$new();
+      ctrl = $controller(controller, { $scope: scope});
+    }));
 
-    it('should create "board" model with 10 by 10', inject(function ($controller) {
-      var scope = {},
-        ctrl = $controller('SudokuCtrl', {$scope: scope});
 
+    it('should create "board" model with 10 by 10', function () {
       expect(scope.board.getBoard().length).toBe(9);
       expect(scope.board.getBoard()[0].length).toBe(9);
-    }));
+    });
 
   });
 
   describe('Checker', function () {
+    var scope, ctrl;
+
+    beforeEach(inject(function ($rootScope, $controller) {
+      scope = $rootScope.$new();
+      ctrl = $controller(controller, { $scope: scope});
+    }));
 
     describe('Rows', function () {
 
-      beforeEach(module('experimentApp'));
-
-      it('Returns true when fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns true when fine', function () {
 
         scope.board.setBoard([
           [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -39,11 +43,9 @@ describe('Sudoku controllers', function () {
           [9, 1, 2, 3, 4, 5, 6, 7, 8]
         ]);
         expect(scope.checkBoard()).toBe(true);
-      }));
+      });
 
-      it('Returns false when not fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns false when not fine', function () {
 
         scope.board.setBoard([
           [1, 2, 3, 4, 1, 5, 6, 7, 9],
@@ -59,17 +61,13 @@ describe('Sudoku controllers', function () {
           [7, 8, 9, 3, 2, 6, 4, 5, 10]
         ]);
         expect(scope.checkBoard()).not.toBe(true);
-      }));
+      });
 
     });
 
     describe('Columns', function () {
 
-      beforeEach(module('experimentApp'));
-
-      it('Returns true when fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns true when fine', function () {
 
         scope.board.setBoard([
           [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -83,11 +81,9 @@ describe('Sudoku controllers', function () {
           [9, 1, 2, 3, 4, 5, 6, 7, 8]
         ]);
         expect(scope.checkBoard()).toBe(true);
-      }));
+      });
 
-      it('Returns false when not fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns false when not fine', function () {
 
         scope.board.setBoard([
           [1],
@@ -115,17 +111,13 @@ describe('Sudoku controllers', function () {
           [8]
         ]);
         expect(scope.checkBoard()).not.toBe(true);
-      }));
+      });
 
     });
 
     describe('Squares', function () {
 
-      beforeEach(module('experimentApp'));
-
-      it('Returns true when fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns true when fine', function () {
 
         scope.board.setBoard([
           [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -139,11 +131,9 @@ describe('Sudoku controllers', function () {
           [9, 1, 2, 3, 4, 5, 6, 7, 8]
         ]);
         expect(scope.checkBoard()).toBe(true);
-      }));
+      });
 
-      it('Returns false when not fine', inject(function ($controller) {
-        var scope = {},
-          ctrl = $controller('SudokuCtrl', {$scope: scope});
+      it('Returns false when not fine', function () {
 
         scope.board.setBoard([
           [1, 2, 3],
@@ -151,20 +141,21 @@ describe('Sudoku controllers', function () {
           [7, 8, 9]
         ]);
         expect(scope.checkBoard()).not.toBe(true);
-      }));
+      });
 
     });
 
   });
 
   describe('Won', function () {
+    var scope, ctrl;
 
-    beforeEach(module('experimentApp'));
+    beforeEach(inject(function ($rootScope, $controller) {
+      scope = $rootScope.$new();
+      ctrl = $controller(controller, { $scope: scope});
+    }));
 
-    it('Returns true when fine', inject(function ($controller) {
-      var scope = {},
-        ctrl = $controller('SudokuCtrl', {$scope: scope});
-
+    it('Returns true when fine', function () {
       scope.board.setBoard([
         [1, 2, 3, 4, 5, 6, 7, 8, 9],
         [4, 5, 6, 7, 8, 9, 1, 2, 3],
@@ -177,11 +168,9 @@ describe('Sudoku controllers', function () {
         [9, 1, 2, 3, 4, 5, 6, 7, 8]
       ]);
       expect(scope.won()).toBe(true);
-    }));
+    });
 
-    it('Returns false when something is empty', inject(function ($controller) {
-      var scope = {},
-        ctrl = $controller('SudokuCtrl', {$scope: scope});
+    it('Returns false when something is empty', function () {
 
       scope.board.setBoard([
         [1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -195,7 +184,7 @@ describe('Sudoku controllers', function () {
         [9, 1, 2, 3, 4, 5, 6, 7, 8]
       ]);
       expect(scope.won()).toBe(false);
-    }));
+    });
 
   });
 
