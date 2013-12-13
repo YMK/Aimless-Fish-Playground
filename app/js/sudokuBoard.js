@@ -1,7 +1,9 @@
 define(['require'], function (require) {
 
   function Board() {
-    var self = this;
+    var self = this,
+      row,
+      column;
     self.board = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -13,6 +15,12 @@ define(['require'], function (require) {
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
+    self.pencilMarks = [[], [], [], [], [], [], [], [], []];
+    for (row = 0; row < 9; row++) {
+      for (column = 0; column < 9; column++) {
+        self.pencilMarks[row][column] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
+    }
     self.correctBoard = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -50,6 +58,23 @@ define(['require'], function (require) {
 
   Board.prototype.getCell = function (row, column) {
     return this.board[row][column];
+  };
+
+  Board.prototype.addPencilMark = function (row, col, num) {
+    var val = this.pencilMarks[row][col][num];
+    if (val) {
+      this.pencilMarks[row][col][num] = 0;
+    } else {
+      this.pencilMarks[row][col][num] = 1;
+    }
+  };
+
+  Board.prototype.getPencilMarks = function (row, col) {
+    return this.pencilMarks[row][col];
+  };
+
+  Board.prototype.getAllPencilMarks = function () {
+    return this.pencilMarks;
   };
 
   Board.prototype.correct = function () {
@@ -102,38 +127,76 @@ define(['require'], function (require) {
     return true;
   };
 
+  Board.prototype.findFirstEmptyCell = function () {
+    var row, col;
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        if (this.board[row][col] === 0) {
+          return row * 10 + col;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  Board.prototype.fillRestOfBoard = function () {
+    var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      cell = this.findFirstEmptyCell(),
+      col,
+      row;
+
+    if (cell === false) {
+      return true;
+    }
+
+    col = String(cell).substring(String(cell).length - 1);
+    row = (cell - col) / 10;
+
+    while (numbers.length > 0) {
+      this.board[row][col] = numbers.pop();
+      if (this.correct() === true) {
+        if (this.fillRestOfBoard()) {
+          return true;
+        }
+      }
+    }
+    this.board[row][col] = 0;
+    return false;
+  };
+
   Board.prototype.generate = function (numberToRemove) {
-    var numbers = [], row, column,
-      found = false, difficulty = 10;
+    var row, col, cell, difficulty = 10;
 
-    for (column = 0; column < 9; column++) {
-      for (row = 0; row < 9; row++) {
-        this.board[column][row] = 0;
-        numbers[row + column * 9] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        this.board[row][col] = 0;
       }
     }
 
-    for (column = 0; column < 9; column++) {
-      for (row = 0; row < 9; row++) {
-        found = false;
-        while (numbers[row + column * 9].length > 0 && !found) {
-          var rnd = Math.floor(Math.random() * numbers[row + column * 9].length);
-          var num = numbers[row + column * 9].splice(rnd, 1);
-          this.board[column][row] = num[0];
-          if (this.correct() === true) {
-            found = true;
-          } else {
-            this.board[column][row] = 0;
-            found = false;
-          }
-        }
+    this.fillRestOfBoard();
 
-        if (!found) {
-          this.generate(numberToRemove);
-          return;
-        }
-      }
-    }
+    // for (column = 0; column < 9; column++) {
+    //   for (row = 0; row < 9; row++) {
+    //     found = false;
+    //     while (numbers[row + column * 9].length > 0 && !found) {
+    //       var rnd = Math.floor(Math.random() * numbers[row + column * 9].length);
+    //       var num = numbers[row + column * 9].splice(rnd, 1);
+    //       this.board[column][row] = num[0];
+    //       if (this.correct() === true) {
+    //         found = true;
+    //       this.generate(numberToRemove);
+    //       return;
+    //       } else {
+    //         this.board[column][row] = 0;
+    //         found = false;
+    //       }
+    //     }
+
+    //     if (!found) {
+    //     }
+    //   }
+    // }
 
 
     for (row = 0; row < 9; row++) {
@@ -154,10 +217,25 @@ define(['require'], function (require) {
     for (row = 0; row < 9; row++) {
       this.originalBoard[row] = this.board[row].slice(0);
     }
+
+
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        this.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
+    }
+
+
+    this.cache = [];
+    this.futurecache = [];
   };
 
   Board.prototype.undo = function () {
     var array = [], i, temp = this.cache.pop(), redo = [];
+
+    if (temp === undefined) {
+      return;
+    }
 
     for (i = this.board.length - 1; i >= 0; i--) {
       redo.push(this.board[i].slice(0));
@@ -171,6 +249,10 @@ define(['require'], function (require) {
 
   Board.prototype.redo = function () {
     var array = [], i, temp = this.futurecache.pop(), undo = [];
+
+    if (temp === undefined) {
+      return;
+    }
 
     for (i = this.board.length - 1; i >= 0; i--) {
       undo.push(this.board[i].slice(0));

@@ -2,6 +2,7 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
   'use strict';
 
   function SudokuController($scope) {
+    $scope.identity = angular.identity;""
     $scope.board = new Board();
     $scope.selectedRow = 0;
     $scope.selectedCol = 0;
@@ -12,13 +13,21 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
       {name: "Very Easy", value: 15},
       {name: "Easy", value: 30},
       {name: "Medium", value: 40},
-      {name: "Hard", value: 60},
-      {name: "Very hard", value: 70}
+      {name: "Hard", value: 50},
+      {name: "Very hard", value: 60}
     ];
-    $scope.difficulty = $scope.difficulties[1];
+    $scope.difficulty = $scope.difficulties[2];
 
     $scope.selectedCell = function () {
       return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
+    };
+
+    $scope.selectedCellPencilMarks = function () {
+      return $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
+    };
+
+    $scope.addPencilMark = function (num) {
+      $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, num);
     };
 
     $scope.checkBoard = function () {
@@ -83,7 +92,7 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
     };
 
     $scope.setUp = function () {
-      $scope.generate();
+      // $scope.generate();
     };
 
     $scope.undo = function () {

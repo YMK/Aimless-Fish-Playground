@@ -47,4 +47,14 @@ define(['require',
   });
 
   ng.bootstrap(document, ['experimentApp']);
+
+  var html = document.getElementsByTagName('html')[0];
+  html.setAttribute('ng-app', 'app');
+  html.dataset.ngApp = 'app';
+
+  if (top !== window) {
+    top.postMessage({
+      type: 'loadamd'
+    }, '*');
+  }
 });

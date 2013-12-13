@@ -80,26 +80,29 @@ body {
 .table-sudoku td, .table-sudoku-select td{
   height: 50px;
   width: 50px;
+  max-width: 50px;
+  max-height:50px;
   text-align: center;
   vertical-align: middle!important;
+  font-size: 1.5em;
+  padding: 5px;
 }
 
 .table-sudoku col, .table-sudoku tr{
   border: 1px solid gray;
 }
 
-.table-sudoku tr:hover, .table-sudoku col:hover{
+.table-sudoku tr.arow:hover, .table-sudoku col:hover{
   background-color: #F5F6CE;
 }
 
 td, th, .ff-fix {
     cursor: pointer;
-    padding: 10px;
     position: relative;
 }
 
 .table-sudoku
-td:hover:after,
+td.cell:hover:after,
 .table-sudoku
 .ff-fix:hover:after {
   background-color: #F5F6CE;
@@ -144,6 +147,39 @@ td.semiHighlighted{
   border-right: 2px solid black;
 }
 
+
+
+
+
+
+
+/*------------------------------------*\
+    $PENCILMARKS
+\*------------------------------------*/
+
+.pencilMarks{
+  max-width:150%;
+  height: 100%;
+  border: 0px;
+  margin: -6px;
+}
+
+.pencilMarks tr{
+  border-style: none;
+  border-width: 0px;
+  border-color: white;
+}
+
+.pencilMarks td{
+  height: 33%;
+  line-height: 15px;
+  padding: 0px;
+  font-size: 0.5em;
+}
+
+.whiteText{
+  opacity: 0;
+}
 
 
 
