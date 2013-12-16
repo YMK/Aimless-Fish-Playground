@@ -1,9 +1,11 @@
-define(['require'], function (require) {
+define(['require', 'kudoku'], function (require, Solver) {
 
   function Board() {
     var self = this,
       row,
       column;
+
+    self.solver = sudoku_solver();
     self.board = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -77,14 +79,18 @@ define(['require'], function (require) {
     return this.pencilMarks;
   };
 
-  Board.prototype.correct = function () {
+  Board.prototype.correct = function (board) {
     var row, col, cell, rowNum, colNum, read = [], col3, row3,
       incorrect = {"row": [], "col": [], "square": []};
 
+    if (board === undefined) {
+      board = this.board;
+    }
+
     // Check rows
-    for (rowNum = 0; rowNum < this.board.length; rowNum++) {
+    for (rowNum = 0; rowNum < board.length; rowNum++) {
       read = [];
-      row = this.board[rowNum];
+      row = board[rowNum];
       for (colNum = 0; colNum < row.length; colNum++) {
         cell = row[colNum];
         if (read.indexOf(cell) >= 0 && cell !== 0) {
@@ -95,10 +101,10 @@ define(['require'], function (require) {
     }
 
     // Check columns
-    for (colNum = 0; colNum < this.board.length; colNum++) {
+    for (colNum = 0; colNum < board.length; colNum++) {
       read = [];
-      for (rowNum = 0; rowNum < this.board.length; rowNum++) {
-        cell = this.board[rowNum][colNum];
+      for (rowNum = 0; rowNum < board.length; rowNum++) {
+        cell = board[rowNum][colNum];
         if (read.indexOf(cell) >= 0 && cell !== 0) {
           incorrect.col.push(colNum);
         }
@@ -107,12 +113,12 @@ define(['require'], function (require) {
     }
 
     // Check squares
-    for (row3 = 0; row3 < this.board.length; row3 = row3 + 3) {
-      for (col3 = 0; col3 < this.board.length; col3 = col3 + 3) {
+    for (row3 = 0; row3 < board.length; row3 = row3 + 3) {
+      for (col3 = 0; col3 < board.length; col3 = col3 + 3) {
         read = [];
         for (rowNum = row3; rowNum < row3 + 3; rowNum++) {
           for (colNum = col3; colNum < col3 + 3; colNum++) {
-            cell = this.board[rowNum][colNum];
+            cell = board[rowNum][colNum];
             if (read.indexOf(cell) >= 0 && cell !== 0) {
               incorrect.square.push(colNum);
             }
@@ -127,11 +133,11 @@ define(['require'], function (require) {
     return true;
   };
 
-  Board.prototype.findFirstEmptyCell = function () {
+  Board.prototype.findFirstEmptyCell = function (board) {
     var row, col;
     for (row = 0; row < 9; row++) {
       for (col = 0; col < 9; col++) {
-        if (this.board[row][col] === 0) {
+        if (board[row][col] === 0) {
           return row * 10 + col;
         }
       }
@@ -140,29 +146,110 @@ define(['require'], function (require) {
     return false;
   };
 
-  Board.prototype.fillRestOfBoard = function () {
-    var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      cell = this.findFirstEmptyCell(),
-      col,
-      row;
+  Board.prototype.fillRestOfBoard = function (board) {
+    var solstr, solarr, row, column,
+      array = [],
+      tempBoard = [];
 
+    for (row = 0; row < 9; row++) {
+      array = array.concat(board[row].slice(0));
+    }
+
+    array = array.toString().replace(/,/g,"").replace(/0/g, ".");
+    solarr = this.solver(array, 1);
+
+    for (row = 0; row < 9; row++) {
+      for (column = 0; column < 9; column++) {
+        board[row][column] = solarr[0][row * 9 + column];
+      }
+    }
+
+    return board;
+  };
+
+  Board.prototype.numberOfSolutionsMaxTwo = function (board) {
+    var solstr, solarr, row, column,
+      array = [],
+      tempBoard = [];
+
+    for (row = 0; row < 9; row++) {
+      array = array.concat(board[row].slice(0));
+    }
+
+    array = array.toString().replace(/,/g,"").replace(/0/g, ".");
+    solarr = this.solver(array, 2);
+
+    return solarr.length;
+  };
+
+  Board.prototype.numberOfSolutions = function (testboard) {
+    var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      cell,
+      col,
+      row,
+      count = 0,
+      board = [];
+
+    for (row = 0; row < 9; row++) {
+      board[row] = testboard[row].slice(0);
+    }
+
+    cell = this.findFirstEmptyCell(board);
     if (cell === false) {
-      return true;
+      return count;
     }
 
     col = String(cell).substring(String(cell).length - 1);
     row = (cell - col) / 10;
 
     while (numbers.length > 0) {
-      this.board[row][col] = numbers.pop();
-      if (this.correct() === true) {
-        if (this.fillRestOfBoard()) {
+      board[row][col] = numbers.pop();
+      if (this.correct(board) === true) {
+        if (this.findFirstEmptyCell(board) === false) {
+          count++;
+        } else {
+          count += this.numberOfSolutions(board);
+        }
+      }
+    }
+    board[row][col] = 0;
+    return count;
+  };
+
+  Board.prototype.digHoles = function (board, number, x, y) {
+    var oldVal = board[x][y],
+      nexty = y + 1,
+      nextx = x,
+      nextnum = number - 1;
+
+    if (number < 1) {
+      return true;
+    }
+
+    if (nexty > 8) {
+      nexty = 0;
+      nextx++;
+      if (nextx > 8) {
+        return true;
+      }
+    }
+
+    board[x][y] = 0;
+    if (this.numberOfSolutionsMaxTwo(board) !== 1) {
+      board[x][y] = oldVal;
+      return false;
+    }
+    while (this.digHoles(board, nextnum, nextx, nexty) === false) {
+      nexty++;
+      if (nexty > 8) {
+        nexty = 0;
+        nextx++;
+        if (nextx > 8) {
           return true;
         }
       }
     }
-    this.board[row][col] = 0;
-    return false;
+    return true;
   };
 
   Board.prototype.generate = function (numberToRemove) {
@@ -174,45 +261,22 @@ define(['require'], function (require) {
       }
     }
 
-    this.fillRestOfBoard();
-
-    // for (column = 0; column < 9; column++) {
-    //   for (row = 0; row < 9; row++) {
-    //     found = false;
-    //     while (numbers[row + column * 9].length > 0 && !found) {
-    //       var rnd = Math.floor(Math.random() * numbers[row + column * 9].length);
-    //       var num = numbers[row + column * 9].splice(rnd, 1);
-    //       this.board[column][row] = num[0];
-    //       if (this.correct() === true) {
-    //         found = true;
-    //       this.generate(numberToRemove);
-    //       return;
-    //       } else {
-    //         this.board[column][row] = 0;
-    //         found = false;
-    //       }
-    //     }
-
-    //     if (!found) {
-    //     }
-    //   }
-    // }
-
+    for (cell = 0; cell < 12; cell++) {
+      row = Math.floor((Math.random() * 9));
+      col = Math.floor((Math.random() * 9));
+      this.board[row][col] = Math.floor((Math.random() * 9) + 1);
+      if (!this.correct() || this.numberOfSolutionsMaxTwo(this.board) < 1) {
+        this.board[row][col] = 0;
+        cell--;
+      }
+    }
+    this.fillRestOfBoard(this.board);
 
     for (row = 0; row < 9; row++) {
       this.correctBoard[row] = this.board[row].slice(0);
     }
 
-    for (difficulty = numberToRemove; difficulty > 0; difficulty--) {
-      var rndRow, rndCol;
-
-      rndRow = Math.floor(Math.random() * 9);
-      rndCol = Math.floor(Math.random() * 9);
-      if (this.board[rndCol][rndRow] === 0) {
-        difficulty++;
-      }
-      this.board[rndCol][rndRow] = 0;
-    }
+    this.digHoles(this.board, 81, 0, 0);
 
     for (row = 0; row < 9; row++) {
       this.originalBoard[row] = this.board[row].slice(0);
@@ -273,10 +337,18 @@ define(['require'], function (require) {
   };
 
   Board.prototype.solve = function () {
-    var row;
+    var tempBoard = [],
+      row;
+
     for (row = 0; row < 9; row++) {
-      this.board[row] = this.correctBoard[row].slice(0);
+      tempBoard[row] = this.board[row].slice(0);
     }
+
+    if (this.correct() === true) {
+      this.fillRestOfBoard(this.board);
+      return true;
+    }
+    return false;
   };
 
   Board.prototype.reset = function () {

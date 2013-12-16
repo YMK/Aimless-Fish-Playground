@@ -15,7 +15,8 @@ require.config({
     "angular": "../lib/angular/angular",
     "ngroute": "../lib/angular-route/angular-route",
     "jquery": "../lib/jquery/jquery",
-    'ngmocks': '../lib/angular-mocks/angular-mocks'
+    'ngmocks': '../lib/angular-mocks/angular-mocks',
+    "kudoku": "../lib/kudoku"
   },
 
   shim: {

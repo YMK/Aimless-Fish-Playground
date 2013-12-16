@@ -92,7 +92,7 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
     };
 
     $scope.setUp = function () {
-      // $scope.generate();
+      $scope.generate();
     };
 
     $scope.undo = function () {
@@ -106,7 +106,7 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
 
 
 
-    $scope.setUp();
+    // $scope.setUp();
     fix.firefoxFix();
   }
 

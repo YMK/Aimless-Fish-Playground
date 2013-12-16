@@ -5,7 +5,8 @@ require.config({
     "ngroute": "../lib/angular-route/angular-route",
     "jquery": "../lib/jquery/jquery",
     "bootstrap.modal": "../lib/bootstrap/js/modal",
-    "bootstrap.collapse": "../lib/bootstrap/js/collapse"
+    "bootstrap.collapse": "../lib/bootstrap/js/collapse",
+    "kudoku": "../lib/kudoku"
   },
 
   shim: {
