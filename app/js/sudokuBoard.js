@@ -1,53 +1,30 @@
-define(['require', 'kudoku'], function (require, Solver) {
+define(['require', 'sudokuUtils'], function (require, sudoku) {
 
   function Board() {
     var self = this,
       row,
       column;
 
-    self.solver = sudoku_solver();
-    self.board = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];
+    self.utils = sudoku.utils;
+    self.board = [];
+    self.correctBoard = [];
+    self.originalBoard = [];
     self.pencilMarks = [[], [], [], [], [], [], [], [], []];
     for (row = 0; row < 9; row++) {
+      self.board[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      self.originalBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      self.correctBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       for (column = 0; column < 9; column++) {
         self.pencilMarks[row][column] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       }
     }
-    self.correctBoard = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];
-    self.originalBoard = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];
     self.cache = [];
     self.futurecache = [];
   }
+
+  Board.prototype.correct = function () {
+    return this.utils.correct(this.board);
+  };
 
   Board.prototype.setCell = function (row, column, number) {
     var array = [], i;
@@ -77,221 +54,6 @@ define(['require', 'kudoku'], function (require, Solver) {
 
   Board.prototype.getAllPencilMarks = function () {
     return this.pencilMarks;
-  };
-
-  Board.prototype.correct = function (board) {
-    var row, col, cell, rowNum, colNum, read = [], col3, row3,
-      incorrect = {"row": [], "col": [], "square": []};
-
-    if (board === undefined) {
-      board = this.board;
-    }
-
-    // Check rows
-    for (rowNum = 0; rowNum < board.length; rowNum++) {
-      read = [];
-      row = board[rowNum];
-      for (colNum = 0; colNum < row.length; colNum++) {
-        cell = row[colNum];
-        if (read.indexOf(cell) >= 0 && cell !== 0) {
-          incorrect.row.push(rowNum);
-        }
-        read.push(cell);
-      }
-    }
-
-    // Check columns
-    for (colNum = 0; colNum < board.length; colNum++) {
-      read = [];
-      for (rowNum = 0; rowNum < board.length; rowNum++) {
-        cell = board[rowNum][colNum];
-        if (read.indexOf(cell) >= 0 && cell !== 0) {
-          incorrect.col.push(colNum);
-        }
-        read.push(cell);
-      }
-    }
-
-    // Check squares
-    for (row3 = 0; row3 < board.length; row3 = row3 + 3) {
-      for (col3 = 0; col3 < board.length; col3 = col3 + 3) {
-        read = [];
-        for (rowNum = row3; rowNum < row3 + 3; rowNum++) {
-          for (colNum = col3; colNum < col3 + 3; colNum++) {
-            cell = board[rowNum][colNum];
-            if (read.indexOf(cell) >= 0 && cell !== 0) {
-              incorrect.square.push(colNum);
-            }
-            read.push(cell);
-          }
-        }
-      }
-    }
-    if (incorrect.row.length > 0 || incorrect.col.length > 0 || incorrect.square.length > 0) {
-      return incorrect;
-    }
-    return true;
-  };
-
-  Board.prototype.findFirstEmptyCell = function (board) {
-    var row, col;
-    for (row = 0; row < 9; row++) {
-      for (col = 0; col < 9; col++) {
-        if (board[row][col] === 0) {
-          return row * 10 + col;
-        }
-      }
-    }
-
-    return false;
-  };
-
-  Board.prototype.fillRestOfBoard = function (board) {
-    var solstr, solarr, row, column,
-      array = [],
-      tempBoard = [];
-
-    for (row = 0; row < 9; row++) {
-      array = array.concat(board[row].slice(0));
-    }
-
-    array = array.toString().replace(/,/g,"").replace(/0/g, ".");
-    solarr = this.solver(array, 1);
-
-    for (row = 0; row < 9; row++) {
-      for (column = 0; column < 9; column++) {
-        board[row][column] = solarr[0][row * 9 + column];
-      }
-    }
-
-    return board;
-  };
-
-  Board.prototype.numberOfSolutionsMaxTwo = function (board) {
-    var solstr, solarr, row, column,
-      array = [],
-      tempBoard = [];
-
-    for (row = 0; row < 9; row++) {
-      array = array.concat(board[row].slice(0));
-    }
-
-    array = array.toString().replace(/,/g,"").replace(/0/g, ".");
-    solarr = this.solver(array, 2);
-
-    return solarr.length;
-  };
-
-  Board.prototype.numberOfSolutions = function (testboard) {
-    var numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      cell,
-      col,
-      row,
-      count = 0,
-      board = [];
-
-    for (row = 0; row < 9; row++) {
-      board[row] = testboard[row].slice(0);
-    }
-
-    cell = this.findFirstEmptyCell(board);
-    if (cell === false) {
-      return count;
-    }
-
-    col = String(cell).substring(String(cell).length - 1);
-    row = (cell - col) / 10;
-
-    while (numbers.length > 0) {
-      board[row][col] = numbers.pop();
-      if (this.correct(board) === true) {
-        if (this.findFirstEmptyCell(board) === false) {
-          count++;
-        } else {
-          count += this.numberOfSolutions(board);
-        }
-      }
-    }
-    board[row][col] = 0;
-    return count;
-  };
-
-  Board.prototype.digHoles = function (board, number, x, y) {
-    var oldVal = board[x][y],
-      nexty = y + 1,
-      nextx = x,
-      nextnum = number - 1;
-
-    if (number < 1) {
-      return true;
-    }
-
-    if (nexty > 8) {
-      nexty = 0;
-      nextx++;
-      if (nextx > 8) {
-        return true;
-      }
-    }
-
-    board[x][y] = 0;
-    if (this.numberOfSolutionsMaxTwo(board) !== 1) {
-      board[x][y] = oldVal;
-      return false;
-    }
-    while (this.digHoles(board, nextnum, nextx, nexty) === false) {
-      nexty++;
-      if (nexty > 8) {
-        nexty = 0;
-        nextx++;
-        if (nextx > 8) {
-          return true;
-        }
-      }
-    }
-    return true;
-  };
-
-  Board.prototype.generate = function (numberToRemove) {
-    var row, col, cell, difficulty = 10;
-
-    for (row = 0; row < 9; row++) {
-      for (col = 0; col < 9; col++) {
-        this.board[row][col] = 0;
-      }
-    }
-
-    for (cell = 0; cell < 12; cell++) {
-      row = Math.floor((Math.random() * 9));
-      col = Math.floor((Math.random() * 9));
-      this.board[row][col] = Math.floor((Math.random() * 9) + 1);
-      if (!this.correct() || this.numberOfSolutionsMaxTwo(this.board) < 1) {
-        this.board[row][col] = 0;
-        cell--;
-      }
-    }
-    this.fillRestOfBoard(this.board);
-
-    for (row = 0; row < 9; row++) {
-      this.correctBoard[row] = this.board[row].slice(0);
-    }
-
-    this.digHoles(this.board, 81, 0, 0);
-
-    for (row = 0; row < 9; row++) {
-      this.originalBoard[row] = this.board[row].slice(0);
-    }
-
-
-    for (row = 0; row < 9; row++) {
-      for (col = 0; col < 9; col++) {
-        this.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-      }
-    }
-
-
-    this.cache = [];
-    this.futurecache = [];
   };
 
   Board.prototype.undo = function () {
@@ -328,6 +90,41 @@ define(['require', 'kudoku'], function (require, Solver) {
     this.board = array;
   };
 
+  Board.prototype.generate = function (difficulty, callback) {
+    var col, row,
+      self = this;
+
+    if (self.gworker !== undefined) {
+      callback(false);
+    } else {
+
+      self.gworker = new Worker("js/sudokuSolver.js");
+      self.gworker.addEventListener("message", function (e) {
+        if (e.data === "Ready") {
+          self.gworker.postMessage({"command": "generate"});
+          return;
+        }
+        self.board = e.data.board;
+        self.correctBoard = e.data.correctBoard;
+        for (row = 0; row < 9; row++) {
+          self.originalBoard[row] = self.board[row].slice(0);
+        }
+        self.gworker.terminate();
+        self.gworker = undefined;
+        callback(true);
+      });
+
+      this.cache = [];
+      this.futurecache = [];
+      for (row = 0; row < 9; row++) {
+        for (col = 0; col < 9; col++) {
+          self.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+      }
+
+    }
+  };
+
   Board.prototype.setBoard = function (board) {
     this.board = board;
   };
@@ -336,25 +133,37 @@ define(['require', 'kudoku'], function (require, Solver) {
     return this.board;
   };
 
-  Board.prototype.solve = function () {
-    var tempBoard = [],
-      row;
+  Board.prototype.solve = function (callback) {
+    var self = this;
 
-    for (row = 0; row < 9; row++) {
-      tempBoard[row] = this.board[row].slice(0);
+    if (self.sworker !== undefined || !self.correct()) {
+      return;
     }
 
-    if (this.correct() === true) {
-      this.fillRestOfBoard(this.board);
-      return true;
-    }
-    return false;
+    self.sworker = new Worker("js/sudokuSolver.js");
+    self.sworker.addEventListener("message", function (e) {
+      if (e.data === "Ready") {
+        self.sworker.postMessage({"command": "solve", "board": self.board});
+        return;
+      }
+      self.board = e.data;
+      self.sworker.terminate();
+      self.sworker = undefined;
+      callback(true);
+    });
   };
 
   Board.prototype.reset = function () {
     var row;
     for (row = 0; row < 9; row++) {
       this.board[row] = this.originalBoard[row].slice(0);
+    }
+  };
+
+  Board.prototype.clear = function () {
+    var row;
+    for (row = 0; row < 9; row++) {
+      this.board[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
   };
 

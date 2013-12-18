@@ -26,6 +26,12 @@
               </td>
             </tr>
           </table>
+          <div class="table table-bordered table-sudoku table-overlay" ng-show="inProgress.generating">
+            <div class="half"></div>
+            <h2>Generating new game</h2>
+            <h4 ng-show="error.generating">{{error.generating}}</h4>
+            <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
+          </div>
       </div>
       <div class="col-xs-12 col-sm-4 col-md-6">
         <div class="row">
@@ -54,7 +60,7 @@
 
         <div class="col-xs-4 col-sm-6 col-sm-offset-3 col-md-offset-1 col-md-4">
           <div class="btn-group-vertical center">
-            <button class="btn btn-default" ng-click="generate()">
+            <button class="btn btn-default" ng-click="generate()" ng-disabled="inProgress.generating">
               New game
             </button>
 
@@ -69,6 +75,10 @@
 
             <button class="btn btn-default" ng-click="reset()">
               Reset
+            </button>
+
+            <button class="btn btn-default" ng-click="clear()">
+              Clear
             </button>
 
             <button class="btn btn-default" ng-click="check()">

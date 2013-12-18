@@ -1,14 +1,16 @@
-define(['sudokuBoard', 'fixes'], function (Board, fix) {
+define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
   'use strict';
 
   function SudokuController($scope) {
-    $scope.identity = angular.identity;""
+    $scope.identity = angular.identity;
     $scope.board = new Board();
     $scope.selectedRow = 0;
     $scope.selectedCol = 0;
     $scope.locks = {"generate": false};
     $scope.checked = false;
     $scope.incorrect = {"row": [], "col": [], "square": []};
+    $scope.inProgress = {"generating": false};
+    $scope.error = {"generating": false};
     $scope.difficulties = [
       {name: "Very Easy", value: 15},
       {name: "Easy", value: 30},
@@ -59,16 +61,43 @@ define(['sudokuBoard', 'fixes'], function (Board, fix) {
     };
 
     $scope.generate = function () {
-      $scope.board.generate($scope.difficulty.value);
+      $scope.inProgress.generating = true;
+      $scope.error.generating = "";
+      $scope.board.generate($scope.difficulty.value, function (success) {
+        if (success) {
+          $scope.$apply($scope.inProgress.generating = false);
+        }
+      });
+
+      setTimeout(function () {
+        if ($scope.inProgress.generating) {
+          $scope.error.generating = "Generation seems to be taking a while." +
+                                    "Sometimes, sudoku can be very hard to " +
+                                    "generate. Feel free to cancel and try " +
+                                    "a new one.";
+          $scope.$apply();
+        }
+      }, 2000);
+    };
+
+    $scope.cancelGeneration = function () {
+      $scope.board.gworker.terminate();
+      $scope.inProgress.generating = false;
     };
 
     $scope.solve = function () {
-      $scope.board.solve();
+      $scope.board.solve(function () {
+        $scope.$apply();
+      });
       $scope.checkBoard();
     };
 
     $scope.reset = function () {
       $scope.board.reset();
+    };
+
+    $scope.clear = function () {
+      $scope.board.clear();
     };
 
     $scope.check = function () {

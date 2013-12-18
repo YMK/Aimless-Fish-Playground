@@ -15,7 +15,10 @@ require.config({
     },
     "ngroute": ['angular'],
     "bootstrap.modal": ['jquery'],
-    "bootstrap.collapse": ['jquery']
+    "bootstrap.collapse": ['jquery'],
+    "sudokuUtils": {
+      exports: "sudoku"
+    }
   }
 });
 

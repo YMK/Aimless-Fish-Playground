@@ -10,6 +10,7 @@
  * SUDOKU..............Set the display of the sudoku board
  * MINISQUARES.........Borders for the inner squares on the board
  * PENCILMARKS.........For laying out of the pencil marks on individual squares
+ * OVERLAY.............For the table overlay
  * Status..............For the status text
  */
 
@@ -188,8 +189,37 @@ td.semiHighlighted{
 
 
 
+
 /*------------------------------------*\
-    $Status
+    $OVERLAY
+\*------------------------------------*/
+
+.table-overlay{
+  height: 455px;
+  position: absolute;
+  top: 0;
+  width: 440px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-overlay .half{
+  margin-bottom: -50px;
+  height: 50%;
+}
+
+.table-overlay h3 span{
+  cursor: pointer;
+}
+
+
+
+
+
+
+/*------------------------------------*\
+    $STATUS
 \*------------------------------------*/
 .statusText{
   text-align: center;
