@@ -1,4 +1,3 @@
-'use strict';
 require.config({
   paths: {
     "angular": "../lib/angular/angular",
@@ -26,6 +25,7 @@ define(['require',
         'angular', 'ngroute',
         'bootstrap.modal', 'bootstrap.collapse',
         'controllers'], function (require, ng) {
+  'use strict';
   var experimentApp = ng.module('experimentApp', [
     'ngRoute',
     'experimentControllers'
@@ -33,21 +33,21 @@ define(['require',
 
   experimentApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.
-      when('/app/sudoku', {
+      when('/sudoku', {
         templateUrl: 'partials/sudoku.html',
         controller: 'SudokuCtrl',
         controllerAs: 'sudoku'
       }).
-      when('/app/something', {
+      when('/something', {
         templateUrl: 'partials/something.html',
         controller: 'SudokuCtrl',
         controllerAs: 'something'
       }).
       otherwise({
-        redirectTo: '/app/sudoku'
+        redirectTo: '/sudoku'
       });
 
-    $locationProvider.html5Mode(true);
+//    $locationProvider.html5Mode(true);
   });
 
   ng.bootstrap(document, ['experimentApp']);
