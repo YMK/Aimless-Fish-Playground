@@ -1,3 +1,6 @@
+/*jslint plusplus: true, indent: 2, maxerr: 500 */
+/*global setTimeout, importScripts, require, sudoku_solver, addEventListener, postMessage */
+
 importScripts("../lib/requirejs/require.js");
 
 
@@ -5,6 +8,7 @@ require(
   {baseUrl: "./"},
   ["require", "../lib/kudoku", "sudokuUtils"],
   function (require, kudoku, sudoku) {
+    'use strict';
     var self = this;
     self.solver = sudoku_solver();
     self.utils = sudoku.utils;
@@ -134,13 +138,14 @@ require(
     };
 
     addEventListener("message", function (event) {
+      var board, pencils;
       switch (event.data.command) {
       case "generate":
-        var board = self.generate(10);
+        board = self.generate(10);
         postMessage(board);
         break;
       case "possibilities":
-        var pencils = self.generatePencils(10);
+        pencils = self.generatePencils(10);
         postMessage(pencils);
         break;
       case "correct":

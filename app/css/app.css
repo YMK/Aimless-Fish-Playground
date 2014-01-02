@@ -11,8 +11,12 @@
  * MINISQUARES.........Borders for the inner squares on the board
  * PENCILMARKS.........For laying out of the pencil marks on individual squares
  * OVERLAY.............For the table overlay
- * Status..............For the status text
+ * STATUS..............For the status text
  */
+
+
+
+
 
 
 
@@ -38,6 +42,9 @@ body {
 
 
 
+
+
+
 /*------------------------------------*\
     $BOOTSTRAP
 \*------------------------------------*/
@@ -55,6 +62,11 @@ body {
 .center{
   margin: auto;
 }
+
+
+
+
+
 
 
 
@@ -136,6 +148,10 @@ td.semiHighlighted{
 
 
 
+
+
+
+
 /*------------------------------------*\
     $MINISQUARES
 \*------------------------------------*/
@@ -149,6 +165,10 @@ td.semiHighlighted{
 .table-sudoku .col5{
   border-right: 2px solid black;
 }
+
+
+
+
 
 
 
@@ -190,6 +210,10 @@ td.semiHighlighted{
 
 
 
+
+
+
+
 /*------------------------------------*\
     $OVERLAY
 \*------------------------------------*/
@@ -218,9 +242,41 @@ td.semiHighlighted{
 
 
 
+
+
+
+
+
 /*------------------------------------*\
     $STATUS
 \*------------------------------------*/
 .statusText{
   text-align: center;
+}
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $PKMNCARDS
+\*------------------------------------*/
+.row form{
+  margin-left: 5px;
+}
+.card{
+  float: left;
+  padding: 5px;
+}
+
+.card .panel{ 
+  height: 200px;
+  padding: 10px;
+}
+
+.card .panel .name{
+  margin: auto;
 }

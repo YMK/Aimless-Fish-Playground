@@ -1,5 +1,8 @@
-define(['require', 'sudokuUtils'], function (require, sudoku) {
+/*jslint plusplus: true, indent: 2, maxerr: 500 */
+/*global define, Worker */
 
+define(['require', 'sudokuUtils'], function (require, sudoku) {
+  'use strict';
   function Board() {
     var self = this,
       row,
@@ -40,12 +43,11 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   };
 
   Board.prototype.addPencilMark = function (row, col, num) {
-    var val = this.pencilMarks[row][col][num];
-    if (val) {
-      this.pencilMarks[row][col][num] = 0;
-    } else {
-      this.pencilMarks[row][col][num] = 1;
-    }
+    this.pencilMarks[row][col][num] = 1;
+  };
+  
+  Board.prototype.removePencilMark = function (row, col, num) {
+    this.pencilMarks[row][col][num] = 0;
   };
 
   Board.prototype.getPencilMarks = function (row, col) {

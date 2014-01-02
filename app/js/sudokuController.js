@@ -1,3 +1,6 @@
+/*jslint plusplus: true, indent: 2, maxerr: 500 */
+/*global define, setTimeout, window */
+
 define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
   'use strict';
 
@@ -26,10 +29,6 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
 
     $scope.selectedCellPencilMarks = function () {
       return $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
-    };
-
-    $scope.addPencilMark = function (num) {
-      $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, num);
     };
 
     $scope.checkBoard = function () {
@@ -105,6 +104,7 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
       window.setTimeout(function () {
         $scope.checked = false;
       }, 1500);
+      
     };
 
     $scope.setSelected = function (row, column) {
@@ -113,10 +113,37 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
     };
 
     $scope.setValueOfCell = function (value) {
-      if ($scope.board.getCell($scope.selectedRow, $scope.selectedCol) === value) {
+      var cellVal = $scope.board.getCell($scope.selectedRow, $scope.selectedCol),
+        pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
+      
+      if (cellVal === value) {
         $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
       } else {
-        $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+        if (cellVal === 0 && pencilMarks.indexOf(1) === -1) {
+          $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+        } else if (pencilMarks[value] === 1) {
+          $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, value);
+          pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
+          var index, num = 0;
+          for (var i = 0; i < pencilMarks.length; i++) {
+            if (pencilMarks[i] === 1) {
+              if (num === 0) {
+                index = i;
+              }
+              num++;
+            }
+          }
+          if (num === 1) {
+            $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, index);
+            $scope.board.setCell($scope.selectedRow, $scope.selectedCol, index);
+          }
+        } else {
+          $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, value);
+          if (cellVal !== 0) {
+            $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, cellVal);
+            $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
+          }
+        }
       }
     };
 

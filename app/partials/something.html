@@ -1,5 +1,16 @@
 <div class="container">
-    <div id="row">
-      <h2>Something else</h2>
+  <div class="row">
+    <form class="form-inline" role="form">
+      <button ng-click="pick()" class="btn btn-default btn-md" ng-disabled="pkmn.length === 0">DraftLocke Generate</button>
+       Generation: <select class="form-control" ng-model="gen" ng-options="g for g in gens"></select>
+       Legendaries: <input type="checkbox" ng-model="allowLeg" />
+    </form>
+  </div>
+  <div class="row">
+    <div ng-repeat="pk in selected" class="card col-sm-2">
+      <div class="panel panel-default">
+        <span class="name">{{pk.gsx$name.$t}}</span>
+      </div>
     </div>
   </div>
+</div>

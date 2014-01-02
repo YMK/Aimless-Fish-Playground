@@ -1,3 +1,6 @@
+/*jslint vars: true, plusplus: true, indent: 2, maxerr: 500 */
+/*global require, define, document, top, window */
+
 require.config({
   paths: {
     "angular": "../lib/angular/angular",
@@ -5,7 +8,8 @@ require.config({
     "jquery": "../lib/jquery/jquery",
     "bootstrap.modal": "../lib/bootstrap/js/modal",
     "bootstrap.collapse": "../lib/bootstrap/js/collapse",
-    "kudoku": "../lib/kudoku"
+    "kudoku": "../lib/kudoku",
+    "sheetrock": "../lib/jquery-sheetrock/src/jquery.sheetrock"
   },
 
   shim: {
@@ -40,7 +44,7 @@ define(['require',
       }).
       when('/something', {
         templateUrl: 'partials/something.html',
-        controller: 'SudokuCtrl',
+        controller: 'PkmnCtrl',
         controllerAs: 'something'
       }).
       otherwise({
