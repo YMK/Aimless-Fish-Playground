@@ -1,19 +1,46 @@
-<div ng-include src="'partials/menu.html'"></div> 
 <div class="container">
-  <div id="row">
-    <form class="form-inline" role="form">
-      <button ng-click="pick()" class="btn btn-default btn-md" ng-disabled="!pkmn.length">DraftLocke Generate</button>
-       Generation: <select class="form-control" ng-model="gen" ng-options="g for g in gens"></select>
-       Legendaries: <input type="checkbox" ng-model="allowLeg" />
-    </form>
-  </div>
   <div class="row">
-    <div ng-repeat="pk in selected track by $index" class="card col-xs-6 col-sm-3 col-md-2">
-      <div class="panel panel-default">
-        <span class="num">{{pk.gsx$no.$t}}. </span>
-        <span class="name">{{pk.gsx$name.$t}}</span>
-        <img ng-src="{{pk.sprite}}" class="sprite"/>
+    <div class="col-sm-5">
+      <form class="form" role="form">
+        <div class="form-group">
+          <label>Generations: </label>
+          <br />
+          <label class="checkbox-inline" ng-repeat="gen in gens">
+            <input type="checkbox" name="selectedGens[]" value="{{gen}}" ng-checked="selectedGens.indexOf(gen) > -1" ng-click="selectGen(gen)">{{gen}}
+          </label>
+        </div>
+        <div class="form-group">
+          <label>Other options: </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="allowLeg" />Allow legendaries
+          </label>
+        </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="allowDupes" />Allow Duplicates
+          </label>
+        </div>
+        <button ng-click="pick()" class="btn btn-default btn-sm" ng-disabled="!pkmn.length">DraftLocke Generate</button>
+      </form>
+    </div>
+    <div class="col-sm-7" ng-hide="!selected.length">
+      <div ng-repeat="pk in selected track by $index" class="card col-xs-6 col-sm-6 col-md-4">
+        <div class="panel panel-default">
+          <span class="num">{{pk.gsx$no.$t}}. </span>
+          <span class="name">{{pk.gsx$name.$t}}</span>
+          <img ng-src="{{pk.sprite}}" class="sprite"/>
+        </div>
       </div>
+    </div>
+    <div class="col-sm-7" ng-hide="selected.length">
+      <p>
+        Welcome to the DraftLocke generator. This was inspired by a discussion on Reddit about a new form of NuzLocke. The idea being that you would use a pack of TCG cards to define what pokemon you used in the locke. As this would get costly if you ended up doing this several times, it was brought up that there could be an online generator for that. So, I decided to make one.
+      </p>
+      <p>
+        Currently, the generator will give you 6 pokemon from whatever generations you choose
+      </p>
     </div>
   </div>
 </div>

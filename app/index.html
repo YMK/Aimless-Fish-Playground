@@ -2,15 +2,15 @@
 <html lang="en" ng-controller="MainCtrl">
 <head>
   <meta charset="utf-8">
-  <title>Sudoku</title>
+  <title>{{info.title}}</title>
   <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-
-  <div ng-view>
-  </div>
+  <div ng-include src="'partials/menu.html'"></div>
+  
+  <div ng-view></div>
 
   <script src="lib/requirejs/require.js" data-main="js/app.js"></script>
 </body>

@@ -3,7 +3,10 @@ define(['require', 'angular', 'sudokuController', 'pkmnController'], function (r
   var experimentControllers = ng.module('experimentControllers', []);
 
   experimentControllers.controller('MainCtrl', function ($scope) {
-    $scope.active = "";
+    $scope.info = {
+      "title": "Html 5 Experiments",
+      "active": ""
+    };
   });
   experimentControllers.controller('SudokuCtrl', sudokuController);
   experimentControllers.controller('PkmnCtrl', ['$scope', '$http', pkmnController]);

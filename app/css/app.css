@@ -279,7 +279,6 @@ td.semiHighlighted{
 
 .card .panel .name{
   float: right;
-  width: 40%;
 }
 
 .card .panel .num{
@@ -289,4 +288,5 @@ td.semiHighlighted{
 .card .panel .sprite{
   width: 50%;
   float: right;
+  clear: right;
 }

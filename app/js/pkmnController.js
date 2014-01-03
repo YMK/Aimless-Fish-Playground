@@ -6,13 +6,24 @@ define(['angular', 'jquery'], function (angular, $) {
 
   function PkmnController($scope, $http) {
     $scope.identity = angular.identity;
-    $scope.active = "pkmn";
+    $scope.info.active = "pkmn";
+    $scope.info.title = "DraftLocke Generator";
     $scope.test = "test";
     $scope.gens = [1, 2, 3, 4, 5, 6];
-    $scope.gen = 6;
+    $scope.selectedGens = [1, 2, 3, 4, 5, 6];
     $scope.pkmn = [];
     $scope.selected = [];
     $scope.allowLeg = false;
+    $scope.allowDupes = true;
+    
+    $scope.selectGen = function (gen) {
+      var index = $scope.selectedGens.indexOf(gen);
+      if (index > -1 ) {
+        $scope.selectedGens.splice(index, 1);
+      } else {
+        $scope.selectedGens.push(gen);
+      }
+    };
 
     $scope.setUp = function () {
       $http({
@@ -28,7 +39,8 @@ define(['angular', 'jquery'], function (angular, $) {
       for (var i = 0; i < 6; i++) {
         var index = Math.floor((Math.random()*718));
         if ((!$scope.allowLeg && $scope.pkmn[index].gsx$legendary.$t !== "") ||
-           (Number($scope.pkmn[index].gsx$gen.$t) > $scope.gen)) {
+           ($scope.selectedGens.indexOf(Number($scope.pkmn[index].gsx$gen.$t)) < 0) ||
+           (!$scope.allowDupes && $scope.selected.indexOf($scope.pkmn[index]) > -1)) {
           i--;
         } else {
           $scope.selected.push($scope.pkmn[index]);
