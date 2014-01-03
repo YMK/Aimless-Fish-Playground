@@ -22,7 +22,7 @@
             <input type="checkbox" ng-model="allowDupes" />Allow Duplicates
           </label>
         </div>
-        <button ng-click="pick()" class="btn btn-default btn-sm" ng-disabled="!pkmn.length">DraftLocke Generate</button>
+        <button ng-click="pick()" class="btn btn-default" ng-disabled="!pkmn.length">Pick my team</button>
       </form>
     </div>
     <div class="col-sm-7" ng-hide="!selected.length">
@@ -35,11 +35,15 @@
       </div>
     </div>
     <div class="col-sm-7" ng-hide="selected.length">
+      <h2>Welcome to the DraftLocke generator.</h2>
       <p>
-        Welcome to the DraftLocke generator. This was inspired by a discussion on Reddit about a new form of NuzLocke. The idea being that you would use a pack of TCG cards to define what pokemon you used in the locke. As this would get costly if you ended up doing this several times, it was brought up that there could be an online generator for that. So, I decided to make one.
+        This was inspired by a discussion on Reddit about a new form of NuzLocke (I'll get a link up sometime). The idea being that you would use a pack of TCG cards to define what pokemon you used in the locke. As this would get costly if you ended up doing this several times, it was brought up that there could be an online generator for that. So, I decided to make one.
       </p>
       <p>
-        Currently, the generator will give you 6 pokemon from whatever generations you choose
+        Currently, the generator will give you 6 pokemon from whatever generations you choose in the sidebar. By default, it doesn't allow legendaries, but does allow duplications. Legendaries are currently just defined as "Whatever I saw in the list and counted as a legendary". It would be a good idea to have a definition that is widely agreed, but it currently includes all event-only pokemon plus most pokemon that can only be obtained once in a game (normally not in a wild encounter, but seeing the pokemon and choosing to interact with it).
+      </p>
+      <p>
+        Note that it currently has no real weighting (or, to be exact, they are all weighted at 1 assuming they fulfill the criteria on the right), but this can be changed relatively easily once I get some sort of idea of how to weight them. Also, note that it can (and is likely to if you only choose 1 gen) choose multiple pokemon in the same evolutionary line, even if dupes are disabled. I may implement some sort of check to only choose one, but I'm not sure how that would work. I am planning on implementing an option to only choose fully devolved/evolved pokemon, which would solve that problem in those particular situations.
       </p>
     </div>
   </div>
