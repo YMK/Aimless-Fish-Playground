@@ -107,7 +107,7 @@ StaticServlet.prototype.handleRequest = function(req, res, oldpath) {
       if (parts[parts.length-1].indexOf(".") > -1){
         return self.sendMissing_(req, res, path);
       }
-      return self.sendRedirect_(req, res, path.slice(1, path.length - parts[parts.length-1].length))
+      return self.sendRedirect_(req, res, path.slice(1, path.length - parts[parts.length-1].length));
     }
 
     if (stat.isDirectory()){
@@ -116,7 +116,7 @@ StaticServlet.prototype.handleRequest = function(req, res, oldpath) {
     
     return self.sendFile_(req, res, path);
   });
-}
+};
 
 StaticServlet.prototype.sendError_ = function(req, res, error) {
   res.writeHead(500, {
@@ -209,7 +209,7 @@ StaticServlet.prototype.sendDirectory_ = function(req, res, path) {
   }
   fs.readdir(path, function(err, files) {
     if (err)
-      return self.sendError_(req, res, error);
+      return self.sendError_(req, res, err);
 
     if (!files.length)
       return self.writeDirectoryIndex_(req, res, path, []);

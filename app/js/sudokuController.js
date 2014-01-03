@@ -6,6 +6,7 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
 
   function SudokuController($scope) {
     $scope.identity = angular.identity;
+    $scope.active = "sudoku";
     $scope.board = new Board();
     $scope.selectedRow = 0;
     $scope.selectedCol = 0;

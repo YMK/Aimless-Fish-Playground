@@ -278,5 +278,15 @@ td.semiHighlighted{
 }
 
 .card .panel .name{
-  margin: auto;
+  float: right;
+  width: 40%;
+}
+
+.card .panel .num{
+  float: left;
+}
+
+.card .panel .sprite{
+  width: 50%;
+  float: right;
 }

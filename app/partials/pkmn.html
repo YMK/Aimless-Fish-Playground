@@ -1,15 +1,18 @@
+<div ng-include src="'partials/menu.html'"></div> 
 <div class="container">
-  <div class="row">
+  <div id="row">
     <form class="form-inline" role="form">
-      <button ng-click="pick()" class="btn btn-default btn-md" ng-disabled="pkmn.length === 0">DraftLocke Generate</button>
+      <button ng-click="pick()" class="btn btn-default btn-md" ng-disabled="!pkmn.length">DraftLocke Generate</button>
        Generation: <select class="form-control" ng-model="gen" ng-options="g for g in gens"></select>
        Legendaries: <input type="checkbox" ng-model="allowLeg" />
     </form>
   </div>
   <div class="row">
-    <div ng-repeat="pk in selected" class="card col-sm-2">
+    <div ng-repeat="pk in selected track by $index" class="card col-xs-6 col-sm-3 col-md-2">
       <div class="panel panel-default">
+        <span class="num">{{pk.gsx$no.$t}}. </span>
         <span class="name">{{pk.gsx$name.$t}}</span>
+        <img ng-src="{{pk.sprite}}" class="sprite"/>
       </div>
     </div>
   </div>

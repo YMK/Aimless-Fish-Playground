@@ -42,10 +42,10 @@ define(['require',
         controller: 'SudokuCtrl',
         controllerAs: 'sudoku'
       }).
-      when('/something', {
-        templateUrl: 'partials/something.html',
+      when('/draftlocke', {
+        templateUrl: 'partials/pkmn.html',
         controller: 'PkmnCtrl',
-        controllerAs: 'something'
+        controllerAs: 'pkmn'
       }).
       otherwise({
         redirectTo: '/sudoku'
