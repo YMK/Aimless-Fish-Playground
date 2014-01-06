@@ -1,10 +1,10 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
-/*global define, setTimeout, window */
+/*global define, setTimeout, window, console */
 
-define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
+define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix, angular, sudoku) {
   'use strict';
 
-  function SudokuController($scope) {
+  function SudokuController($scope, $routeParams) {
     $scope.identity = angular.identity;
     if ($scope.info) {
       $scope.info.active = "sudoku";
@@ -26,6 +26,7 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
       {name: "Very hard", value: 60}
     ];
     $scope.difficulty = $scope.difficulties[2];
+    $scope.params = $routeParams || {};
 
     $scope.selectedCell = function () {
       return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
@@ -123,7 +124,7 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
       if (cellVal === value) {
         $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
       } else {
-        if (cellVal === 0 && pencilMarks.indexOf(1) === -1) {
+        if (!cellVal && pencilMarks.indexOf(1) === -1) {
           $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
         } else if (pencilMarks[value] === 1) {
           $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, value);
@@ -164,9 +165,12 @@ define(['sudokuBoard', 'fixes', 'angular'], function (Board, fix, angular) {
     };
 
 
-
-
-    // $scope.setUp();
+    
+    if ($scope.params.board) {
+      $scope.board.setBoard(sudoku.utils.load($scope.params.board));
+    } else {
+      $scope.setUp();
+    }
     fix.firefoxFix();
   }
 

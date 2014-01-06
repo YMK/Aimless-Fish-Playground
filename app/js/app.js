@@ -37,6 +37,11 @@ define(['require',
 
   experimentApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.
+      when('/sudoku/:board', {
+        templateUrl: 'partials/sudoku.html',
+        controller: 'SudokuCtrl',
+        controllerAs: 'sudoku'
+      }).
       when('/sudoku', {
         templateUrl: 'partials/sudoku.html',
         controller: 'SudokuCtrl',
