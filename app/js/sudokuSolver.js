@@ -3,13 +3,12 @@
 
 importScripts("../lib/requirejs/require.js");
 
-
 require(
   {baseUrl: "./"},
   ["require", "../lib/kudoku", "sudokuUtils"],
   function (require, kudoku, sudoku) {
-    'use strict';
-    var self = this;
+    "use strict";
+    var self = this || {};
     self.solver = sudoku_solver();
     self.utils = sudoku.utils;
 
