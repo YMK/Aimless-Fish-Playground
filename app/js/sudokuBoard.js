@@ -156,16 +156,29 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   };
 
   Board.prototype.reset = function () {
-    var row;
+    var row, col;
     for (row = 0; row < 9; row++) {
       this.board[row] = this.originalBoard[row].slice(0);
+    }
+    
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        this.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
     }
   };
 
   Board.prototype.clear = function () {
-    var row;
+    var row, col;
     for (row = 0; row < 9; row++) {
       this.board[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+    
+    
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        this.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
     }
   };
 
