@@ -1,3 +1,6 @@
+/*jslint vars: true, plusplus: true, indent: 2, maxerr: 500 */
+/*global define, Worker */
+
 define(['require'], function (require) {
   var sudoku = {};
 
@@ -51,6 +54,38 @@ define(['require'], function (require) {
           return incorrect;
         }
         return true;
+      },
+      
+      save: function (board) {
+        var string = "";
+        for (var i = 0; i < board.length; i++) {
+          for (var j = 0; j < board.length; j++) {
+            if (board[i][j] === 0) {
+              string = string + ".";
+            } else  {
+              string = string + board[i][j];
+            }
+          }
+        }
+        return string;
+      },
+      
+      load: function (saved) {
+        var board = [[], [], [], [], [], [], [], [], []];
+        
+        if (saved.length !== 81) {
+          return false;
+        }
+        
+        for (var i = 0; i < 9; i++) {
+          var temp = [];
+          for (var j = 0; j < 9; j++) {
+            temp.push(Number(saved.slice((i * 9) + j, (i * 9) + j + 1)));
+          }
+          board[i] = temp;
+        }
+        
+        return board;
       }
     };
   }());

@@ -1,8 +1,9 @@
-'use strict';
+/*jslint plusplus: true, indent: 2, maxerr: 500 */
+/*global define, describe, beforeEach, it, inject, expect */
 
 define(['angular', 'ngmocks', 'sudokuController'], function (ng, mocks, controller) {
-  /* jasmine specs for controllers go here */
-
+  'use strict';
+  
   describe('Sudoku controller', function () {
     var scope, ctrl;
 
