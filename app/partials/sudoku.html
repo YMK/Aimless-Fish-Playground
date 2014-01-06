@@ -40,7 +40,7 @@
         <table class="table table-bordered table-sudoku-select">
           <tr ng-repeat="row in [0, 1, 2]">
             <td ng-repeat="cell in [1, 2, 3]"
-              ng-class="{highlighted: (cell + row * 3) === selectedCell()}"
+              ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
               ng-click="setValueOfCell(cell + row*3)">
               <span>{{cell + row*3}}</span>
             </td>
