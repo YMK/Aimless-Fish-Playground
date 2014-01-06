@@ -80,7 +80,11 @@ define(['require'], function (require) {
         for (var i = 0; i < 9; i++) {
           var temp = [];
           for (var j = 0; j < 9; j++) {
-            temp.push(Number(saved.slice((i * 9) + j, (i * 9) + j + 1)));
+            if (saved.slice((i * 9) + j, (i * 9) + j + 1) === ".") {
+              temp.push(0);
+            } else {
+              temp.push(Number(saved.slice((i * 9) + j, (i * 9) + j + 1)));
+            }
           }
           board[i] = temp;
         }
