@@ -8,7 +8,27 @@
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-  <div ng-include src="'partials/menu.html'"></div>
+  <header class="navbar navbar-default" role="navigation">
+    <div class="container">
+      <div class="navbar-header col-sm-6">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">HTML Experiments</a>
+      </div>
+  
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <nav class="collapse navbar-collapse pull-right col-sm-6" id="mainNav">
+        <ul class="nav navbar-nav">
+          <li ng-class="{active: info.active == 'sudoku'}"><a href="#sudoku">Sudoku</a></li>
+          <li ng-class="{active: info.active == 'pkmn'}"><a href="#draftlocke">DraftLocke</a></li>
+        </ul>
+      </nav><!-- /.navbar-collapse -->
+    </div>
+  </header>
   
   <div ng-view></div>
 

@@ -84,7 +84,8 @@ body {
   -webkit-user-select: none;
   -ms-user-select: none;
   cursor: default;
-  border:2px solid black;
+  border: 2px solid black;
+  display: inline-block;
   overflow: hidden;
 }
 
@@ -101,10 +102,6 @@ body {
   vertical-align: middle!important;
   font-size: 1.5em;
   padding: 5px;
-}
-
-.table-sudoku col, .table-sudoku tr{
-  border: 1px solid gray;
 }
 
 .table-sudoku tr.arow:hover, .table-sudoku col:hover{
@@ -134,12 +131,8 @@ td.highlighted{
   background-color: yellow;
 }
 
-td.semiHighlighted{
-  /*background-color: #F5F6CE;*/
-}
-
 .table-sudoku .wrong{
-  border: 3px solid red;
+  border: 2px solid red;
 }
 
 
@@ -183,14 +176,7 @@ td.semiHighlighted{
 .pencilMarks{
   max-width:150%;
   height: 100%;
-  border: 0px;
   margin: -6px;
-}
-
-.pencilMarks tr{
-  border-style: none;
-  border-width: 0px;
-  border-color: white;
 }
 
 .pencilMarks td{
@@ -222,7 +208,7 @@ td.semiHighlighted{
   height: 455px;
   position: absolute;
   top: 0;
-  width: 440px;
+  width: 452px;
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
   vertical-align: middle;
