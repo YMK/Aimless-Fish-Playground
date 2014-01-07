@@ -8,7 +8,6 @@
  * BASE................Base css
  * BOOTSTRAP...........Bootstrap modifications/additions
  * SUDOKU..............Set the display of the sudoku board
- * MINISQUARES.........Borders for the inner squares on the board
  * PENCILMARKS.........For laying out of the pencil marks on individual squares
  * OVERLAY.............For the table overlay
  * STATUS..............For the status text
@@ -53,10 +52,9 @@ body {
   float: left;
   width: 50%;
   border-top-right-radius: 0;
-}
-
-.btn-group-vertical .btn-group-horizontal .btn:last-child {
-  float: right;
+  &:last-child {
+    float: right;
+  }
 }
 
 .center{
@@ -87,76 +85,59 @@ body {
   border: 2px solid black;
   display: inline-block;
   overflow: hidden;
+  td {
+    height: 50px;
+    width: 50px;
+    max-width: 50px;
+    max-height:50px;
+    text-align: center;
+    vertical-align: middle!important;
+    font-size: 1.5em;
+    padding: 5px;
+  }
+}
+
+.table-sudoku{
+  tr.arow:hover, col:hover {
+    background-color: #F5F6CE;
+  }
+  
+  td.cell:hover:after, .ff-fix:hover:after{
+    background-color: #F5F6CE;
+    content: ' ';
+    height: 10000px;
+    left: 0;
+    position: absolute;
+    top: -5000px;
+    width: 100%;
+    z-index:-1;
+  }
+  
+  .wrong{
+    border: 2px solid red;
+  }
+  
+  .row2, .row5{
+    border-bottom: 2px solid black;
+  }
+  
+  .col2, .col5{
+    border-right: 2px solid black;
+  }
 }
 
 .table-sudoku-select{
   margin-left: auto;
 }
 
-.table-sudoku td, .table-sudoku-select td{
-  height: 50px;
-  width: 50px;
-  max-width: 50px;
-  max-height:50px;
-  text-align: center;
-  vertical-align: middle!important;
-  font-size: 1.5em;
-  padding: 5px;
-}
-
-.table-sudoku tr.arow:hover, .table-sudoku col:hover{
-  background-color: #F5F6CE;
-}
 
 td, th, .ff-fix {
     cursor: pointer;
     position: relative;
 }
 
-.table-sudoku
-td.cell:hover:after,
-.table-sudoku
-.ff-fix:hover:after {
-  background-color: #F5F6CE;
-  content: ' ';
-  height: 10000px;
-  left: 0;
-  position: absolute;
-  top: -5000px;
-  width: 100%;
-  z-index:-1;
-}
-
 td.highlighted{
   background-color: yellow;
-}
-
-.table-sudoku .wrong{
-  border: 2px solid red;
-}
-
-
-
-
-
-
-
-
-
-
-
-/*------------------------------------*\
-    $MINISQUARES
-\*------------------------------------*/
-
-.table-sudoku .row2,
-.table-sudoku .row5{
-  border-bottom: 2px solid black;
-}
-
-.table-sudoku .col2,
-.table-sudoku .col5{
-  border-right: 2px solid black;
 }
 
 
@@ -177,13 +158,13 @@ td.highlighted{
   max-width:150%;
   height: 100%;
   margin: -6px;
-}
-
-.pencilMarks td{
-  height: 33%;
-  line-height: 15px;
-  padding: 0px;
-  font-size: 0.5em;
+  
+  td{
+    height: 33%;
+    line-height: 15px;
+    padding: 0px;
+    font-size: 0.5em;
+  }
 }
 
 .whiteText{
@@ -214,15 +195,15 @@ td.highlighted{
   text-align: center;
   vertical-align: middle;
   padding: 10px;
-}
-
-.table-overlay .half{
-  margin-bottom: -100px;
-  height: 50%;
-}
-
-.table-overlay h3 span{
-  cursor: pointer;
+  
+  .half{
+    margin-bottom: -100px;
+    height: 50%;
+  }
+  
+  h3 span{
+    cursor: pointer;
+  }
 }
 
 
@@ -258,23 +239,23 @@ td.highlighted{
 .card{
   float: left;
   padding: 5px;
-}
-
-.card .panel{ 
-  height: 200px;
-  padding: 10px;
-}
-
-.card .panel .name{
-  float: right;
-}
-
-.card .panel .num{
-  float: left;
-}
-
-.card .panel .sprite{
-  width: 50%;
-  float: right;
-  clear: right;
+  
+  .panel{ 
+    height: 200px;
+    padding: 10px;
+    
+    .name{
+      float: right;
+    }
+    
+    .num{
+      float: left;
+    }
+    
+    .sprite{
+      width: 50%;
+      float: right;
+      clear: right;
+    }
+  }
 }
