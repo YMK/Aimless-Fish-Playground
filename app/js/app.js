@@ -70,4 +70,6 @@ define(['require',
       type: 'loadamd'
     }, '*');
   }
+   
+  FastClick.attach(document.body);
 });
