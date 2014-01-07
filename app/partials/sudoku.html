@@ -1,36 +1,36 @@
 <section class="container">
   <div class="row">
     <div class="sudoku">
-        <table class="table-sudoku">
-          <col ng-repeat="row in board.getBoard()"
-            ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
-          <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
-            ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
-            <td ng-repeat="(cIndex, cell) in row track by cIndex"
-              ng-click="setSelected(rIndex, cIndex)" class="cell"
-              ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
-              semiHighlighted: selectedCol === cIndex || selectedRow === rIndex}">
-              <table class="pencilMarks" ng-hide="cell">
-                <tr ng-repeat="row in [0, 1, 2]">
-                  <td ng-repeat="cell in [1, 2, 3]">
-                    <span ng-class="{whiteText: !board.getPencilMarks(rIndex, cIndex)[cell + row*3]}">
-                      {{cell + row*3}}
-                    </span>
-                  </td>
-                </tr>
-              </table>
-              <span ng-show="cell">
-                {{cell}}
-              </span>
-            </td>
-          </tr>
-        </table>
-        <div class="table-overlay" ng-show="inProgress.generating">
-          <div class="half"></div>
-          <h2>Generating new game</h2>
-          <h4 ng-show="error.generating">{{error.generating}}</h4>
-          <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
-        </div>
+      <table class="table-sudoku">
+        <col ng-repeat="row in board.getBoard()"
+          ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
+        <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
+          ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
+          <td ng-repeat="(cIndex, cell) in row track by cIndex"
+            ng-click="setSelected(rIndex, cIndex)" class="cell"
+            ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
+            semiHighlighted: selectedCol === cIndex || selectedRow === rIndex}">
+            <table class="pencilMarks" ng-hide="cell">
+              <tr ng-repeat="row in [0, 1, 2]">
+                <td ng-repeat="cell in [1, 2, 3]">
+                  <span ng-class="{whiteText: !board.getPencilMarks(rIndex, cIndex)[cell + row*3]}">
+                    {{cell + row*3}}
+                  </span>
+                </td>
+              </tr>
+            </table>
+            <span ng-show="cell">
+              {{cell}}
+            </span>
+          </td>
+        </tr>
+      </table>
+      <div class="table-overlay" ng-show="inProgress.generating">
+        <div class="half"></div>
+        <h2>Generating new game</h2>
+        <h4 ng-show="error.generating">{{error.generating}}</h4>
+        <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
+      </div>
     </div>
     
     <div class="control">

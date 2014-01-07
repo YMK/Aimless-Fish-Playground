@@ -34,8 +34,8 @@
 @grid-columns: 12;
 
 html {  
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
+  -ms-touch-action: none;
+  touch-action: none;
 }
 
 body {
@@ -140,16 +140,10 @@ header{
     text-align: center;
     vertical-align: middle!important;
     font-size: 1.5em;
-    padding: 5px;
   }
 }
 
 .table-sudoku{
-  @media (max-width: 500px) {
-    width: 100%;
-    height: 100%;
-  }
-  
   tr.arow:hover, col:hover {
     background-color: #F5F6CE;
   }
@@ -283,6 +277,11 @@ td.highlighted{
   text-align: center;
   vertical-align: middle;
   padding: 10px;
+  
+  @media (max-width: 500px){
+    width: 95%;
+    border-style: none;
+  }
   
   .half{
     margin-bottom: -100px;
