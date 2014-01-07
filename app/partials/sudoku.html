@@ -1,7 +1,7 @@
 <section class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-8 col-md-6">
-        <table class="table table-bordered table-sudoku">
+    <div class="sudoku">
+        <table class="table-sudoku">
           <col ng-repeat="row in board.getBoard()"
             ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
           <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
@@ -25,7 +25,7 @@
             </td>
           </tr>
         </table>
-        <div class="table table-bordered table-sudoku table-overlay" ng-show="inProgress.generating">
+        <div class="table-overlay" ng-show="inProgress.generating">
           <div class="half"></div>
           <h2>Generating new game</h2>
           <h4 ng-show="error.generating">{{error.generating}}</h4>
@@ -33,62 +33,46 @@
         </div>
     </div>
     
-    <div class="col-xs-12 col-sm-4 col-md-6">
+    <div class="control">
       <div class="row">
-        
-      <div class="col-xs-8 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1">
-        <table class="table table-bordered table-sudoku-select">
-          <tr ng-repeat="row in [0, 1, 2]">
-            <td ng-repeat="cell in [1, 2, 3]"
-              ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
-              ng-click="setValueOfCell(cell + row*3)">
-              <span>{{cell + row*3}}</span>
-            </td>
-          </tr>
-        </table>
-      </div>
+        <div class="select">
+          <table class="table-sudoku-select">
+            <tr ng-repeat="row in [0, 1, 2]">
+              <td ng-repeat="cell in [1, 2, 3]"
+                ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
+                ng-click="setValueOfCell(cell + row*3)">
+                <span>{{cell + row*3}}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
 
-      <div class="col-xs-4 col-sm-6 col-sm-offset-3 col-md-offset-1 col-md-4">
-        <div class="btn-group-vertical center">
-          <button class="btn btn-default" ng-click="generate()" ng-disabled="inProgress.generating">
-            New game
-          </button>
-
-<!--
-          <button class="btn btn-default" data-toggle="modal"
-            data-target="#settingsModal">
-            Settings
-          </button>
--->
-
-          <button class="btn btn-default" ng-click="solve()">
-            Solve
-          </button>
-
-          <button class="btn btn-default" ng-click="reset()">
-            Reset
-          </button>
-
-          <button class="btn btn-default" ng-click="clear()">
-            Clear
-          </button>
-
-          <button class="btn btn-default" ng-click="check()">
-            Check
-          </button>
-          <div class="btn-group btn-group-horizontal">
-            <button type="button" class="btn btn-default btn-half" ng-click="undo()">
-              <i class="fa fa-undo"></i>
+        <div class="buttons">
+          <div class="btn-group-vertical center">
+            <button class="btn" ng-click="generate()" ng-disabled="inProgress.generating">
+              New game
             </button>
-            <button type="button" class="btn btn-default btn-half" ng-click="redo()">
-              <i class="fa fa-repeat"></i>
-            </button>
+  <!--
+            <button class="btn btn" data-toggle="modal"
+              data-target="#settingsModal">Settings</button>
+  -->
+            <button class="btn" ng-click="solve()">Solve</button>
+            <button class="btn" ng-click="reset()">Reset</button>
+            <button class="btn" ng-click="clear()">Clear</button>
+            <button class="btn" ng-click="check()">Check</button>
+            <div class="btn-group btn-group-horizontal">
+              <button class="btn" ng-click="undo()">
+                <i class="fa fa-undo"></i>
+              </button>
+              <button class="btn" ng-click="redo()">
+                <i class="fa fa-repeat"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      </div>
 
-      <div class="row statusText col-md-10">
+      <div class="statusText">
         <h2>
           <span ng-show="won()">
             Well done, you have completed this Sudoku!

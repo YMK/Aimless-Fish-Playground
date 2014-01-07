@@ -6,8 +6,10 @@
 /**
  * CONTENTS............You’re reading it!
  * BASE................Base css
+ * HEADER..............Setting boostrap variables for the header
  * BOOTSTRAP...........Bootstrap modifications/additions
  * SUDOKU..............Set the display of the sudoku board
+ * CONTROL.............Set display for the other stuff that isn't the board
  * PENCILMARKS.........For laying out of the pencil marks on individual squares
  * OVERLAY.............For the table overlay
  * STATUS..............For the status text
@@ -22,10 +24,15 @@
 
 
 
-
+ 
 /*------------------------------------*\
     $BASE
 \*------------------------------------*/
+@import "../lib/bootstrap/less/bootstrap.less";
+@import (css) "../lib/font-awesome/css/font-awesome.css";
+
+@grid-columns: 12;
+
 body {
   background-color: white;
 }
@@ -34,6 +41,33 @@ body {
   margin-bottom: 15px;
 }
 
+
+
+
+
+
+
+
+
+
+ 
+/*------------------------------------*\
+    $HEADER
+\*------------------------------------*/
+
+header{
+  .navbar-header{
+    .make-sm-column(6);
+  }  
+  
+  nav{
+    .pull-right;
+    .make-sm-column(6);
+  }
+}
+
+
+  
 
 
 
@@ -75,7 +109,14 @@ body {
     $SUDOKU
 \*------------------------------------*/
 
+.sudoku{
+  .make-sm-column(8);
+  .make-md-column(6);
+}
+
 .table-sudoku, .table-sudoku-select{
+  .table;
+  .table-bordered;
   width: auto;
   user-select:none;
   -moz-user-select: none;
@@ -151,6 +192,41 @@ td.highlighted{
 
 
 /*------------------------------------*\
+    $CONTROL
+\*------------------------------------*/
+.control{
+  .make-sm-column(4);
+  .make-md-column(6);
+}
+
+.select{
+  .make-xs-column(8);
+  .make-sm-column(10);
+  .make-sm-column-offset(1);
+  .make-md-column(5);
+}
+
+.buttons{
+  .make-xs-column(4);
+  .make-sm-column(6);
+  .make-sm-column-offset(3);
+  .make-md-column(4);
+  .make-md-column-offset(1);
+  
+  button{
+    .btn-default;
+  }
+}
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
     $PENCILMARKS
 \*------------------------------------*/
 
@@ -186,6 +262,7 @@ td.highlighted{
 \*------------------------------------*/
 
 .table-overlay{
+  .table-sudoku;
   height: 458px;
   position: absolute;
   top: 0;
@@ -221,6 +298,7 @@ td.highlighted{
 \*------------------------------------*/
 .statusText{
   text-align: center;
+  .make-md-column(10);
 }
 
 
