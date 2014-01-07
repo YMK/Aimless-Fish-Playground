@@ -8,7 +8,7 @@ define(['require', 'angular', 'sudokuController', 'pkmnController'], function (r
       "active": ""
     };
   });
-  experimentControllers.controller('SudokuCtrl', ['$scope', '$routeParams', sudokuController]);
+  experimentControllers.controller('SudokuCtrl', ['$scope', '$routeParams', '$location', sudokuController]);
   experimentControllers.controller('PkmnCtrl', ['$scope', '$http', pkmnController]);
   // Add any other controllers needed in the same way, after adding
   // the files to the requirejs line above.

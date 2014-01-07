@@ -4,7 +4,7 @@
 define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix, angular, sudoku) {
   'use strict';
 
-  function SudokuController($scope, $routeParams) {
+  function SudokuController($scope, $routeParams, $location) {
     $scope.identity = angular.identity;
     if ($scope.info) {
       $scope.info.active = "sudoku";
@@ -27,6 +27,10 @@ define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix,
     ];
     $scope.difficulty = $scope.difficulties[2];
     $scope.params = $routeParams || {};
+    
+    $scope.saveBoard = function () {
+      $location.path("/sudoku/" + sudoku.utils.save($scope.board.getBoard()));
+    };
 
     $scope.selectedCell = function () {
       return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
