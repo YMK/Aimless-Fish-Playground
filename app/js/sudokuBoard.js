@@ -134,6 +134,9 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   Board.prototype.getBoard = function (board) {
     return this.board;
   };
+  Board.prototype.getOrigBoard = function (board) {
+    return this.originalBoard;
+  };
 
   Board.prototype.solve = function (callback) {
     var self = this;

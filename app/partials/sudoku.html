@@ -9,7 +9,8 @@
           <td ng-repeat="(cIndex, cell) in row track by cIndex"
             ng-click="setSelected(rIndex, cIndex)" class="cell"
             ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
-            semiHighlighted: selectedCol === cIndex || selectedRow === rIndex}">
+            semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
+            faded: isOriginal(rIndex, cIndex)}">
             <table class="pencilMarks" ng-hide="cell">
               <tr ng-repeat="row in [0, 1, 2]">
                 <td ng-repeat="cell in [1, 2, 3]">

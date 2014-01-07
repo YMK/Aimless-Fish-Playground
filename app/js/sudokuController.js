@@ -35,6 +35,12 @@ define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix,
     $scope.selectedCell = function () {
       return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
     };
+    
+    $scope.isOriginal = function (row, col) {
+      if ($scope.board.getOrigBoard()[row][col] !== 0) {
+        return true;
+      }
+    };
 
     $scope.selectedCellPencilMarks = function () {
       return $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
