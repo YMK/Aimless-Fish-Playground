@@ -126,11 +126,12 @@ header{
   border: 2px solid black;
   display: inline-block;
   overflow: hidden;
+  
   td {
     height: 50px;
     width: 50px;
     max-width: 50px;
-    max-height:50px;
+    max-height: 50px;
     text-align: center;
     vertical-align: middle!important;
     font-size: 1.5em;
@@ -139,6 +140,11 @@ header{
 }
 
 .table-sudoku{
+  @media (max-width: 500px) {
+    width: 100%;
+    height: 100%;
+  }
+  
   tr.arow:hover, col:hover {
     background-color: #F5F6CE;
   }
