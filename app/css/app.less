@@ -122,20 +122,8 @@ header{
 .table-sudoku{
   .sudoku-styles;
   
-  tr.arow:hover, col:hover {
-    z-index: -1;
+  td.cell:hover{
     background-color: #F5F6CE;
-  }
-  
-  td.cell:hover:after, .ff-fix:hover:after{
-    z-index: -1;
-    background-color: #F5F6CE;
-    content: ' ';
-    height: 1000px;
-    left: 0;
-    position: absolute;
-    top: -500px;
-    width: 100%;
   }
   
   .wrong{
@@ -160,6 +148,12 @@ td, th, .ff-fix {
   cursor: pointer;
   position: relative;
 }
+
+@-moz-document url-prefix() {
+  td{
+    position: static;
+  }
+}
   
 
 .sudoku-styles{
@@ -176,7 +170,6 @@ td, th, .ff-fix {
   overflow: hidden;
   border-radius: 10px;
   td {
-    position: static;
     height: 50px;
     width: 50px;
     max-width: 50px;

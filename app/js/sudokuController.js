@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window, console */
 
-define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix, angular, sudoku) {
+define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudoku) {
   'use strict';
 
   function SudokuController($scope, $routeParams, $location) {
@@ -181,7 +181,6 @@ define(['sudokuBoard', 'fixes', 'angular', 'sudokuUtils'], function (Board, fix,
     } else {
       $scope.setUp();
     }
-    fix.firefoxFix();
   }
 
   SudokuController.$inject = ['$scope'];
