@@ -326,12 +326,33 @@ td, th, .ff-fix {
 
 
 /*------------------------------------*\
+    $PKMNMAIN
+\*------------------------------------*/
+.controls{
+  .make-sm-column(@grid-columns / 3);
+}
+
+.card-pack, .intro{
+  .make-sm-column(@grid-columns / 1.8);
+}
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
     $PKMNCARDS
 \*------------------------------------*/
 .row form{
   margin-left: 5px;
 }
 .card{
+  .make-xs-column(@grid-columns / 2);
+  .make-md-column(@grid-columns / 3);
   float: left;
   padding: 5px;
   

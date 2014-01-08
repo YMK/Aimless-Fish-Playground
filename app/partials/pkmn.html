@@ -1,6 +1,6 @@
 <section class="container">
   <div class="row">
-    <div class="col-sm-5">
+    <div class="controls">
       <form class="form" role="form">
         <div class="form-group">
           <label>Generations: </label>
@@ -25,8 +25,8 @@
         <button ng-click="pick()" class="btn btn-default" ng-disabled="!pkmn.length">Pick my team</button>
       </form>
     </div>
-    <div class="col-sm-7" ng-hide="!selected.length">
-      <div ng-repeat="pk in selected track by $index" class="card col-xs-6 col-sm-6 col-md-4">
+    <div class="card-pack" ng-hide="!selected.length">
+      <div ng-repeat="pk in selected track by $index" class="card">
         <div class="panel panel-default">
           <span class="num">{{pk.gsx$no.$t}}. </span>
           <span class="name">{{pk.gsx$name.$t}}</span>
@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-7" ng-hide="selected.length">
+    <div class="intro" ng-hide="selected.length">
       <h2>Welcome to the DraftLocke generator.</h2>
       <p>
         This was inspired by a discussion on Reddit about a new form of NuzLocke (I'll get a link up sometime). The idea being that you would use a pack of TCG cards to define what pokemon you used in the locke. As this would get costly if you ended up doing this several times, it was brought up that there could be an online generator for that. So, I decided to make one.
