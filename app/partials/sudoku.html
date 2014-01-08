@@ -7,7 +7,7 @@
         <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
           ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
           <td ng-repeat="(cIndex, cell) in row track by cIndex"
-            ng-click="setSelected(rIndex, cIndex)" class="cell"
+            ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}"
             ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
             semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
             faded: isOriginal(rIndex, cIndex)}">

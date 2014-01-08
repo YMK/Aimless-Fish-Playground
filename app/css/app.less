@@ -5,7 +5,7 @@
 \*------------------------------------*/
 /**
  * CONTENTS............You’re reading it!
- * BASE................Base css
+ * BASE................Base css, including variables
  * HEADER..............Setting boostrap variables for the header
  * BOOTSTRAP...........Bootstrap modifications/additions
  * SUDOKU..............Set the display of the sudoku board
@@ -31,7 +31,7 @@
 @import "../lib/bootstrap/less/bootstrap.less";
 @import (css) "../lib/font-awesome/css/font-awesome.css";
 
-@grid-columns: 12;
+@grid-columns: 24;
 
 html {  
   -ms-touch-action: none;
@@ -62,12 +62,12 @@ body {
 
 header{
   .navbar-header{
-    .make-sm-column(6);
+    .make-sm-column(@grid-columns / 2);
   }  
   
   nav{
     .pull-right;
-    .make-sm-column(6);
+    .make-sm-column(@grid-columns / 2);
   }
 }
 
@@ -115,55 +115,27 @@ header{
 \*------------------------------------*/
 
 .sudoku{
-  .make-sm-column(8);
-  .make-md-column(6);
+  .make-sm-column(@grid-columns / 1.5);
+  .make-md-column(@grid-columns / 2);
 }
 
-.table-sudoku, .table-sudoku-select{
-  .table;
-  .table-bordered;
-  width: auto;
-  user-select:none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  cursor: default;
-  border: 2px solid black;
-  display: inline-block;
-  overflow: hidden;
+.table-sudoku{
+  .sudoku-styles;
   
-  td {
-    height: 50px;
-    width: 50px;
-    max-width: 50px;
-    max-height: 50px;
-    text-align: center;
-    vertical-align: middle!important;
-    font-size: 1.5em;
-  }
-  td.faded {
-    background-color: #D1D1D1;
-  }
-  
-  td.highlighted{
-    background-color: yellow;
-  }
-}
-
-.table-sudoku{  
   tr.arow:hover, col:hover {
+    z-index: -1;
     background-color: #F5F6CE;
   }
   
   td.cell:hover:after, .ff-fix:hover:after{
+    z-index: -1;
     background-color: #F5F6CE;
     content: ' ';
-    height: 10000px;
+    height: 1000px;
     left: 0;
     position: absolute;
-    top: -5000px;
+    top: -500px;
     width: 100%;
-    z-index:-1;
   }
   
   .wrong{
@@ -180,13 +152,46 @@ header{
 }
 
 .table-sudoku-select{
+  .sudoku-styles;
   margin-left: auto;
 }
 
-
 td, th, .ff-fix {
-    cursor: pointer;
-    position: relative;
+  cursor: pointer;
+  position: relative;
+}
+  
+
+.sudoku-styles{
+  .table;
+  .table-bordered;
+  width: auto;
+  user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  cursor: default;
+  border: 2px solid black;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 10px;
+  td {
+    position: static;
+    height: 50px;
+    width: 50px;
+    max-width: 50px;
+    max-height: 50px;
+    text-align: center;
+    vertical-align: middle!important;
+    font-size: 1.5em;
+    &.faded {
+      background-color: #D1D1D1;
+    }
+    
+    &.highlighted{
+      background-color: yellow;
+    }
+  }
 }
 
 
@@ -202,23 +207,23 @@ td, th, .ff-fix {
     $CONTROL
 \*------------------------------------*/
 .control{
-  .make-sm-column(4);
-  .make-md-column(6);
+  .make-sm-column(@grid-columns / 3);
+  .make-md-column(@grid-columns / 2);
 }
 
 .select{
-  .make-xs-column(8);
-  .make-sm-column(10);
-  .make-sm-column-offset(1);
-  .make-md-column(5);
+  .make-xs-column(@grid-columns / 1.5);
+  .make-sm-column(@grid-columns / 1.2);
+  .make-sm-column-offset(@grid-columns / 12);
+  .make-md-column(@grid-columns / 2.4);
 }
 
 .buttons{
-  .make-xs-column(4);
-  .make-sm-column(6);
-  .make-sm-column-offset(3);
-  .make-md-column(4);
-  .make-md-column-offset(1);
+  .make-xs-column(@grid-columns / 3);
+  .make-sm-column(@grid-columns / 2);
+  .make-sm-column-offset(@grid-columns / 4);
+  .make-md-column(@grid-columns / 3);
+  .make-md-column-offset(@grid-columns / 12);
   
   button{
     .btn-default;
@@ -310,7 +315,7 @@ td, th, .ff-fix {
 \*------------------------------------*/
 .statusText{
   text-align: center;
-  .make-md-column(10);
+  .make-md-column(@grid-columns / 1.2);
 }
 
 
