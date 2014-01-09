@@ -1,16 +1,17 @@
 {
-	"name": "HTML5 Experiments",
-	"version": "0.1",
-	"main": "index.html",
-	"ignore": [
-		"**/.*",
-		"libs"
-	],
-	"dependencies": {
-		"angular": "latest",
-		"angular-route": "latest",
-		"bootstrap": "latest",
-		"requirejs": "latest",
-		"jquery": "latest"
-	}
+  "name": "HTML5 Experiments",
+  "version": "0.1",
+  "main": "index.html",
+  "ignore": [
+    "**/.*",
+    "libs"
+  ],
+  "dependencies": {
+    "angular": "latest",
+    "angular-route": "latest",
+    "bootstrap": "latest",
+    "requirejs": "latest",
+    "jquery": "latest",
+    "angular-touch": "~1.2.7"
+  }
 }

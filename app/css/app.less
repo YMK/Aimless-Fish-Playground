@@ -32,7 +32,7 @@
 @import (css) "../lib/font-awesome/css/font-awesome.css";
 
 @grid-columns: 24;
-
+.nav, .pagination, .carousel a { cursor: pointer; }
 html {  
   -ms-touch-action: none;
   touch-action: none;
@@ -142,6 +142,17 @@ header{
 .table-sudoku-select{
   .sudoku-styles;
   margin-left: auto;
+  margin: 0px;
+  background-color: white;
+  td{
+    padding: 0px!important;
+    font-size:1em;
+    line-height: 20px;
+    height: 20px;
+    width: 20px;
+    max-width: 30px;
+    max-height: 30px;
+  }
 }
 
 td, th, .ff-fix {

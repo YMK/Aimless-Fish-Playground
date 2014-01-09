@@ -1,10 +1,13 @@
 /*jslint vars: true, plusplus: true, indent: 2, maxerr: 500 */
-/*global require, define, document, top, window */
+/*global require, define, document, top, window, FastClick */
 
 require.config({
   paths: {
     "angular": "../lib/angular/angular",
     "ngroute": "../lib/angular-route/angular-route",
+    "ngtouch": "../lib/angular-touch/angular-touch.min",
+    "ngbootstrap": "../lib/angular-bootstrap/ui-bootstrap.min",
+    "ngbootstrap-tpls": "../lib/angular-bootstrap/ui-bootstrap-tpls.min",
     "jquery": "../lib/jquery/jquery",
     "bootstrap.modal": "../lib/bootstrap/js/modal",
     "bootstrap.collapse": "../lib/bootstrap/js/collapse",
@@ -16,6 +19,9 @@ require.config({
     "angular": {
       exports: "angular"
     },
+    "ngtouch": ['angular'],
+    "ngbootstrap": ['angular'],
+    "ngbootstrap-tpls": ['angular'],
     "ngroute": ['angular'],
     "bootstrap.modal": ['jquery'],
     "bootstrap.collapse": ['jquery'],
@@ -25,14 +31,16 @@ require.config({
   }
 });
 
-define(['require',
-        'angular', 'ngroute',
-        'bootstrap.modal', 'bootstrap.collapse',
-        'controllers'], function (require, ng) {
+define(['require', 'jquery',
+        'angular', 'ngroute', 'ngtouch',
+        'ngbootstrap', 'ngbootstrap-tpls',
+        'bootstrap.collapse',
+        'controllers', 'directives'], function (require, $, ng) {
   'use strict';
+          
   var experimentApp = ng.module('experimentApp', [
-    'ngRoute',
-    'experimentControllers'
+    'ngRoute', 'ngTouch', 'ui.bootstrap',
+    'experimentControllers', 'custom.sudoku'
   ]);
 
   experimentApp.config(function ($routeProvider, $locationProvider) {
@@ -55,8 +63,6 @@ define(['require',
       otherwise({
         redirectTo: '/sudoku'
       });
-
-//    $locationProvider.html5Mode(true);
   });
 
   ng.bootstrap(document, ['experimentApp']);

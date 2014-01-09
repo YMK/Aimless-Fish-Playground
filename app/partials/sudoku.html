@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" bluring>
   <div class="row">
     <div class="sudoku">
       <table class="table-sudoku">
@@ -6,8 +6,9 @@
           ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
         <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
           ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
-          <td ng-repeat="(cIndex, cell) in row track by cIndex"
-            ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}"
+          <td sudoku selected-cell="selectedCell()" pencil-marks="selectedCellPencilMarks()"
+            ng-repeat="(cIndex, cell) in row track by cIndex"
+            ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}" id="cell c{{rIndex}}{{cIndex}}"
             ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
             semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
             faded: isOriginal(rIndex, cIndex)}">
@@ -37,15 +38,6 @@
     <div class="control">
       <div class="row">
         <div class="select">
-          <table class="table-sudoku-select">
-            <tr ng-repeat="row in [0, 1, 2]">
-              <td ng-repeat="cell in [1, 2, 3]"
-                ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
-                ng-click="setValueOfCell(cell + row*3)">
-                <span>{{cell + row*3}}</span>
-              </td>
-            </tr>
-          </table>
         </div>
 
         <div class="buttons">
@@ -53,10 +45,6 @@
             <button class="btn" ng-click="generate()" ng-disabled="inProgress.generating">
               New game
             </button>
-  <!--
-            <button class="btn btn" data-toggle="modal"
-              data-target="#settingsModal">Settings</button>
-  -->
             <button class="btn" ng-click="solve()">Solve</button>
             <button class="btn" ng-click="reset()">Reset</button>
             <button class="btn" ng-click="clear()">Clear</button>
@@ -90,20 +78,14 @@
   </div>
 </section>
 
-
-<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        
-        <h2>Difficulty:</h2>
-        <select ng-model="difficulty" ng-options="d.name for d in difficulties"></select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+<div id="test" style="display:none;">
+<table class="table-sudoku-select">
+    <tr ng-repeat="row in [0, 1, 2]">
+      <td ng-repeat="cell in [1, 2, 3]"
+        ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
+        ng-click="setValueOfCell(cell + row*3)">
+        <span>{{cell + row*3}}</span>
+      </td>
+    </tr>
+</table>
+</div>
