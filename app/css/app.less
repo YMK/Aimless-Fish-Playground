@@ -122,7 +122,7 @@ header{
 .table-sudoku{
   .sudoku-styles;
   
-  td.cell:hover{
+  td.cell:hover:not(.faded){
     background-color: #F5F6CE;
   }
   
@@ -157,6 +157,10 @@ header{
 
 td, th, .ff-fix {
   cursor: pointer;
+  &.faded{
+    pointer-events: none;
+    cursor: not-allowed;
+  }
   position: relative;
 }
 
