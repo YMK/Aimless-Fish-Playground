@@ -240,6 +240,7 @@ td, th, .ff-fix {
   .make-xs-column(@grid-columns / 3);
   .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 3);
+  .make-md-column-offset(@grid-columns / 6);
   .controlPanel;
   
   button{
@@ -350,19 +351,11 @@ td, th, .ff-fix {
 /*------------------------------------*\
     $STATUS
 \*------------------------------------*/
-.blank{
-  display: block;
-  .make-md-column(@grid-columns / 3);
-  height: 200px;
-  color: white;
-  @media (max-width: 992px) {
-    display: none;
-  }
-}
 .statusText{
   text-align: center;
   .make-xs-column(@grid-columns / 3);
   .make-sm-column(@grid-columns / 1.5);
+  .make-md-column-offset(@grid-columns / 6);
 }
 
 
