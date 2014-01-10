@@ -1,54 +1,53 @@
 <section class="container">
   <div class="row">
     <div class="sudoku">
-      <table class="table-sudoku">
-        <col ng-repeat="row in board.getBoard()"
-          ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
-        <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
-          ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
-          <td sudoku selected-cell="selectedCell()" pencil-marks="selectedCellPencilMarks()"
-            ng-repeat="(cIndex, cell) in row track by cIndex"
-            ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}" id="cell c{{rIndex}}{{cIndex}}"
-            ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
-            semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
-            faded: isOriginal(rIndex, cIndex)}">
-            <table class="pencilMarks" ng-hide="cell">
-              <tr ng-repeat="row in [0, 1, 2]">
-                <td ng-repeat="cell in [1, 2, 3]">
-                  <span ng-class="{whiteText: !board.getPencilMarks(rIndex, cIndex)[cell + row*3]}">
-                    {{cell + row*3}}
-                  </span>
-                </td>
-              </tr>
-            </table>
-            <span ng-show="cell">
-              {{cell}}
-            </span>
-          </td>
-        </tr>
-      </table>
-      <div class="table-overlay" ng-show="inProgress.generating">
-        <div class="half"></div>
-        <h2>Generating new game</h2>
-        <h4 ng-show="error.generating">{{error.generating}}</h4>
-        <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
+      <div class="shrink-wrap">
+        <table class="table-sudoku">
+          <col ng-repeat="row in board.getBoard()"
+            ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
+          <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
+            ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
+            <td sudoku selected-cell="selectedCell()" pencil-marks="selectedCellPencilMarks()"
+              ng-repeat="(cIndex, cell) in row track by cIndex"
+              ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}" id="cell c{{rIndex}}{{cIndex}}"
+              ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
+              semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
+              faded: isOriginal(rIndex, cIndex)}">
+              <table class="pencilMarks" ng-hide="cell">
+                <tr ng-repeat="row in [0, 1, 2]">
+                  <td ng-repeat="cell in [1, 2, 3]">
+                    <span ng-class="{whiteText: !board.getPencilMarks(rIndex, cIndex)[cell + row*3]}">
+                      {{cell + row*3}}
+                    </span>
+                  </td>
+                </tr>
+              </table>
+              <span ng-show="cell">
+                {{cell}}
+              </span>
+            </td>
+          </tr>
+        </table>
+        <div class="table-overlay" ng-show="inProgress.generating">
+          <div class="half"></div>
+          <h2>Generating new game</h2>
+          <h4 ng-show="error.generating">{{error.generating}}</h4>
+          <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
+        </div>
       </div>
     </div>
     
     <div class="control">
       <div class="row">
-        <div class="select">
-        </div>
-
+        
         <div class="buttons">
+          <label>Control</label>
           <div class="btn-group-vertical center">
             <button class="btn" ng-click="generate()" ng-disabled="inProgress.generating">
               New game
             </button>
-            <button class="btn" ng-click="solve()">Solve</button>
             <button class="btn" ng-click="reset()">Reset</button>
             <button class="btn" ng-click="clear()">Clear</button>
-            <button class="btn" ng-click="check()">Check</button>
             <div class="btn-group btn-group-horizontal">
               <button class="btn" ng-click="undo()">
                 <i class="fa fa-undo"></i>
@@ -59,20 +58,33 @@
             </div>
           </div>
         </div>
-      </div>
+        
+        <div class="cheat">
+          <label>Cheat</label>
+          <div class="btn-group-vertical center">
+            <button class="btn" ng-click="solve()">Solve</button>
+            <button class="btn" ng-click="clear()">Clear</button>
+            <button class="btn" ng-click="check()">Check</button>
+          </div>
+        </div>
+        
+        <div class="blank">
+         This is a really, really bad hack.
+        </div>
 
-      <div class="statusText">
-        <h2>
-          <span ng-show="won()">
-            Well done, you have completed this Sudoku!
-          </span>
-          <span ng-show="checked && checkBoard() && !won()">
-            Correct so far
-          </span>
-          <span ng-show="checked && !checkBoard()">
-            Something is wrong
-          </span>
-        </h2>
+        <div class="statusText">
+          <h2>
+            <span ng-show="won()">
+              Well done, you have completed this Sudoku!
+            </span>
+            <span ng-show="checked && checkBoard() && !won()">
+              Correct so far
+            </span>
+            <span ng-show="checked && !checkBoard()">
+              Something is wrong
+            </span>
+          </h2>
+        </div>
       </div>
     </div>
   </div>

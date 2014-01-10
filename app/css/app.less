@@ -87,6 +87,10 @@ header{
     $BOOTSTRAP
 \*------------------------------------*/
 
+.btn-group-vertical{
+  display: block;
+}
+
 .btn-group-vertical .btn-group-horizontal .btn {
   float: left;
   width: 50%;
@@ -115,12 +119,25 @@ header{
 \*------------------------------------*/
 
 .sudoku{
+  @media (max-width: 767px){
+    text-align: center;
+  }
+  overflow: hidden;
   .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 2);
 }
 
+.shrink-wrap{
+  float: left;
+  position: relative;
+  left: 50%;
+  height: 500px;
+}
+
 .table-sudoku{
   .sudoku-styles;
+  position: relative;
+  left: -50%;
   
   td.cell:hover:not(.faded){
     background-color: #F5F6CE;
@@ -219,23 +236,34 @@ td, th, .ff-fix {
   .make-md-column(@grid-columns / 2);
 }
 
-.select{
-  .make-xs-column(@grid-columns / 1.5);
-  .make-sm-column(@grid-columns / 1.2);
-  .make-sm-column-offset(@grid-columns / 12);
-  .make-md-column(@grid-columns / 2.4);
-}
-
 .buttons{
   .make-xs-column(@grid-columns / 3);
-  .make-sm-column(@grid-columns / 2);
-  .make-sm-column-offset(@grid-columns / 4);
+  .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 3);
-  .make-md-column-offset(@grid-columns / 12);
+  .controlPanel;
   
   button{
     .btn-default;
   }
+}
+
+.cheat{
+  .make-xs-column(@grid-columns / 3);
+  .make-sm-column(@grid-columns / 1.5);
+  .make-md-column(@grid-columns / 3);
+  .controlPanel;
+  
+  button{
+    .btn-default;
+  }
+  
+  @media (max-width: 991px) and (min-width: 768px){
+    margin-top: 20px;
+  }
+}
+
+.controlPanel{
+  text-align: center;
 }
 
 
@@ -284,18 +312,19 @@ td, th, .ff-fix {
 .table-overlay{
   .table-sudoku;
   height: 458px;
-  position: absolute;
-  top: 0;
-  left: 15px;
+  position: relative;
+  top: -482px;
+  left: -50%;
   width: 455px;
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
   vertical-align: middle;
   padding: 10px;
+  overflow: auto;
   
-  @media (max-width: 500px){
-    width: 95%;
-    border-style: none;
+  @media (max-width: 455px){
+    width: 100%;
+//    border-style: none;
   }
   
   .half{
@@ -321,9 +350,19 @@ td, th, .ff-fix {
 /*------------------------------------*\
     $STATUS
 \*------------------------------------*/
+.blank{
+  display: block;
+  .make-md-column(@grid-columns / 3);
+  height: 200px;
+  color: white;
+  @media (max-width: 992px) {
+    display: none;
+  }
+}
 .statusText{
   text-align: center;
-  .make-md-column(@grid-columns / 1.2);
+  .make-xs-column(@grid-columns / 3);
+  .make-sm-column(@grid-columns / 1.5);
 }
 
 
