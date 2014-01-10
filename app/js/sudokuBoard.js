@@ -127,7 +127,6 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     }
   };
 
-
   Board.prototype.generatePencilMarks = function (callback) {
     var col, row,
       self = this;
@@ -157,6 +156,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   Board.prototype.getBoard = function (board) {
     return this.board;
   };
+  
   Board.prototype.getOrigBoard = function (board) {
     return this.originalBoard;
   };
@@ -198,6 +198,10 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     var row, col;
     for (row = 0; row < 9; row++) {
       this.board[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+    
+    for (row = 0; row < 9; row++) {
+      this.originalBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
     
     
