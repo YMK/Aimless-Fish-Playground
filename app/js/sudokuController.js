@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window, console */
 
-define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudoku) {
+define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, angular, sudoku, $) {
   'use strict';
 
   function SudokuController($scope, $routeParams, $location) {
@@ -14,6 +14,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudo
     $scope.selectedRow = 0;
     $scope.selectedCol = 0;
     $scope.locks = {"generate": false};
+    $scope.autoPencil = false;
     $scope.checked = false;
     $scope.incorrect = {"row": [], "col": [], "square": []};
     $scope.inProgress = {"generating": false};
@@ -80,6 +81,9 @@ define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudo
       $scope.board.generate($scope.difficulty.value, function (success) {
         if (success) {
           $scope.$apply($scope.inProgress.generating = false);
+          if ($scope.autoPencil) {
+            $scope.generatePencils();
+          }
         }
       });
 
@@ -92,6 +96,23 @@ define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudo
           $scope.$apply();
         }
       }, 2000);
+    };
+    
+    $scope.autoGenerate = function () {
+      if ($scope.autoPencil) {
+        $scope.autoPencil = false;
+      } else {
+        $scope.autoPencil = true;
+        $scope.generatePencils();
+      }
+    };
+    
+    $scope.generatePencils = function () {
+      $scope.board.generatePencilMarks(function (success) {
+        if (success) {
+          $scope.$apply();
+        }
+      });
     };
 
     $scope.cancelGeneration = function () {
@@ -132,34 +153,46 @@ define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudo
       var cellVal = $scope.board.getCell($scope.selectedRow, $scope.selectedCol),
         pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
       
-      if (cellVal === value) {
-        $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
-      } else {
-        if (!cellVal && pencilMarks.indexOf(1) === -1) {
-          $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
-        } else if (pencilMarks[value] === 1) {
-          $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, value);
-          pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
-          var index, num = 0;
-          for (var i = 0; i < pencilMarks.length; i++) {
-            if (pencilMarks[i] === 1) {
-              if (num === 0) {
-                index = i;
+      if (!$scope.autoPencil) {
+        if (cellVal === value) {
+          $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
+        } else {
+          if (!cellVal && pencilMarks.indexOf(1) === -1) {
+            $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+          } else if (pencilMarks[value] === 1) {
+            $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, value);
+            pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
+            var index, num = 0;
+            for (var i = 0; i < pencilMarks.length; i++) {
+              if (pencilMarks[i] === 1) {
+                if (num === 0) {
+                  index = i;
+                }
+                num++;
               }
-              num++;
+            }
+            if (num === 1) {
+              $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, index);
+              $scope.board.setCell($scope.selectedRow, $scope.selectedCol, index);
+            } else if (num === 0) {
+              $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+            }
+          } else {
+            $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, value);
+            if (cellVal !== 0) {
+              $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, cellVal);
+              $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
             }
           }
-          if (num === 1) {
-            $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, index);
-            $scope.board.setCell($scope.selectedRow, $scope.selectedCol, index);
-          }
-        } else {
-          $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, value);
-          if (cellVal !== 0) {
-            $scope.board.addPencilMark($scope.selectedRow, $scope.selectedCol, cellVal);
-            $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
-          }
         }
+      } else {
+        $('#test').fadeOut(100);
+        if (cellVal === value) {
+          $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
+        } else {
+          $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
+        }
+        $scope.generatePencils();
       }
     };
 

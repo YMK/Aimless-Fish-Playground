@@ -127,6 +127,29 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     }
   };
 
+
+  Board.prototype.generatePencilMarks = function (callback) {
+    var col, row,
+      self = this;
+
+    if (self.gworker !== undefined) {
+      callback(false);
+    } else {
+      self.gworker = new Worker("js/sudokuSolver.js");
+      self.gworker.addEventListener("message", function (e) {
+        if (e.data === "Ready") {
+          self.gworker.postMessage({"command": "possibilities",
+                                    "board": self.board});
+          return;
+        }
+        self.pencilMarks = e.data;
+        self.gworker.terminate();
+        self.gworker = undefined;
+        callback(true);
+      });
+    }
+  };
+
   Board.prototype.setBoard = function (board) {
     this.board = board;
   };

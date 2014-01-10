@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" bluring>
   <div class="row">
     <div class="sudoku">
       <div class="shrink-wrap">
@@ -46,8 +46,8 @@
             <button class="btn" ng-click="generate()" ng-disabled="inProgress.generating">
               New game
             </button>
-            <button class="btn" ng-click="reset()">Reset</button>
-            <button class="btn" ng-click="clear()">Clear</button>
+            <button class="btn" ng-click="reset()">Reset Game</button>
+            <button class="btn" ng-click="clear()">Clear Board</button>
             <div class="btn-group btn-group-horizontal">
               <button class="btn" ng-click="undo()">
                 <i class="fa fa-undo"></i>
@@ -62,6 +62,8 @@
         <div class="cheat">
           <label>Cheat</label>
           <div class="btn-group-vertical center">
+            <button class="btn" ng-click="autoGenerate()"
+                    ng-class="{active: autoPencil}">Auto Pencil Marks</button>
             <button class="btn" ng-click="solve()">Solve</button>
             <button class="btn" ng-click="clear()">Clear</button>
             <button class="btn" ng-click="check()">Check</button>
@@ -96,7 +98,8 @@
 <table class="table-sudoku-select">
     <tr ng-repeat="row in [0, 1, 2]">
       <td ng-repeat="cell in [1, 2, 3]"
-        ng-class="{highlighted: (cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]}"
+        ng-class="{highlighted: !autoPencil && ((cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]),
+                  faded2: autoPencil && !((cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3])}"
         ng-click="setValueOfCell(cell + row*3)">
         <span>{{cell + row*3}}</span>
       </td>
