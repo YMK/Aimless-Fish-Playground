@@ -96,6 +96,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils'], function (Board, angular, sudo
 
     $scope.cancelGeneration = function () {
       $scope.board.gworker.terminate();
+      $scope.board.gworker = undefined;
       $scope.inProgress.generating = false;
     };
 
