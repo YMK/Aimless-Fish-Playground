@@ -216,7 +216,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     };
     
     if ($scope.params.board) {
-      $scope.board.setBoard(sudoku.utils.load($scope.params.board));
+      $scope.board.generate(null, null, sudoku.utils.load($scope.params.board));
     } else {
       $scope.setUp();
     }

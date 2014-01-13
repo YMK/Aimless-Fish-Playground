@@ -125,13 +125,11 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
           callback(true);
         });
       } else {
-        
-      }
-
-      self.board = board;
-      self.correctBoard = board;
-      for (row = 0; row < 9; row++) {
-        self.originalBoard[row] = self.board[row].slice(0);
+        self.board = board;
+        self.correctBoard = board;
+        for (row = 0; row < 9; row++) {
+          self.originalBoard[row] = self.board[row].slice(0);
+        }
       }
       
       this.cache = [];

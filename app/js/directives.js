@@ -12,12 +12,12 @@ define(['require', 'angular', 'jquery'], function (require, ng, $) {
           var el = $('#test'),
             x = $(element).offset().left + $(element).width() / 2,
             y = $(element).offset().top + $(element).height() / 2;
-          el.fadeOut(150, function () {
+          el.fadeOut(1, function () {
             el.css( {
               position:"absolute", 
               top: y - el.height()/2 + 14, 
               left: x - el.width()/2 + 9
-            }).fadeIn(200);
+            }).fadeIn(300);
           });
         });
       }
