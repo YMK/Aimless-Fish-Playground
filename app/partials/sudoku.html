@@ -28,11 +28,17 @@
             </td>
           </tr>
         </table>
+        
         <div class="table-overlay" ng-show="inProgress.generating">
           <div class="half"></div>
           <h2>Generating new game</h2>
           <h4 ng-show="error.generating">{{error.generating}}</h4>
           <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
+        </div>
+        
+        <div class="table-overlay" ng-show="won() && !inProgress.generating">
+          <div class="half"></div>
+          <h2>Well done, you have completed this Sudoku!</h2>
         </div>
       </div>
     </div>
@@ -65,22 +71,13 @@
             <button class="btn" ng-click="autoGenerate()"
                     ng-class="{active: autoPencil}">Auto Pencil Marks</button>
             <button class="btn" ng-click="solve()">Solve</button>
-            <button class="btn" ng-click="clear()">Clear</button>
+<!--            <button class="btn" ng-click="clear()">Clear</button>-->
             <button class="btn" ng-click="check()">Check</button>
           </div>
         </div>
-        
-<!--
-        <div class="blank">
-         This is a really, really bad hack.
-        </div>
--->
 
         <div class="statusText">
           <h2>
-            <span ng-show="won()">
-              Well done, you have completed this Sudoku!
-            </span>
             <span ng-show="checked && checkBoard() && !won()">
               Correct so far
             </span>
