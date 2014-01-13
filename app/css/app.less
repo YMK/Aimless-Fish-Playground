@@ -132,14 +132,20 @@ header{
 .shrink-wrap{
   float: left;
   position: relative;
-  left: 50%;
   height: 500px;
+  
+  @media (max-width: 699px){
+    left: 50%;
+  }
 }
 
 .table-sudoku{
   .sudoku-styles;
   position: relative;
-  left: -50%;
+  
+  @media (max-width: 699px){
+    left: -50%;
+  }
   
   td.cell:hover:not(.faded){
     background-color: #F5F6CE;
@@ -322,7 +328,9 @@ td, th, .ff-fix {
   height: 458px;
   position: relative;
   top: -482px;
-  left: -50%;
+  @media (max-width: 699px){
+    left: -50%;
+  }
   width: 455px;
   background-color: rgba(255, 255, 255, 0.8);
   text-align: center;
