@@ -50,6 +50,15 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     this.pencilMarks[row][col][num] = 0;
   };
 
+  Board.prototype.clearPencilMarks = function () {
+    var row, column;
+    for (row = 0; row < 9; row++) {
+      for (column = 0; column < 9; column++) {
+        this.pencilMarks[row][column] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      }
+    }
+  };
+  
   Board.prototype.getPencilMarks = function (row, col) {
     return this.pencilMarks[row][col];
   };

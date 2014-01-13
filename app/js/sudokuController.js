@@ -103,6 +103,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.autoGenerate = function () {
       if ($scope.autoPencil) {
         $scope.autoPencil = false;
+        $scope.board.clearPencilMarks();
       } else {
         $scope.autoPencil = true;
         $scope.generatePencils();
