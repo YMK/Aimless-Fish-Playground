@@ -90,6 +90,82 @@ define(['require'], function (require) {
         }
         
         return board;
+      },
+      
+      humanSolve: function (pencils) {
+        var solved = false,
+            board = [[],[],[],[],[],[],[],[]],
+            givenUp = false;
+        
+        for (var i = 0; i < 9; i++) {
+          board[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+        
+        while (!solved && !givenUp) {
+          var x, y;
+          
+          for (x = 0; x < 9; x++) {
+            for (y = 0; y < 9; y++) {
+              
+            }
+          }
+          
+          for (x = 0; x < 9; x++) {
+            for (y = 0; y < 9; y++) {
+              // Check if board is done
+              solved = true;
+              if (pencils[x][y].length > 1) {
+                solved = false;
+              }
+            }
+          }
+        }
+        
+        if (givenUp) {
+          return false;
+        }
+        
+        for (var row = 0; row < 9; row++) {
+          for (var col = 0; col < 0; col ++) {
+            board[row][col] = pencils[row][col][0];
+          }
+        }
+        
+        return board;
+      },
+    
+      hiddenSingle: function (array) {
+        
+        for (var i = 0; i < 9; i++) {
+          for (var j = 0; j < array[i].length; j++) {
+            var found = false;
+            for (var k = 0; j < 8; k++) {
+              if (array[k].indexOf(array[i][j]) > -1){
+                found = true;
+              }
+            }
+            if (!found) {
+              var temp = array[i][j];
+              array[i] = [temp];
+            }
+          }
+        }
+      },
+      
+      nakedPair: function (array) {
+        
+      },
+      
+      nakedTriple: function (array) {
+        
+      },
+      
+      hiddenPair: function (array) {
+        
+      },
+      
+      hiddenTriple: function (array) {
+        
       }
     };
   }());
