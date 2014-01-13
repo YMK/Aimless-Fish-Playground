@@ -41,6 +41,7 @@ html {
 
 body {
   background-color: white;
+  overflow-x: hidden;
 }
 
 .row{
@@ -243,7 +244,7 @@ td, th, .ff-fix {
 }
 
 .buttons{
-  .make-xs-column(@grid-columns / 3);
+  .make-xs-column(@grid-columns / 2);
   .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 3);
   .make-md-column-offset(@grid-columns / 6);
@@ -255,7 +256,7 @@ td, th, .ff-fix {
 }
 
 .cheat{
-  .make-xs-column(@grid-columns / 3);
+  .make-xs-column(@grid-columns / 2);
   .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 3);
   .controlPanel;
@@ -357,11 +358,43 @@ td, th, .ff-fix {
 /*------------------------------------*\
     $STATUS
 \*------------------------------------*/
+
+.statusWrapper{
+  @media (max-width: 699px) {
+    float: left;
+    position: relative;
+    left: 50%;
+    height: 0px;
+  }
+}
+
 .statusText{
+  overflow: hidden;
   text-align: center;
-  .make-xs-column(@grid-columns / 3);
-  .make-sm-column(@grid-columns / 1.5);
-  .make-md-column-offset(@grid-columns / 6);
+  
+  .half{
+    display: hidden;
+  }
+  
+  @media (min-width: 700px) {
+    .make-sm-column(@grid-columns / 1.5);
+    .make-md-column-offset(@grid-columns / 6);
+  }
+  
+  @media (max-width: 699px) {
+    .table-overlay;
+  
+    .half{
+      display: auto;
+    }
+    top: -658px;
+    left: -50%;
+    float: left;
+    @media (max-width: 455px) {
+      border-style: none;
+      width: 455px;
+    }
+  }
 }
 
 

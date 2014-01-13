@@ -141,7 +141,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, ang
     $scope.check = function () {
       $scope.checked = true;
       window.setTimeout(function () {
-        $scope.checked = false;
+        $scope.$apply($scope.checked = false);
       }, 1500);
       
     };

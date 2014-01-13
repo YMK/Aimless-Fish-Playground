@@ -76,16 +76,20 @@
             <button class="btn" ng-click="check()">Check</button>
           </div>
         </div>
-
-        <div class="statusText">
-          <h2>
-            <span ng-show="checked && checkBoard() && !won()">
-              Correct so far
-            </span>
-            <span ng-show="checked && !checkBoard()">
-              Something is wrong
-            </span>
-          </h2>
+        
+        
+        <div class="statusWrapper">
+          <div class="statusText" ng-show="checked">
+            <div class="half"></div>
+            <h2>
+              <span ng-show="checked && checkBoard() && !won()">
+                Correct so far
+              </span>
+              <span ng-show="checked && !checkBoard()">
+                Something is wrong
+              </span>
+            </h2>
+          </div>
         </div>
       </div>
     </div>
