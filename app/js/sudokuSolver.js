@@ -52,18 +52,21 @@ require(
       return solarr.length;
     };
 
-    self.digHoles = function (board, number, x, y) {
-      var oldVal = board[x][y],
-        nexty = y + 1,
+    self.digHoles = function (board, number, x, y, mult) {
+      var nextmult, oldVal = board[x][y],
+        nexty = y,
         nextx = x,
         nextnum = number - 1;
+
+      nexty = mult ? nexty - 1 : nexty + 1;
 
       if (number < 1) {
         return true;
       }
 
       if (nexty > 8) {
-        nexty = 0;
+        nexty = mult ? 8 : 0;
+        nextmult = !mult;
         nextx++;
         if (nextx > 8) {
           return true;
@@ -75,7 +78,7 @@ require(
         board[x][y] = oldVal;
         return false;
       }
-      while (self.digHoles(board, nextnum, nextx, nexty) === false) {
+      while (self.digHoles(board, nextnum, nextx, nexty, mult) === false) {
         nexty++;
         if (nexty > 8) {
           nexty = 0;
@@ -115,7 +118,7 @@ require(
         correctBoard[row] = board[row].slice(0);
       }
 
-      self.digHoles(board, 81, 0, 0);
+      self.digHoles(board, 81, 0, 0, false);
 
       return {"board": board, "correctBoard": correctBoard};
     };
