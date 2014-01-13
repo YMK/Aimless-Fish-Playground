@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window, console */
 
-define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, angular, sudoku, $) {
+define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (Board, angular, sudoku, $, pantry) {
   'use strict';
 
   function SudokuController($scope, $routeParams, $location) {
@@ -199,7 +199,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, ang
     };
 
     $scope.setUp = function () {
-      $scope.generate();
+      $scope.board.generate(null, null, pantry[0].board);
     };
 
     $scope.undo = function () {

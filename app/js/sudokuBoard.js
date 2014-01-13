@@ -92,30 +92,39 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     this.board = array;
   };
 
-  Board.prototype.generate = function (difficulty, callback) {
+  Board.prototype.generate = function (difficulty, callback, board) {
     var col, row,
       self = this;
 
     if (self.gworker !== undefined) {
       callback(false);
     } else {
+      if (!board){
+        self.gworker = new Worker("js/sudokuSolver.js");
+        self.gworker.addEventListener("message", function (e) {
+          if (e.data === "Ready") {
+            self.gworker.postMessage({"command": "generate"});
+            return;
+          }
+          self.board = e.data.board;
+          self.correctBoard = e.data.correctBoard;
+          for (row = 0; row < 9; row++) {
+            self.originalBoard[row] = self.board[row].slice(0);
+          }
+          self.gworker.terminate();
+          self.gworker = undefined;
+          callback(true);
+        });
+      } else {
+        
+      }
 
-      self.gworker = new Worker("js/sudokuSolver.js");
-      self.gworker.addEventListener("message", function (e) {
-        if (e.data === "Ready") {
-          self.gworker.postMessage({"command": "generate"});
-          return;
-        }
-        self.board = e.data.board;
-        self.correctBoard = e.data.correctBoard;
-        for (row = 0; row < 9; row++) {
-          self.originalBoard[row] = self.board[row].slice(0);
-        }
-        self.gworker.terminate();
-        self.gworker = undefined;
-        callback(true);
-      });
-
+      self.board = board;
+      self.correctBoard = board;
+      for (row = 0; row < 9; row++) {
+        self.originalBoard[row] = self.board[row].slice(0);
+      }
+      
       this.cache = [];
       this.futurecache = [];
       for (row = 0; row < 9; row++) {
