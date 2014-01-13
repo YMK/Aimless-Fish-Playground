@@ -26,6 +26,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, ang
       {name: "Hard", value: 50},
       {name: "Very hard", value: 60}
     ];
+    $scope.show = {"won": true};
     $scope.difficulty = $scope.difficulties[2];
     $scope.params = $routeParams || {};
     
@@ -77,6 +78,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, ang
 
     $scope.generate = function () {
       $scope.inProgress.generating = true;
+      $scope.show.won = true;
       $scope.error.generating = "";
       $scope.board.generate($scope.difficulty.value, function (success) {
         if (success) {
@@ -208,7 +210,9 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery'], function (Board, ang
       $scope.board.redo();
     };
 
-
+    $scope.hideWon = function () {
+      $scope.show.won = false;
+    };
     
     if ($scope.params.board) {
       $scope.board.setBoard(sudoku.utils.load($scope.params.board));

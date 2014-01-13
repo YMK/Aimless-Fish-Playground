@@ -30,13 +30,14 @@
         </table>
         
         <div class="table-overlay" ng-show="inProgress.generating">
+          <button type="button" class="close"  ng-click="cancelGeneration()">Cancel &times;</button>
           <div class="half"></div>
           <h2>Generating new game</h2>
           <h4 ng-show="error.generating">{{error.generating}}</h4>
-          <h3 ng-click="cancelGeneration()"><span>Cancel</span></h3>
         </div>
         
-        <div class="table-overlay" ng-show="won() && !inProgress.generating">
+        <div class="table-overlay" ng-show="won() && !inProgress.generating && show.won">
+          <button type="button" class="close" ng-click="hideWon()">Close &times;</button>
           <div class="half"></div>
           <h2>Well done, you have completed this Sudoku!</h2>
         </div>
