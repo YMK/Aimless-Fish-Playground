@@ -73,6 +73,25 @@ define(['angular', 'ngmocks', 'sudokuUtils', 'sudokuBoard'], function (ng, mocks
     describe("Correct", function () {
       
     });
+    
+    describe("Human Solving", function () {
+      describe("Hidden single", function () {
+        
+        it("Returns empty list when nothing is unique", function () {
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3]]).length).toEqual(0);
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3]])).toEqual([]);
+        });
+        
+        it("Returns object with the number of the array and the number that is unique when 1 number is only in 1 cell", function () {
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3, 4]]).length).toEqual(1);
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3, 4]])[0]).toEqual({index: 3, number: 4});
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3, 5]]).length).toEqual(1);
+          expect(utils.utils.hiddenSingle([[1, 2], [1, 2, 3], [2, 3], [3, 5]])[0]).toEqual({index: 3, number: 5});
+          expect(utils.utils.hiddenSingle([[1, 2, 9], [1, 2, 3], [2, 3], [3]]).length).toEqual(1);
+          expect(utils.utils.hiddenSingle([[1, 2, 9], [1, 2, 3], [2, 3], [3]])[0]).toEqual({index: 0, number: 9});
+        });
+      });
+    });
   });
   
 });

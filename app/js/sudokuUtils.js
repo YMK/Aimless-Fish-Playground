@@ -172,14 +172,49 @@ define(['require'], function (require) {
             pencils = sudoku.utils.generatePencils(board);
         
         while (!solved && !givenUp) {
-          var x, y, lastrating = rating;
-          
-          // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
-          for (x = 0; x < 9; x++) {
-            for (y = 0; y < 9; y++) {
-              rating = rating + this.removeSingles(board, pencils, x, y);
+          var x, y, lastrating = rating, simple = true;
+          while (simple) {
+            var simplerating = rating;
+            // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
+            for (x = 0; x < 9; x++) {
+              for (y = 0; y < 9; y++) {
+                rating = rating + this.removeSingles(board, pencils, x, y);
+              }
+            }
+            if (simplerating === rating) {
+              simple = false;
             }
           }
+          
+          // Send each row to hidden singles
+          for (x = 0; x < 9; x++) {
+            var rowSingles = this.hiddenSingle(pencils[x]);
+            for (var l = 0; l < rowSingles.length; l++) {
+              pencils[x][rowSingles[l].index] = [rowSingles[l].number];
+              rating = rating + (this.removeSingles(board, pencils, x, rowSingles[l].index) * 1.5);
+            }
+          }
+          
+          // Send each column to hidden singles
+          for (y = 0; y < 9; y++) {
+            var colSingles, columns = [];
+            
+            for (x = 0; x < 9; x++) {
+              columns.push(board[x][y]);
+            }
+            
+            colSingles = this.hiddenSingle(columns);
+            for (var m = 0; m < colSingles.length; m++) {
+              pencils[colSingles[m].index][y] = [colSingles[m].number];
+              rating = rating + (this.removeSingles(board, pencils, colSingles[m].index, y) * 1.5);
+            }
+          }
+          
+          
+          
+          
+          
+          
           
           // Check if board is done. It's only done if nothing is 0
           for (x = 0; x < 9; x++) {
@@ -206,25 +241,42 @@ define(['require'], function (require) {
       },
       
       rate: function (board) {
-        return this.humanSolve(board, true);
+        var rating, defaultNum = 0;
+        
+        for (var x = 0; x < 9; x++) {
+          for (var y = 0; y < 9; y++) {
+            if (board[x][y] > 0) {
+              defaultNum++;
+            }
+          }
+        }
+        
+        rating = this.humanSolve(board, true);
+        rating = (rating + defaultNum) - 81;
+//        if (rating < 0) {
+//          rating = -1;
+//        }
+        
+        return rating;
       },
     
       hiddenSingle: function (array) {
-        
-        for (var i = 0; i < 9; i++) {
+        var uniques = [];
+        for (var i = 0; i < array.length; i++) {
           for (var j = 0; j < array[i].length; j++) {
             var found = false;
-            for (var k = 0; j < 8; k++) {
+            for (var k = (i + 1) % array.length; k !== i; k = (k + 1) % array.length) {
               if (array[k].indexOf(array[i][j]) > -1){
                 found = true;
               }
             }
             if (!found) {
-              var temp = array[i][j];
-              array[i] = [temp];
+              uniques.push({index: i, number: array[i][j]});
             }
           }
         }
+        
+        return uniques;      
       },
       
       nakedPair: function (array) {
@@ -289,6 +341,7 @@ define(['require'], function (require) {
         
         return rating;
       }
+      
     };
   }());
 
