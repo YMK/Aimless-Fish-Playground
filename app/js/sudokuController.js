@@ -134,6 +134,9 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
 
     $scope.reset = function () {
       $scope.board.reset();
+      if ($scope.autoPencil) {
+        $scope.generatePencils();
+      }
     };
 
     $scope.clear = function () {
