@@ -9,7 +9,7 @@ define(['require'], function (require) {
       correct: function (board) {
         var row, col, cell, rowNum, colNum, read = [], col3, row3,
           incorrect = {"row": [], "col": [], "square": []};
-
+        
         // Check rows
         for (rowNum = 0; rowNum < board.length; rowNum++) {
           read = [];
@@ -54,6 +54,24 @@ define(['require'], function (require) {
           return incorrect;
         }
         return true;
+      },
+      
+      compare: function (board, original) {
+        var incorrect = [];
+
+        for (var i = 0; i < 9; i++) {
+          incorrect[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+        
+        for (var col = 0; col < 9; col++) {
+          for (var row = 0; row < 9; row++){
+            if (board[col][row] !== 0 && board[col][row] !== original[col][row]) {
+              incorrect[col][row] = 1;
+            }
+          }
+        }
+        
+        return incorrect;
       },
       
       save: function (board) {
