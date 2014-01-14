@@ -1,22 +1,23 @@
-<section class="container">
+<section class="container" bluring>
   <div class="row">
     <div class="sudoku">
       <div class="shrink-wrap">
         <table class="table-sudoku">
           <col ng-repeat="row in board.getBoard()"
-            ng-class="{wrong: incorrect.col.indexOf($index) > -1, col{{$index}}: true}" />
+            ng-class="{col{{$index}}: true}" />
           <tr ng-repeat="(rIndex, row) in board.getBoard()" class="arow"
-            ng-class="{wrong: incorrect.row.indexOf($index) > -1, row{{$index}}: true}">
+            ng-class="{row{{$index}}: true}">
             <td sudoku selected-cell="selectedCell()" pencil-marks="selectedCellPencilMarks()"
               ng-repeat="(cIndex, cell) in row track by cIndex"
               ng-click="setSelected(rIndex, cIndex)" class="cell c{{rIndex}}{{cIndex}}" id="cell c{{rIndex}}{{cIndex}}"
               ng-class="{highlighted: selectedRow === rIndex && selectedCol === cIndex,
               semiHighlighted: selectedCol === cIndex || selectedRow === rIndex,
-              faded: isOriginal(rIndex, cIndex)}">
+              faded: isOriginal(rIndex, cIndex),
+              wrong: incorrect[rIndex][cIndex]}">
               <table class="pencilMarks" ng-hide="cell">
                 <tr ng-repeat="row in [0, 1, 2]">
                   <td ng-repeat="cell in [1, 2, 3]">
-                    <span ng-class="{whiteText: !board.getPencilMarks(rIndex, cIndex)[cell + row*3]}">
+                    <span ng-class="{whiteText: board.getPencilMarks(rIndex, cIndex).indexOf(cell + row*3) === -1}">
                       {{cell + row*3}}
                     </span>
                   </td>
@@ -101,8 +102,8 @@
 <table class="table-sudoku-select">
     <tr ng-repeat="row in [0, 1, 2]">
       <td ng-repeat="cell in [1, 2, 3]"
-        ng-class="{highlighted: !autoPencil && ((cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3]),
-                  faded2: autoPencil && !((cell + row * 3) === selectedCell() || selectedCellPencilMarks()[cell + row * 3])}"
+        ng-class="{highlighted: !autoPencil && ((cell + row * 3) === selectedCell() || selectedCellPencilMarks().indexOf(cell + row * 3) > -1),
+                  faded2: autoPencil && !((cell + row * 3) === selectedCell() || selectedCellPencilMarks().indexOf(cell + row * 3) > -1)}"
         ng-click="setValueOfCell(cell + row*3)">
         <span>{{cell + row*3}}</span>
       </td>

@@ -16,7 +16,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.locks = {"generate": false};
     $scope.autoPencil = false;
     $scope.checked = false;
-    $scope.incorrect = {"row": [], "col": [], "square": []};
+    $scope.incorrect = [];
     $scope.inProgress = {"generating": false};
     $scope.error = {"generating": false};
     $scope.difficulties = [
@@ -54,22 +54,21 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     };
 
     $scope.getMistakes = function () {
-      var correct = $scope.board.correct(),
-        mistakes = {"row": [], "col": [], "square": []};
-      if (correct === true) {
-        return mistakes;
-      }
-      return correct;
+      var mistakes = $scope.board.mistakes();
+      return mistakes;
     };
 
     $scope.isCorrect = function () {
       var mistakes = $scope.getMistakes();
-      if (mistakes.row.length === 0 &&
-          mistakes.col.length === 0 &&
-          mistakes.square.length === 0) {
-        return true;
+      for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+          if (mistakes[i][j] === 1) {
+            return false;
+          }
+        }
       }
-      return false;
+      
+      return true;
     };
 
     $scope.won = function () {
@@ -141,6 +140,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
 
     $scope.check = function () {
       $scope.checked = true;
+      $scope.checkBoard();
       window.setTimeout(function () {
         $scope.$apply($scope.checked = false);
       }, 1500);
@@ -160,14 +160,14 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
         if (cellVal === value) {
           $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
         } else {
-          if (!cellVal && pencilMarks.indexOf(1) === -1) {
+          if (!cellVal && pencilMarks.length === 0) {
             $scope.board.setCell($scope.selectedRow, $scope.selectedCol, value);
-          } else if (pencilMarks[value] === 1) {
+          } else if (pencilMarks.indexOf(value) > -1) {
             $scope.board.removePencilMark($scope.selectedRow, $scope.selectedCol, value);
             pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
             var index, num = 0;
             for (var i = 0; i < pencilMarks.length; i++) {
-              if (pencilMarks[i] === 1) {
+              if (pencilMarks.indexOf(i) > 0) {
                 if (num === 0) {
                   index = i;
                 }

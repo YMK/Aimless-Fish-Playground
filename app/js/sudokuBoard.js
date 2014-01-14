@@ -18,7 +18,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       self.originalBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       self.correctBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       for (column = 0; column < 9; column++) {
-        self.pencilMarks[row][column] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        self.pencilMarks[row][column] = [];
       }
     }
     self.cache = [];
@@ -29,6 +29,10 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     return this.utils.correct(this.board);
   };
 
+  Board.prototype.mistakes = function () {
+    return this.utils.compare(this.board, this.correctBoard);
+  };
+  
   Board.prototype.setCell = function (row, column, number) {
     var array = [], i;
     for (i = this.board.length - 1; i >= 0; i--) {
@@ -43,18 +47,23 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   };
 
   Board.prototype.addPencilMark = function (row, col, num) {
-    this.pencilMarks[row][col][num] = 1;
+    if (this.pencilMarks[row][col].indexOf(num) === -1) {
+      this.pencilMarks[row][col].push(num);
+    }
   };
   
   Board.prototype.removePencilMark = function (row, col, num) {
-    this.pencilMarks[row][col][num] = 0;
+    var index = this.pencilMarks[row][col].indexOf(num);
+    if (index > -1) {
+      this.pencilMarks[row][col].splice(index, 1);
+    }
   };
 
   Board.prototype.clearPencilMarks = function () {
     var row, column;
     for (row = 0; row < 9; row++) {
       for (column = 0; column < 9; column++) {
-        this.pencilMarks[row][column] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.pencilMarks[row][column] = [];
       }
     }
   };
