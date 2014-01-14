@@ -73,8 +73,8 @@
           <div class="btn-group-vertical center">
             <button class="btn" ng-click="autoGenerate()"
                     ng-class="{active: autoPencil}">Auto Pencil Marks</button>
-            <button class="btn" ng-click="solve()">Solve</button>
-<!--            <button class="btn" ng-click="clear()">Clear</button>-->
+            <button class="btn" ng-click="solve()">Solve Sudoku</button>
+            <button class="btn" ng-click="rate()">Rate Sudoku</button>
             <button class="btn" ng-click="check()">Check</button>
           </div>
         </div>
@@ -89,6 +89,14 @@
               </span>
               <span ng-show="checked && !checkBoard()">
                 Something is wrong
+              </span>
+            </h2>
+          </div>
+          <div class="statusText" ng-show="rated">
+            <div class="half"></div>
+            <h2>
+              <span>
+                Rated: {{rating}}
               </span>
             </h2>
           </div>

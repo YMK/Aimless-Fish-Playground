@@ -127,59 +127,12 @@ require(
       return {"board": board, "correctBoard": correctBoard};
     };
 
+    self.rate = function (board) {
+      return self.utils.rate(board);
+    };
+    
     self.generatePencils = function (board) {
-      var row, column, pencils = [[], [], [], [], [], [], [], [], []];
-      for (row = 0; row < 9; row++) {
-        for (column = 0; column < 9; column++) {
-          pencils[row][column] = [];
-        }
-      }
-      
-      for (var i = 0; i < 9; i++) {
-        for (var j = 0; j < 9; j++){
-          var cell = board[i][j];
-          if (cell === 0) {
-            var possibilities = [1, 2, 3, 4, 5, 6, 7, 8, 9],
-                not = [];
-            for (var k = (j + 1) % 9; k !== j; k = (k + 1) % 9) {
-              if (board[i][k] > 0){
-                not.push(board[i][k]);
-              }
-            }
-            for (k = (i + 1) % 9; k !== i; k = (k + 1) % 9) {
-              if (board[k][j] > 0){
-                not.push(board[k][j]);
-              }
-            }
-            var x = 0, y = 0;
-            if (i > 5) {
-              x = 6;
-            } else if (i > 2) {
-              x = 3;
-            }
-            if (j > 5) {
-              y = 6;
-            } else if (j > 2) {
-              y = 3;
-            }
-            for (k = (((i + 1) % 3) + x); k !== i; k = ((k + 1) % 3) + x) {
-              for (var l = (((j + 1) % 3) + y); l !== j; l = ((l + 1) % 3) + y) {
-                if (board[k][l] > 0){
-                  not.push(board[k][l]);
-                }
-              }
-            }            
-            
-            for (var a = 0; a < possibilities.length; a++) {
-              if (not.indexOf(possibilities[a]) === -1) {
-                pencils[i][j].push(possibilities[a]);
-              }
-            }
-          }
-        }
-      }
-
-      return pencils;
+      return this.utils.generatePencils(board);
     };
 
     addEventListener("message", function (event) {
@@ -197,7 +150,10 @@ require(
         postMessage(self.correct(event.data.board));
         break;
       case "solve":
-        postMessage(self.fillRestOfBoard(event.data.board));
+        postMessage(self.utils.humanSolve(event.data.board));
+        break;
+      case "rate":
+        postMessage(self.rate(event.data.board));
         break;
       }
     });

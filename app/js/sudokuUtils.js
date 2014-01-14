@@ -110,46 +110,103 @@ define(['require'], function (require) {
         return board;
       },
       
-      humanSolve: function (pencils) {
-        var solved = false,
-            board = [[],[],[],[],[],[],[],[]],
-            givenUp = false;
-        
-        for (var i = 0; i < 9; i++) {
-          board[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      generatePencils: function (board) {
+        var row, column, pencils = [[], [], [], [], [], [], [], [], []];
+        for (row = 0; row < 9; row++) {
+          for (column = 0; column < 9; column++) {
+            pencils[row][column] = [];
+          }
         }
         
-        while (!solved && !givenUp) {
-          var x, y;
-          
-          for (x = 0; x < 9; x++) {
-            for (y = 0; y < 9; y++) {
+        for (var i = 0; i < 9; i++) {
+          for (var j = 0; j < 9; j++){
+            var cell = board[i][j];
+            if (cell === 0) {
+              var possibilities = [1, 2, 3, 4, 5, 6, 7, 8, 9],
+                  not = [];
+              for (var k = (j + 1) % 9; k !== j; k = (k + 1) % 9) {
+                if (board[i][k] > 0){
+                  not.push(board[i][k]);
+                }
+              }
+              for (k = (i + 1) % 9; k !== i; k = (k + 1) % 9) {
+                if (board[k][j] > 0){
+                  not.push(board[k][j]);
+                }
+              }
+              var x = 0, y = 0;
+              if (i > 5) {
+                x = 6;
+              } else if (i > 2) {
+                x = 3;
+              }
+              if (j > 5) {
+                y = 6;
+              } else if (j > 2) {
+                y = 3;
+              }
+              for (k = (((i + 1) % 3) + x); k !== i; k = ((k + 1) % 3) + x) {
+                for (var l = (((j + 1) % 3) + y); l !== j; l = ((l + 1) % 3) + y) {
+                  if (board[k][l] > 0){
+                    not.push(board[k][l]);
+                  }
+                }
+              }            
               
-            }
-          }
-          
-          for (x = 0; x < 9; x++) {
-            for (y = 0; y < 9; y++) {
-              // Check if board is done
-              solved = true;
-              if (pencils[x][y].length > 1) {
-                solved = false;
+              for (var a = 0; a < possibilities.length; a++) {
+                if (not.indexOf(possibilities[a]) === -1) {
+                  pencils[i][j].push(possibilities[a]);
+                }
               }
             }
           }
         }
         
-        if (givenUp) {
-          return false;
-        }
+        return pencils;
+      },
+      
+      humanSolve: function (board, rate) {
+        var solved = false,
+            givenUp = false,
+            rating = 0,
+            pencils = sudoku.utils.generatePencils(board);
         
-        for (var row = 0; row < 9; row++) {
-          for (var col = 0; col < 0; col ++) {
-            board[row][col] = pencils[row][col][0];
+        while (!solved && !givenUp) {
+          var x, y, lastrating = rating;
+          
+          // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
+          for (x = 0; x < 9; x++) {
+            for (y = 0; y < 9; y++) {
+              rating = rating + this.removeSingles(board, pencils, x, y);
+            }
+          }
+          
+          // Check if board is done. It's only done if nothing is 0
+          for (x = 0; x < 9; x++) {
+            for (y = 0; y < 9; y++) {
+              solved = true;
+              if (board[x][y] === 0) {
+                solved = false;
+              }
+            }
+          }
+          
+          // If we haven't done anything this time around, then we won't ever solve it. Give up,
+          if (rating === lastrating) {
+            givenUp = true;
           }
         }
         
-        return board;
+        // Return the final rating or board, depending on what is requested
+        if (rate) {
+          return rating;
+        } else {
+          return board;
+        }
+      },
+      
+      rate: function (board) {
+        return this.humanSolve(board, true);
       },
     
       hiddenSingle: function (array) {
@@ -184,6 +241,53 @@ define(['require'], function (require) {
       
       hiddenTriple: function (array) {
         
+      },
+      
+      removeSingles: function (board, pencils, x, y) {
+        var index, x2, y2, rating = 0;
+        if (board[x][y] === 0 && pencils[x][y].length === 1) {
+          board[x][y] = pencils[x][y][0];
+          rating++;
+          
+          for (x2 = (x + 1) % 9; x2 !== x; x2 = (x2 + 1) % 9) {
+            index = pencils[x2][y].indexOf(pencils[x][y][0]);
+            if (index > -1){
+              pencils[x2][y].splice(index, 1);
+              rating = rating + this.removeSingles(board, pencils, x2, y);
+            }
+          }
+          
+          for (y2 = (y + 1) % 9; y2 !== y; y2 = (y2 + 1) % 9) {
+            index = pencils[x][y2].indexOf(pencils[x][y][0]);
+            if (index > -1){
+              pencils[x][y2].splice(index, 1);
+              rating = rating + this.removeSingles(board, pencils, x, y2);
+            }
+          }
+          
+          var a = 0, b = 0;
+          if (x > 5) {
+            a = 6;
+          } else if (x > 2) {
+            a = 3;
+          }
+          if (y > 5) {
+            b = 6;
+          } else if (y > 2) {
+            b = 3;
+          }
+          for (x2 = (((x + 1) % 3) + a); x2 !== x; x2 = ((x2 + 1) % 3) + a) {
+            for (y2 = (((y + 1) % 3) + b); y2 !== y; y2 = ((y2 + 1) % 3) + b) {
+              index = pencils[x2][y2].indexOf(pencils[x][y][0]);
+              if (index > -1){
+                pencils[x2][y2].splice(index, 1);
+                rating = rating + this.removeSingles(board, pencils, x2, y2);
+              }
+            }
+          }  
+        }
+        
+        return rating;
       }
     };
   }());

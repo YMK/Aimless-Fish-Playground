@@ -19,6 +19,8 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.incorrect = [];
     $scope.inProgress = {"generating": false};
     $scope.error = {"generating": false};
+    $scope.rating = 0;
+    $scope.rated = false;
     $scope.difficulties = [
       {name: "Very Easy", value: 15},
       {name: "Easy", value: 30},
@@ -213,6 +215,17 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
 
     $scope.hideWon = function () {
       $scope.show.won = false;
+    };
+    
+    $scope.rate = function () {
+      $scope.board.rate(function (e) {
+        $scope.rating = e;
+        $scope.rated = true;
+        window.setTimeout(function () {
+          $scope.$apply($scope.rated = false);
+        }, 1500);
+        $scope.$apply();
+      });
     };
     
     if ($scope.params.board) {

@@ -152,6 +152,25 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     }
   };
 
+  Board.prototype.rate = function (callback) {
+    var self = this;
+    
+    if (self.rworker !== undefined) {
+      callback(false);
+    } else {
+      self.rworker = new Worker("js/sudokuSolver.js");
+      self.rworker.addEventListener("message", function (e) {
+        if (e.data === "Ready") {
+          self.rworker.postMessage({"command": "rate", "board" : self.board});
+          return;
+        }
+        self.rworker.terminate();
+        self.rworker = undefined;
+        callback(e.data);
+      });
+    }
+  };
+  
   Board.prototype.generatePencilMarks = function (callback) {
     var col, row,
       self = this;
