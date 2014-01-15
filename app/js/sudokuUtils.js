@@ -200,7 +200,7 @@ define(['require'], function (require) {
             var colSingles, columns = [];
             
             for (x = 0; x < 9; x++) {
-              columns.push(board[x][y]);
+              columns.push(pencils[x][y]);
             }
             
             colSingles = this.hiddenSingle(columns);
@@ -208,18 +208,75 @@ define(['require'], function (require) {
               pencils[colSingles[m].index][y] = [colSingles[m].number];
               rating = rating + (this.removeSingles(board, pencils, colSingles[m].index, y) * 1.5);
             }
+          }          
+          
+          // Send each box to hidden singles
+          for (var i = 0; i < 9; i = i + 3) {
+            for (var j = 0; j < 9; j = j + 3) {
+              var boxSingles, box = [];
+              
+              for (x = i; x < i + 3; x++) {
+                for (y = j; y < j + 3; y++) {
+                  box.push(board[x][y]);
+                }
+              }
+              
+              boxSingles = this.hiddenSingle(box);
+              for (var n = 0; n < boxSingles.length; n++) {
+                var index = boxSingles[n].index;
+                pencils[(index%3)+i][(index%3)+j] = [boxSingles[n].number];
+                rating = rating + (this.removeSingles(board, pencils, (index%3)+i, (index%3)+j) * 1.5);
+              } 
+            }
           }
           
+          // Send each row to naked pairs
+          for (x = 0; x < 9; x++) {
+            var row = pencils[x], rowPairs = this.nakedPair(row);
+            for (var o = 0; o < rowPairs.members.length; o++) {
+              for (var p = 0; p < pencils[x].length; p++) {
+                if (rowPairs.not.indexOf(p) === -1) {
+                  var rpindex = pencils[x][p].indexOf(rowPairs.members[o]);
+                  if (rpindex > -1) {
+                    pencils[x][p].splice(rpindex, 1);
+                    rating = rating + (this.removeSingles(board, pencils, x, p) * 1.5);
+                  }
+                }
+              }
+            }
+          }
           
+          // Send each column to naked pairs
+          for (y = 0; y < 9; y++) {
+            var colPairs, cols = [];
+            
+            for (x = 0; x < 9; x++) {
+              cols.push(pencils[x][y]);
+            }
+            
+            colPairs = this.nakedPair(cols);
+            
+            for (var q = 0; q < colPairs.members.length; q++) {
+              for (var r = 0; r < cols.length; r++) {
+                if (colPairs.not.indexOf(r) === -1) {
+                  var cpindex = pencils[r][y].indexOf(colPairs.members[q]);
+                  if (cpindex > -1) {
+                    pencils[r][y].splice(cpindex, 1);
+                    rating = rating + (this.removeSingles(board, pencils, r, y) * 1.5);
+                  }
+                }
+              }
+            }
+          }     
           
           
           
           
           
           // Check if board is done. It's only done if nothing is 0
+          solved = true;
           for (x = 0; x < 9; x++) {
             for (y = 0; y < 9; y++) {
-              solved = true;
               if (board[x][y] === 0) {
                 solved = false;
               }
@@ -276,11 +333,32 @@ define(['require'], function (require) {
           }
         }
         
-        return uniques;      
+        return uniques;
       },
       
       nakedPair: function (array) {
-        
+        var pairs = {}, pairMembers = {members: [], not: []};
+        for (var i = 0; i < array.length; i++) {
+          if (array[i].length === 2) {
+            if (pairs[array[i]]) {
+              pairs[array[i]].push(i);
+            } else {
+              pairs[array[i]] = [i];
+            }
+          }
+        }
+        for (var p in pairs) {
+          if (pairs[p].length > 1) {
+            var temp = p.split(",");
+            for (var j = 0; j < temp.length; j++) {
+              pairMembers.members.push(Number(temp[j]));
+            }
+            for (var k = 0; k < pairs[p].length; k++) {
+              pairMembers.not.push(pairs[p][k]);
+            }
+          }
+        }
+        return pairMembers;
       },
       
       nakedTriple: function (array) {

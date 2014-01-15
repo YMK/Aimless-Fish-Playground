@@ -91,6 +91,34 @@ define(['angular', 'ngmocks', 'sudokuUtils', 'sudokuBoard'], function (ng, mocks
           expect(utils.utils.hiddenSingle([[1, 2, 9], [1, 2, 3], [2, 3], [3]])[0]).toEqual({index: 0, number: 9});
         });
       });
+      
+      describe("Naked Pair", function () {
+        
+        it("Returns no members and no not when no naked pair", function () {
+          expect(utils.utils.nakedPair([[1, 2], [1, 2, 3], [2, 3], [3]]).members.length).toEqual(0);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2, 3], [2, 3], [3]]).not.length).toEqual(0);
+        });
+        
+        it("Returns object with members that need to be removed, and not that shouldn't have things removed", function () {
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).members.length).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).not.length).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).members[0]).toEqual(1);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).members[1]).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).not[0]).toEqual(0);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [3]]).not[1]).toEqual(1);
+          
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).members.length).toEqual(4);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not.length).toEqual(4);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).members[0]).toEqual(1);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).members[1]).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).members[2]).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).members[3]).toEqual(3);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not[0]).toEqual(0);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not[1]).toEqual(1);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not[2]).toEqual(2);
+          expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not[3]).toEqual(3);
+        });
+      });
     });
   });
   
