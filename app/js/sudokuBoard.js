@@ -227,12 +227,13 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     
     for (row = 0; row < 9; row++) {
       this.originalBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+      this.correctBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
     
     
     for (row = 0; row < 9; row++) {
       for (col = 0; col < 9; col++) {
-        this.pencilMarks[row][col] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.pencilMarks[row][col] = [];
       }
     }
   };
