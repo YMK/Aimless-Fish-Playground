@@ -119,6 +119,39 @@ define(['angular', 'ngmocks', 'sudokuUtils', 'sudokuBoard'], function (ng, mocks
           expect(utils.utils.nakedPair([[1, 2], [1, 2], [2, 3], [2, 3]]).not[3]).toEqual(3);
         });
       });
+      
+      describe("Naked Triple", function () {
+        
+        it("Returns no members and no not when no naked pair", function () {
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [2, 3], [3, 4, 5]]).members.length).toEqual(0);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [2, 3], [3, 4, 5]]).not.length).toEqual(0);
+        });
+        
+        it("Returns object with members that need to be removed, and not that shouldn't have things removed", function () {
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3, 4], [3, 6]]).members.length).toEqual(3);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).not.length).toEqual(3);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).members[0]).toEqual(1);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).members[1]).toEqual(2);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).members[2]).toEqual(3);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).not[0]).toEqual(0);
+          expect(utils.utils.nakedTriple([[1, 2, 3], [1, 2, 3], [1, 2, 3], [2, 3], [3]]).not[1]).toEqual(1);
+          
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members.length).toEqual(6);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not.length).toEqual(6);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[0]).toEqual(2);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[1]).toEqual(3);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[2]).toEqual(4);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[3]).toEqual(5);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[4]).toEqual(6);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).members[5]).toEqual(7);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[0]).toEqual(1);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[1]).toEqual(2);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[2]).toEqual(3);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[3]).toEqual(4);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[4]).toEqual(5);
+          expect(utils.utils.nakedTriple([[1, 2], [2, 3, 4], [2, 3, 4], [2, 3, 4], [5, 6, 7], [5, 6, 7], [5, 6, 7]]).not[5]).toEqual(6);
+        });
+      });
     });
   });
   

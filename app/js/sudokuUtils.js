@@ -267,7 +267,46 @@ define(['require'], function (require) {
                 }
               }
             }
-          }     
+          }
+          
+          // Send each row to naked triples
+          for (x = 0; x < 9; x++) {
+            var trow = pencils[x], rowTriples = this.nakedTriple(trow);
+            for (var s = 0; s < rowTriples.members.length; s++) {
+              for (var t = 0; t < pencils[x].length; t++) {
+                if (rowTriples.not.indexOf(t) === -1) {
+                  var rtindex = pencils[x][t].indexOf(rowTriples.members[s]);
+                  if (rtindex > -1) {
+                    pencils[x][t].splice(rtindex, 1);
+                    rating = rating + (this.removeSingles(board, pencils, x, t) * 1.5);
+                  }
+                }
+              }
+            }
+          }
+          
+          // Send each column to naked triples
+          for (y = 0; y < 9; y++) {
+            var colTriples, col = [];
+            
+            for (x = 0; x < 9; x++) {
+              col.push(pencils[x][y]);
+            }
+            
+            colTriples = this.nakedTriple(col);
+            
+            for (var u = 0; u < colTriples.members.length; u++) {
+              for (var v = 0; v < col.length; v++) {
+                if (colTriples.not.indexOf(v) === -1) {
+                  var ctindex = pencils[v][y].indexOf(colTriples.members[u]);
+                  if (ctindex > -1) {
+                    pencils[v][y].splice(ctindex, 1);
+                    rating = rating + (this.removeSingles(board, pencils, v, y) * 1.5);
+                  }
+                }
+              }
+            }
+          }
           
           
           
@@ -362,7 +401,28 @@ define(['require'], function (require) {
       },
       
       nakedTriple: function (array) {
-        
+        var triples = {}, tripleMembers = {members: [], not: []};
+        for (var i = 0; i < array.length; i++) {
+          if (array[i].length === 3) {
+            if (triples[array[i]]) {
+              triples[array[i]].push(i);
+            } else {
+              triples[array[i]] = [i];
+            }
+          }
+        }
+        for (var p in triples) {
+          if (triples[p].length > 2) {
+            var temp = p.split(",");
+            for (var j = 0; j < temp.length; j++) {
+              tripleMembers.members.push(Number(temp[j]));
+            }
+            for (var k = 0; k < triples[p].length; k++) {
+              tripleMembers.not.push(triples[p][k]);
+            }
+          }
+        }
+        return tripleMembers;
       },
       
       hiddenPair: function (array) {
