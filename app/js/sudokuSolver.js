@@ -149,8 +149,11 @@ require(
       case "correct":
         postMessage(self.correct(event.data.board));
         break;
-      case "solve":
+      case "humanSolve":
         postMessage(self.utils.humanSolve(event.data.board));
+        break;
+      case "solve":
+        postMessage(self.fillRestOfBoard(event.data.board));
         break;
       case "rate":
         postMessage(self.rate(event.data.board));

@@ -205,6 +205,26 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     return this.originalBoard;
   };
 
+  Board.prototype.humanSolve = function (callback) {
+    var self = this;
+
+    if (self.sworker !== undefined || !self.correct()) {
+      return;
+    }
+
+    self.sworker = new Worker("js/sudokuSolver.js");
+    self.sworker.addEventListener("message", function (e) {
+      if (e.data === "Ready") {
+        self.sworker.postMessage({"command": "humanSolve", "board": self.board});
+        return;
+      }
+      self.board = e.data;
+      self.sworker.terminate();
+      self.sworker = undefined;
+      callback(true);
+    });
+  };
+
   Board.prototype.solve = function (callback) {
     var self = this;
 

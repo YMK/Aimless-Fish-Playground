@@ -1,5 +1,5 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
-/*global define, setTimeout, window, console */
+/*global define, setTimeout, window */
 
 define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (Board, angular, sudoku, $, pantry) {
   'use strict';
@@ -127,6 +127,13 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
 
     $scope.solve = function () {
       $scope.board.solve(function () {
+        $scope.$apply();
+      });
+      $scope.checkBoard();
+    };
+
+    $scope.humanSolve = function () {
+      $scope.board.humanSolve(function () {
         $scope.$apply();
       });
       $scope.checkBoard();
