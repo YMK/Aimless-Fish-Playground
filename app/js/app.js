@@ -12,7 +12,8 @@ require.config({
     "bootstrap.modal": "../lib/bootstrap/js/modal",
     "bootstrap.collapse": "../lib/bootstrap/js/collapse",
     "kudoku": "../lib/kudoku",
-    "sheetrock": "../lib/jquery-sheetrock/src/jquery.sheetrock"
+    "sheetrock": "../lib/jquery-sheetrock/src/jquery.sheetrock",
+    "underscore": "../lib/underscore/underscore-min"
   },
 
   shim: {
@@ -27,6 +28,9 @@ require.config({
     "bootstrap.collapse": ['jquery'],
     "sudokuUtils": {
       exports: "sudoku"
+    },
+    "underscore": {
+      exports: "_"
     }
   }
 });

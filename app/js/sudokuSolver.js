@@ -2,6 +2,39 @@
 /*global setTimeout, importScripts, require, sudoku_solver, addEventListener, postMessage */
 
 importScripts("../lib/requirejs/require.js");
+require.config({
+  paths: {
+    "angular": "../lib/angular/angular",
+    "ngroute": "../lib/angular-route/angular-route",
+    "ngtouch": "../lib/angular-touch/angular-touch.min",
+    "ngbootstrap": "../lib/angular-bootstrap/ui-bootstrap.min",
+    "ngbootstrap-tpls": "../lib/angular-bootstrap/ui-bootstrap-tpls.min",
+    "jquery": "../lib/jquery/jquery",
+    "bootstrap.modal": "../lib/bootstrap/js/modal",
+    "bootstrap.collapse": "../lib/bootstrap/js/collapse",
+    "kudoku": "../lib/kudoku",
+    "sheetrock": "../lib/jquery-sheetrock/src/jquery.sheetrock",
+    "underscore": "../lib/underscore/underscore-min"
+  },
+
+  shim: {
+    "angular": {
+      exports: "angular"
+    },
+    "ngtouch": ['angular'],
+    "ngbootstrap": ['angular'],
+    "ngbootstrap-tpls": ['angular'],
+    "ngroute": ['angular'],
+    "bootstrap.modal": ['jquery'],
+    "bootstrap.collapse": ['jquery'],
+    "sudokuUtils": {
+      exports: "sudoku"
+    },
+    "underscore": {
+      exports: "_"
+    }
+  }
+});
 
 require(
   {baseUrl: "./"},

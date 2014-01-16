@@ -1,7 +1,7 @@
 /*jslint vars: true, plusplus: true, indent: 2, maxerr: 500 */
 /*global define, Worker */
 
-define(['require'], function (require) {
+define(['require', 'underscore'], function (require, _) {
   var sudoku = {};
 
   sudoku.utils = (function () {
@@ -361,10 +361,6 @@ define(['require'], function (require) {
             }
           }
           
-          
-          
-          
-          
           // Check if board is done. It's only done if nothing is 0
           solved = true;
           for (x = 0; x < 9; x++) {
@@ -453,23 +449,23 @@ define(['require'], function (require) {
       nakedTriple: function (array) {
         var triples = {}, tripleMembers = {members: [], not: []};
         for (var i = 0; i < array.length; i++) {
-          if (array[i].length === 3) {
-            if (triples[array[i]]) {
-              triples[array[i]].push(i);
-            } else {
-              triples[array[i]] = [i];
+          for (var j = i + 1; j < array.length; j++) {
+            for (var k = j + 1; k < array.length; k++) {
+              if (_.union(array[i], array[j], array[k]).length === 3 && 
+                  !_.isEmpty(array[k]) && !_.isEmpty(array[j]) && !_.isEmpty(array[i])) {
+                triples[_.union(array[i], array[j], array[k])] = [i, j, k];
+              }
             }
           }
         }
+        
         for (var p in triples) {
-          if (triples[p].length > 2) {
-            var temp = p.split(",");
-            for (var j = 0; j < temp.length; j++) {
-              tripleMembers.members.push(Number(temp[j]));
-            }
-            for (var k = 0; k < triples[p].length; k++) {
-              tripleMembers.not.push(triples[p][k]);
-            }
+          var temp = p.split(",");
+          for (var l = 0; l < temp.length; l++) {
+            tripleMembers.members.push(Number(temp[l]));
+          }
+          for (var m = 0; m < triples[p].length; m++) {
+            tripleMembers.not.push(triples[p][m]);
           }
         }
         return tripleMembers;

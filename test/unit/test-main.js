@@ -16,7 +16,8 @@ require.config({
     "ngroute": "../lib/angular-route/angular-route",
     "jquery": "../lib/jquery/jquery",
     'ngmocks': '../lib/angular-mocks/angular-mocks',
-    "kudoku": "../lib/kudoku"
+    "kudoku": "../lib/kudoku",
+    "underscore": "../lib/underscore/underscore-min"
   },
 
   shim: {
@@ -27,6 +28,9 @@ require.config({
     "ngmocks": {
       deps: ['angular'],
       exports: "mocks"
+    },
+    "underscore": {
+      exports: "_"
     }
   },
 
