@@ -212,7 +212,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     };
 
     $scope.setUp = function () {
-      $scope.board.generate(null, null, pantry[0].board);
+      $scope.board.generate(null, null, pantry[1].board);
     };
 
     $scope.undo = function () {

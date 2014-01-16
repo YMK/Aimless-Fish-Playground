@@ -65,7 +65,7 @@ define(['require'], function (require) {
         
         for (var col = 0; col < 9; col++) {
           for (var row = 0; row < 9; row++){
-            if (board[col][row] !== 0 && board[col][row] !== original[col][row]) {
+            if (board[col][row] !== 0 && original[col][row] !== 0 && board[col][row] !== original[col][row]) {
               incorrect[col][row] = 1;
             }
           }
@@ -172,10 +172,11 @@ define(['require'], function (require) {
             pencils = sudoku.utils.generatePencils(board);
         
         while (!solved && !givenUp) {
-          var x, y, lastrating = rating, simple = true;
+          var x, y, i, j, lastrating = rating, simple = true;
+          
+          // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
           while (simple) {
             var simplerating = rating;
-            // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
             for (x = 0; x < 9; x++) {
               for (y = 0; y < 9; y++) {
                 rating = rating + this.removeSingles(board, pencils, x, y);
@@ -200,7 +201,7 @@ define(['require'], function (require) {
             var colSingles, columns = [];
             
             for (x = 0; x < 9; x++) {
-              columns.push(pencils[x][y]);
+              columns.push(board[x][y]);
             }
             
             colSingles = this.hiddenSingle(columns);
@@ -211,21 +212,21 @@ define(['require'], function (require) {
           }          
           
           // Send each box to hidden singles
-          for (var i = 0; i < 9; i = i + 3) {
-            for (var j = 0; j < 9; j = j + 3) {
+          for (i = 0; i < 9; i = i + 3) {
+            for (j = 0; j < 9; j = j + 3) {
               var boxSingles, box = [];
               
               for (x = i; x < i + 3; x++) {
                 for (y = j; y < j + 3; y++) {
-                  box.push(board[x][y]);
+                  box.push(pencils[x][y]);
                 }
               }
               
               boxSingles = this.hiddenSingle(box);
               for (var n = 0; n < boxSingles.length; n++) {
                 var index = boxSingles[n].index;
-                pencils[(index%3)+i][(index%3)+j] = [boxSingles[n].number];
-                rating = rating + (this.removeSingles(board, pencils, (index%3)+i, (index%3)+j) * 1.5);
+                pencils[Math.floor(index/3)+i][(index%3)+j] = [boxSingles[n].number];
+                rating = rating + (this.removeSingles(board, pencils, Math.floor(index/3)+i, (index%3)+j) * 1.5);
               } 
             }
           }
@@ -269,6 +270,32 @@ define(['require'], function (require) {
             }
           }
           
+          // Send each box to naked pairs
+          for (i = 0; i < 9; i = i + 3) {
+            for (j = 0; j < 9; j = j + 3) {
+              var boxPairs, pbox = [];
+              
+              for (x = i; x < i + 3; x++) {
+                for (y = j; y < j + 3; y++) {
+                  pbox.push(pencils[x][y]);
+                }
+              }
+              
+              boxPairs = this.nakedPair(pbox);
+              for (var w = 0; w < boxPairs.members.length; w++) {
+                for (var z = 0; z < pbox.length; z++){
+                  if (boxPairs.not.indexOf(z) === -1) {
+                    var bpindex = pencils[Math.floor(z/3)+i][(z%3)+j].indexOf(boxPairs.members[w]);
+                    if (bpindex > -1) {
+                      pencils[Math.floor(z/3)+i][(z%3)+j].splice(bpindex, 1);
+                      rating = rating + (this.removeSingles(board, pencils, Math.floor(z/3)+i, (z%3)+j) * 1.5);
+                    }
+                  }
+                }
+              } 
+            }
+          }
+          
           // Send each row to naked triples
           for (x = 0; x < 9; x++) {
             var trow = pencils[x], rowTriples = this.nakedTriple(trow);
@@ -305,6 +332,32 @@ define(['require'], function (require) {
                   }
                 }
               }
+            }
+          }
+          
+          // Send each box to naked triples
+          for (i = 0; i < 9; i = i + 3) {
+            for (j = 0; j < 9; j = j + 3) {
+              var boxTriples, tbox = [];
+              
+              for (x = i; x < i + 3; x++) {
+                for (y = j; y < j + 3; y++) {
+                  tbox.push(pencils[x][y]);
+                }
+              }
+              
+              boxTriples = this.nakedPair(tbox);
+              for (var w1 = 0; w1 < boxTriples.members.length; w1++) {
+                for (var z1 = 0; z1 < tbox.length; z1++){
+                  if (boxTriples.not.indexOf(z1) === -1) {
+                    var btindex = pencils[Math.floor(z1/3)+i][(z1%3)+j].indexOf(boxTriples.members[w1]);
+                    if (btindex > -1) {
+                      pencils[Math.floor(z1/3)+i][(z1%3)+j].splice(btindex, 1);
+                      rating = rating + (this.removeSingles(board, pencils, Math.floor(z1/3)+i, (z1%3)+j) * 1.5);
+                    }
+                  }
+                }
+              } 
             }
           }
           
@@ -349,9 +402,6 @@ define(['require'], function (require) {
         
         rating = this.humanSolve(board, true);
         rating = (rating + defaultNum) - 81;
-//        if (rating < 0) {
-//          rating = -1;
-//        }
         
         return rating;
       },
