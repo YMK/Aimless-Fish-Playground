@@ -346,7 +346,7 @@ define(['require', 'underscore'], function (require, _) {
                 }
               }
               
-              boxTriples = this.nakedPair(tbox);
+              boxTriples = this.nakedTriple(tbox);
               for (var w1 = 0; w1 < boxTriples.members.length; w1++) {
                 for (var z1 = 0; z1 < tbox.length; z1++){
                   if (boxTriples.not.indexOf(z1) === -1) {
@@ -355,6 +355,124 @@ define(['require', 'underscore'], function (require, _) {
                       pencils[Math.floor(z1/3)+i][(z1%3)+j].splice(btindex, 1);
                       rating = rating + (this.removeSingles(board, pencils, Math.floor(z1/3)+i, (z1%3)+j) * 1.5);
                     }
+                  }
+                }
+              } 
+            }
+          }
+          
+          // Send each row to hidden pairs
+          for (x = 0; x < 9; x++) {
+            var row = pencils[x], rowPairs = this.hiddenPair(row);
+            for (var p = 0; p < pencils[x].length; p++) {
+              if (rowPairs.not.indexOf(p) > -1) {
+                pencils[x][p] = [];
+                for (var o = 0; o < rowPairs.members.length; o++) {
+                  pencils[x][p].push(rowPairs.members[o]);
+                  rating = rating + (this.removeSingles(board, pencils, x, p) * 1.5);
+                }
+              }
+            }
+          }
+          
+          // Send each column to hidden pairs
+          for (y = 0; y < 9; y++) {
+            var colPairs, cols = [];
+            
+            for (x = 0; x < 9; x++) {
+              cols.push(pencils[x][y]);
+            }
+            
+            colPairs = this.hiddenPair(cols);
+            
+            for (var r = 0; r < cols.length; r++) {
+              if (colPairs.not.indexOf(r) > -1) {
+                pencils[r][y] = [];
+                for (var q = 0; q < colPairs.members.length; q++) {
+                  pencils[r][y].push(colPairs.members[q]);
+                  rating = rating + (this.removeSingles(board, pencils, r, y) * 1.5);
+                }
+              }
+            }
+          }
+          
+          // Send each box to hidden pairs
+          for (i = 0; i < 9; i = i + 3) {
+            for (j = 0; j < 9; j = j + 3) {
+              var boxPairs, pbox = [];
+              
+              for (x = i; x < i + 3; x++) {
+                for (y = j; y < j + 3; y++) {
+                  pbox.push(pencils[x][y]);
+                }
+              }
+              
+              boxPairs = this.hiddenPair(pbox);
+              for (var z = 0; z < pbox.length; z++){
+                if (boxPairs.not.indexOf(z) > -1) {
+                  pencils[Math.floor(z/3)+i][(z%3)+j] = [];
+                  for (var w = 0; w < boxPairs.members.length; w++) {
+                    pencils[Math.floor(z/3)+i][(z%3)+j].push(boxPairs.members[w]);
+                      rating = rating + (this.removeSingles(board, pencils, Math.floor(z/3)+i, (z%3)+j) * 1.5);
+                  }
+                }
+              }
+            }
+          }
+          
+          // Send each row to hidden triples
+          for (x = 0; x < 9; x++) {
+            var trow = pencils[x], rowTriples = this.hiddenTriple(trow);
+            for (var t = 0; t < pencils[x].length; t++) {
+              if (rowTriples.not.indexOf(t) > -1) {
+                pencils[x][t] = [];
+                for (var s = 0; s < rowTriples.members.length; s++) {
+                  pencils[x][t].push(rowTriples.members[s]);
+                  rating = rating + (this.removeSingles(board, pencils, x, p) * 1.5);
+                }
+              }
+            }
+          }
+          
+          // Send each column to hidden triples
+          for (y = 0; y < 9; y++) {
+            var colTriples, col = [];
+            
+            for (x = 0; x < 9; x++) {
+              col.push(pencils[x][y]);
+            }
+            
+            colTriples = this.hiddenTriple(col);
+            
+            for (var v = 0; v < col.length; v++) {
+              if (colTriples.not.indexOf(v) > -1) {
+                pencils[v][y] = [];
+                for (var u = 0; u < colTriples.members.length; u++) {
+                  pencils[v][y].push(colTriples.members[u]);
+                  rating = rating + (this.removeSingles(board, pencils, r, y) * 1.5);
+                }
+              }
+            }
+          }
+          
+          // Send each box to hidden triples
+          for (i = 0; i < 9; i = i + 3) {
+            for (j = 0; j < 9; j = j + 3) {
+              var boxTriples, tbox = [];
+              
+              for (x = i; x < i + 3; x++) {
+                for (y = j; y < j + 3; y++) {
+                  tbox.push(pencils[x][y]);
+                }
+              }
+              
+              boxTriples = this.hiddenTriple(tbox);
+              for (var z1 = 0; z1 < tbox.length; z1++) {
+                if (boxTriples.not.indexOf(z1) > -1) {
+                  pencils[Math.floor(z1/3)+i][(z1%3)+j] = [];
+                  for (var w1 = 0; w1 < boxTriples.members.length; w1++) {
+                    pencils[Math.floor(z1/3)+i][(z1%3)+j].push(boxTriples.members[w1]);
+                    rating = rating + (this.removeSingles(board, pencils, Math.floor(z1/3)+i, (z1%3)+j) * 1.5);
                   }
                 }
               } 
@@ -401,7 +519,7 @@ define(['require', 'underscore'], function (require, _) {
         
         return rating;
       },
-    
+     
       hiddenSingle: function (array) {
         var uniques = [];
         for (var i = 0; i < array.length; i++) {
@@ -424,19 +542,18 @@ define(['require', 'underscore'], function (require, _) {
       nakedPair: function (array) {
         var pairs = {}, pairMembers = {members: [], not: []};
         for (var i = 0; i < array.length; i++) {
-          if (array[i].length === 2) {
-            if (pairs[array[i]]) {
-              pairs[array[i]].push(i);
-            } else {
-              pairs[array[i]] = [i];
+          for (var j = i + 1; j < array.length; j++) {
+            if (_.union(array[i], array[j]).length === 2 && 
+                !_.isEmpty(array[j]) && !_.isEmpty(array[i])) {
+              pairs[_.union(array[i], array[j])] = [i, j];
             }
           }
         }
         for (var p in pairs) {
           if (pairs[p].length > 1) {
             var temp = p.split(",");
-            for (var j = 0; j < temp.length; j++) {
-              pairMembers.members.push(Number(temp[j]));
+            for (var j2 = 0; j2 < temp.length; j2++) {
+              pairMembers.members.push(Number(temp[j2]));
             }
             for (var k = 0; k < pairs[p].length; k++) {
               pairMembers.not.push(pairs[p][k]);
@@ -472,11 +589,69 @@ define(['require', 'underscore'], function (require, _) {
       },
       
       hiddenPair: function (array) {
-        
+        var pairs = {}, pairMembers = {members: [], not: []};
+        for (var i = 0; i < array.length; i++) {
+          for (var j = i + 1; j < array.length; j++) {
+            var common = _.intersection(array[i], array[j]);
+            if (common.length === 2) {
+              var unique = true;
+              for (var k = 0; k < array.length; k++) {
+                if (k !== i && k !== j && _.intersection(common, array[k]).length > 0) {
+                  unique = false;
+                }
+              }
+              if (unique) {
+                pairs[common] = [i, j];
+              }
+            }
+          }
+        }
+        for (var p in pairs) {
+          if (pairs[p].length > 1) {
+            var temp = p.split(",");
+            for (var j2 = 0; j2 < temp.length; j2++) {
+              pairMembers.members.push(Number(temp[j2]));
+            }
+            for (var k2 = 0; k2 < pairs[p].length; k2++) {
+              pairMembers.not.push(pairs[p][k2]);
+            }
+          }
+        }
+        return pairMembers;
       },
       
       hiddenTriple: function (array) {
-        
+        var pairs = {}, pairMembers = {members: [], not: []};
+        for (var i = 0; i < array.length; i++) {
+          for (var j = i + 1; j < array.length; j++) {
+            for (var k = 0; k < array.length; k++) {
+              var common = _.intersection(array[i], array[j], array[k]);
+              if (common.length === 3) {
+                var unique = true;
+                for (var l = 0; l < array.length; l++) {
+                  if (l !== i && l !== j && l !== k && _.intersection(common, array[l]).length > 0) {
+                    unique = false;
+                  }
+                }
+                if (unique) {
+                  pairs[common] = [i, j, k];
+                }
+              }
+            }
+          }
+        }
+        for (var p in pairs) {
+          if (pairs[p].length > 1) {
+            var temp = p.split(",");
+            for (var j2 = 0; j2 < temp.length; j2++) {
+              pairMembers.members.push(Number(temp[j2]));
+            }
+            for (var k2 = 0; k2 < pairs[p].length; k2++) {
+              pairMembers.not.push(pairs[p][k2]);
+            }
+          }
+        }
+        return pairMembers;
       },
       
       removeSingles: function (board, pencils, x, y) {
