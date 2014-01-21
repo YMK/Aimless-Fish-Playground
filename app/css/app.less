@@ -232,6 +232,14 @@ td, th, .ff-fix {
     
     &.highlighted{
       background-color: yellow;
+    }    
+    
+    &.semiHighlighted:not(.faded){
+      background-color: rgba(255, 255, 178, 0.6);
+    }
+    
+    &.semiHighlighted.faded{
+      background-color: rgba(209, 209, 120, 0.3);
     }
   }
 }
