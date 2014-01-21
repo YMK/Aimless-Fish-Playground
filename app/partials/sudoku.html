@@ -80,7 +80,6 @@
           </div>
         </div>
         
-        
         <div class="statusWrapper">
           <div class="statusText" ng-show="checked">
             <div class="half"></div>
@@ -104,6 +103,11 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="row messages">
+    <p ng-repeat="message in messages track by $index">
+      {{message}}
+    </p>
   </div>
 </section>
 

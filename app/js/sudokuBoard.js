@@ -161,7 +161,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       self.rworker = new Worker("js/sudokuSolver.js");
       self.rworker.addEventListener("message", function (e) {
         if (e.data === "Ready") {
-          self.rworker.postMessage({"command": "rate", "board" : self.board});
+          self.rworker.postMessage({"command": "rate", "board" : self.board, "original" : self.correctBoard});
           return;
         }
         self.rworker.terminate();
@@ -205,7 +205,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     return this.originalBoard;
   };
 
-  Board.prototype.humanSolve = function (callback) {
+  Board.prototype.humanSolve = function (callback, messageCallback) {
     var self = this;
 
     if (self.sworker !== undefined || !self.correct()) {
@@ -215,13 +215,16 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     self.sworker = new Worker("js/sudokuSolver.js");
     self.sworker.addEventListener("message", function (e) {
       if (e.data === "Ready") {
-        self.sworker.postMessage({"command": "humanSolve", "board": self.board});
+        self.sworker.postMessage({"command": "humanSolve", "board": self.board, "original" : self.correctBoard});
         return;
+      } else if (e.data.message === "finished") {
+        self.board = e.data.board;
+        self.sworker.terminate();
+        self.sworker = undefined;
+        callback(true, e.data.messages);
+      } else {
+        messageCallback(e.data.message);
       }
-      self.board = e.data;
-      self.sworker.terminate();
-      self.sworker = undefined;
-      callback(true);
     });
   };
 

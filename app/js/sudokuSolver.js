@@ -38,8 +38,8 @@ require.config({
 
 require(
   {baseUrl: "./"},
-  ["require", "../lib/kudoku", "sudokuUtils"],
-  function (require, kudoku, sudoku) {
+  ["require", "../lib/kudoku", "sudokuUtils", "solver"],
+  function (require, kudoku, sudoku, Solver) {
     "use strict";
     var self = this || {};
     self.solver = sudoku_solver();
@@ -160,8 +160,20 @@ require(
       return {"board": board, "correctBoard": correctBoard};
     };
 
-    self.rate = function (board) {
-      return self.utils.rate(board);
+    self.rate = function (board, original) {
+      var solver = new Solver(board, original);
+      return solver.rate(board, original);
+    };
+    
+    self.humanSolve = function (board, original, messages) {
+      var solver = new Solver(board, original);
+      return solver.humanSolve({board: board, 
+                                 correct: original,
+                                 rate: false,
+                                 messageCallback: function (message) {
+                                    messages.push(message);
+                                  }
+                                });
     };
     
     self.generatePencils = function (board) {
@@ -183,13 +195,15 @@ require(
         postMessage(self.correct(event.data.board));
         break;
       case "humanSolve":
-        postMessage(self.utils.humanSolve(event.data.board));
+        var messages = [],
+            finalBoard = self.humanSolve(event.data.board, event.data.original, messages);
+        postMessage({message: "finished", board: finalBoard, messages: messages});
         break;
       case "solve":
         postMessage(self.fillRestOfBoard(event.data.board));
         break;
       case "rate":
-        postMessage(self.rate(event.data.board));
+        postMessage(self.rate(event.data.board, event.data.original));
         break;
       }
     });

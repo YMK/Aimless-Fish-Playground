@@ -12,6 +12,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     }
     $scope.board = new Board();
     $scope.selectedRow = 0;
+    $scope.messages = [];
     $scope.selectedCol = 0;
     $scope.locks = {"generate": false};
     $scope.autoPencil = false;
@@ -133,9 +134,17 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     };
 
     $scope.humanSolve = function () {
-      $scope.board.humanSolve(function () {
-        $scope.$apply();
-      });
+      $scope.messages = [];
+      $scope.board.humanSolve(
+        function (success, messages) {
+          if (success) { 
+            $scope.$apply($scope.messages = messages);
+          }
+        },
+        function (message) {
+          $scope.$apply($scope.messages.shift(message));
+        }
+      );
       $scope.checkBoard();
     };
 
