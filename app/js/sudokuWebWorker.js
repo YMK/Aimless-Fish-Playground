@@ -164,18 +164,19 @@ require(
       var solver = new Solver(board, original);
       return solver.rate(board, original);
     };
-    
+
     self.humanSolve = function (board, original, messages) {
       var solver = new Solver(board, original);
-      return solver.humanSolve({board: board, 
-                                 correct: original,
-                                 rate: false,
-                                 messageCallback: function (message) {
-                                    messages.push(message);
-                                  }
-                                });
+      return solver.humanSolve({
+        board: board, 
+        correct: original,
+        rate: false,
+        messageCallback: function (message) {
+          messages.push(message);
+        }
+      });
     };
-    
+
     self.generatePencils = function (board) {
       return this.utils.generatePencils(board);
     };
