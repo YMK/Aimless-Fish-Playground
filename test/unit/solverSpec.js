@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, describe, beforeEach, it, inject, expect */
 
-define(['angular', 'ngmocks', 'solver', 'sudokuBoard'], function (ng, mocks, Solver, Board) {
+define(['angular', 'ngmocks', 'sudokuSolver', 'sudokuBoard'], function (ng, mocks, Solver, Board) {
   'use strict'; 
   describe("Human Solving", function () {
     var utils;

@@ -118,7 +118,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       callback(false);
     } else {
       if (!board){
-        self.gworker = new Worker("js/sudokuSolver.js");
+        self.gworker = new Worker("js/sudokuWebWorker.js");
         self.gworker.addEventListener("message", function (e) {
           if (e.data === "Ready") {
             self.gworker.postMessage({"command": "generate"});
@@ -158,7 +158,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     if (self.rworker !== undefined) {
       callback(false);
     } else {
-      self.rworker = new Worker("js/sudokuSolver.js");
+      self.rworker = new Worker("js/sudokuWebWorker.js");
       self.rworker.addEventListener("message", function (e) {
         if (e.data === "Ready") {
           self.rworker.postMessage({"command": "rate", "board" : self.board, "original" : self.correctBoard});
@@ -178,7 +178,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     if (self.gworker !== undefined) {
       callback(false);
     } else {
-      self.gworker = new Worker("js/sudokuSolver.js");
+      self.gworker = new Worker("js/sudokuWebWorker.js");
       self.gworker.addEventListener("message", function (e) {
         if (e.data === "Ready") {
           self.gworker.postMessage({"command": "possibilities",
@@ -212,7 +212,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       return;
     }
 
-    self.sworker = new Worker("js/sudokuSolver.js");
+    self.sworker = new Worker("js/sudokuWebWorker.js");
     self.sworker.addEventListener("message", function (e) {
       if (e.data === "Ready") {
         self.sworker.postMessage({"command": "humanSolve", "board": self.board, "original" : self.correctBoard});
@@ -235,7 +235,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       return;
     }
 
-    self.sworker = new Worker("js/sudokuSolver.js");
+    self.sworker = new Worker("js/sudokuWebWorker.js");
     self.sworker.addEventListener("message", function (e) {
       if (e.data === "Ready") {
         self.sworker.postMessage({"command": "solve", "board": self.board});
