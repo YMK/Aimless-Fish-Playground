@@ -232,6 +232,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         var hrow = pencils[row], rowHPairs = self.utils.hiddenPair(hrow);
         for (var p1 = 0; p1 < pencils[row].length; p1++) {
           if (rowHPairs.not.indexOf(p1) > -1) {
+            messageCallback("Remove everything other than " + rowHPairs.members + " from " + p1 + "," + row);
             pencils[row][p1] = [];
             for (var o1 = 0; o1 < rowHPairs.members.length; o1++) {
               pencils[row][p1].push(rowHPairs.members[o1]);
@@ -252,6 +253,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         
         for (var r1 = 0; r1 < colh.length; r1++) {
           if (colHPairs.not.indexOf(r1) > -1) {
+            messageCallback("Remove everything other than " + colHPairs.members + " from " + column + "," + r1);
             pencils[r1][column] = [];
             for (var q1 = 0; q1 < colHPairs.members.length; q1++) {
               pencils[r1][column].push(colHPairs.members[q1]);
@@ -288,9 +290,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         var htrow = pencils[row], rowHTriples = self.utils.hiddenTriple(htrow);
         for (var t1 = 0; t1 < pencils[row].length; t1++) {
           if (rowHTriples.not.indexOf(t1) > -1) {
-            pencils[row][t1] = [];
-            for (var s1 = 0; s1 < rowHTriples.members.length; s1++) {
-              pencils[row][t1].push(rowHTriples.members[s1]);
+            for (var u3 = 0; u3 < pencils[row][t1].length; u3++){
+              var indexrht = rowHTriples.members.indexOf(pencils[row][t1][u3]);
+              if (indexrht === -1) {
+                pencils[row][t1].splice(indexrht, 1);
+              }
             }
           }
         }
@@ -308,9 +312,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         
         for (var v1 = 0; v1 < colht.length; v1++) {
           if (colHTriples.not.indexOf(v1) > -1) {
-            pencils[v1][column] = [];
-            for (var u1 = 0; u1 < colHTriples.members.length; u1++) {
-              pencils[v1][column].push(colHTriples.members[u1]);
+            for (var u1 = 0; u1 < pencils[v1][column].length; u1++){
+              var indexcht = colHTriples.members.indexOf(pencils[v1][column][u1]);
+              if (indexcht === -1) {
+                pencils[v1][column].splice(indexcht, 1);
+              }
             }
           }
         }
@@ -330,9 +336,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           boxHTriples = self.utils.hiddenTriple(thbox);
           for (var z3 = 0; z3 < thbox.length; z3++) {
             if (boxHTriples.not.indexOf(z3) > -1) {
-              pencils[Math.floor(z3/3)+i][(z3%3)+j] = [];
-              for (var w3 = 0; w3 < boxHTriples.members.length; w3++) {
-                pencils[Math.floor(z3/3)+i][(z3%3)+j].push(boxHTriples.members[w3]);
+              for (var u2 = 0; u2 < pencils[Math.floor(z3/3)+i][(z3%3)+j].length; u2++){
+                var indexbht = boxHTriples.members.indexOf(pencils[Math.floor(z3/3)+i][(z3%3)+j][u2]);
+                if (indexbht === -1) {
+                  pencils[Math.floor(z3/3)+i][(z3%3)+j].splice(indexbht, 1);
+                }
               }
             }
           } 
@@ -353,7 +361,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
       if (!solved && rating === lastrating) {
         // Send each row to naked pairs and guess one
         rating = self.rowGuess(pencils, board, correct, rating, messageCallback);
-      
+        // If none of them worked, try columns
+        if (rating === lastrating) {
+          rating = self.colGuess(pencils, board, correct, rating, messageCallback);
+        }
+        
         // If we still haven't done anything, there ain't no way we solving this. Give up
         if (rating === lastrating) {
           messageCallback("Nothing else I can do. Either unsolvable, or something I don't have rules for.");
@@ -400,21 +412,44 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
       var row = pencils[i], rowPairs = self.utils.nakedPair(row);
       for (var j = 0; j < pencils[i].length; j++) {
         if (rowPairs.not.indexOf(j) > -1) {
+          messageCallback("Guessing row " + i);
           board[i][j] = pencils[i][j][0];
-          if (sudoku.utils.compare(board, original, true) === true) {
-            pencils[i][j] = [board[i][j]];
-            board[i][j] = 0;
-            rating = rating + (self.removeSingles(board, pencils, i, j, messageCallback) * 2);
-            return rating;
-          } else {
+          if (sudoku.utils.compare(board, original, true) !== true) {
             board[i][j] = pencils[i][j][1];
-            if (sudoku.utils.compare(board, original, true) === true) {
-              pencils[i][j] = [board[i][j]];
-              board[i][j] = 0;
-              rating = rating + (self.removeSingles(board, pencils, i, j, messageCallback) * 2);
-              return rating;
-            }
           }
+          messageCallback("Cell " + j + "," + i + " is correct as " + board[i][j]);
+          pencils[i][j] = [board[i][j]];
+          board[i][j] = 0;
+          rating = rating + (self.removeSingles(board, pencils, i, j, messageCallback) * 2);
+          return rating;
+        }
+      }
+    }
+    return rating;
+  };
+  
+  Solver.prototype.colGuess = function (pencils, board, original, rating, messageCallback) {
+    var column, row, self = this;
+    for (column = 0; column < 9; column++) {
+      var colPairs, cols = [];
+      
+      for (row = 0; row < 9; row++) {
+        cols.push(pencils[row][column]);
+      }
+      colPairs = self.utils.nakedPair(cols);
+      
+      for (row = 0; row < cols.length; row++) {
+        if (colPairs.not.indexOf(row) > -1) {
+          board[row][column] = pencils[row][column][0];
+          if (sudoku.utils.compare(board, original, true) !== true) {
+            board[row][column] = pencils[row][column][1];
+          }
+          messageCallback("Cell " + column + "," + row + " is correct as " + board[row][column]);
+          
+          pencils[row][column] = [board[row][column]];
+          board[row][column] = 0;
+          rating = rating + (self.removeSingles(board, pencils, row, column, messageCallback) * 2);
+          return rating;
         }
       }
     }
@@ -608,6 +643,6 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return pairMembers;
   };
-    
+  
   return Solver;
 });
