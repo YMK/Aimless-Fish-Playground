@@ -44,6 +44,7 @@ require(
     var self = this || {};
     self.solver = sudoku_solver();
     self.utils = sudoku.utils;
+    self.running = true;
 
     self.correct = function (board) {
       return self.utils.correct(board);
@@ -60,7 +61,7 @@ require(
 
       array = array.toString().replace(/,/g, "").replace(/0/g, ".");
       solarr = self.solver(array, 1);
-      
+
       if(solarr.length === 0){
         return board;
       }
@@ -168,13 +169,19 @@ require(
     self.humanSolve = function (board, original, messages) {
       var solver = new Solver(board, original);
       return solver.humanSolve({
-        board: board, 
+        board: board,
         correct: original,
         rate: false,
         messageCallback: function (message) {
           messages.push(message);
         }
       });
+    };
+    
+    self.generateLots = function () {
+      while (true) {
+        postMessage(self.generate(10));
+      }
     };
 
     self.generatePencils = function (board) {
@@ -205,6 +212,9 @@ require(
         break;
       case "rate":
         postMessage(self.rate(event.data.board, event.data.original));
+        break;
+      case "generateLots":
+        self.generateLots();
         break;
       }
     });

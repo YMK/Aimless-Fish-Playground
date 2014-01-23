@@ -1,5 +1,5 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
-/*global define, setTimeout, window */
+/*global define, setTimeout, window, Worker */
 
 define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (Board, angular, sudoku, $, pantry) {
   'use strict';
@@ -11,7 +11,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       $scope.info.title = "Sudoku";
     }
     $scope.board = new Board();
-    $scope.selectedRow = 0;
+    $scope.selectedRow = 1;
     $scope.messages = [];
     $scope.selectedCol = 0;
     $scope.locks = {"generate": false};
@@ -33,6 +33,24 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.difficulty = $scope.difficulties[2];
     $scope.params = $routeParams || {};
     
+    $scope.boardCache = [];
+    $scope.workers = {};
+    
+    $scope.createWebWorker = function (i) {
+      $scope.workers[i] = new Worker("js/sudokuWebWorker.js");
+      $scope.workers[i].addEventListener("message", function (e) {
+        if (e.data === "Ready") {
+          $scope.workers[i].postMessage({"command": "generateLots"});
+        } else {
+          $scope.boardCache.push(e.data);
+        }
+      });
+    }
+    
+    for (var i = 0; i < 4; i++) {
+      $scope.createWebWorker(i);
+    }
+    
     $scope.saveBoard = function () {
       $location.path("/sudoku/" + sudoku.utils.save($scope.board.getBoard()));
     };
@@ -40,7 +58,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.selectedCell = function () {
       return $scope.board.getCell($scope.selectedRow, $scope.selectedCol);
     };
-    
+
     $scope.isOriginal = function (row, col) {
       if ($scope.board.getOrigBoard()[row][col] !== 0) {
         return true;
@@ -70,7 +88,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
           }
         }
       }
-      
+
       return true;
     };
 
@@ -82,26 +100,32 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       $scope.inProgress.generating = true;
       $scope.show.won = true;
       $scope.error.generating = "";
-      $scope.board.generate($scope.difficulty.value, function (success) {
-        if (success) {
-          $scope.$apply($scope.inProgress.generating = false);
-          if ($scope.autoPencil) {
-            $scope.generatePencils();
+      
+      if ($scope.boardCache.length > 0) {
+        $scope.board.newGame($scope.boardCache.pop());
+        $scope.inProgress.generating = false;
+      } else {
+        $scope.board.generate($scope.difficulty.value, function (success) {
+          if (success) {
+            $scope.$apply($scope.inProgress.generating = false);
+            if ($scope.autoPencil) {
+              $scope.generatePencils();
+            }
           }
-        }
-      });
-
-      setTimeout(function () {
-        if ($scope.inProgress.generating) {
-          $scope.error.generating = "Generation seems to be taking a while." +
-                                    "Sometimes, sudoku can be very hard to " +
-                                    "generate. Feel free to cancel and try " +
-                                    "a new one.";
-          $scope.$apply();
-        }
-      }, 2000);
+        });
+  
+        setTimeout(function () {
+          if ($scope.inProgress.generating) {
+            $scope.error.generating = "Generation seems to be taking a while." +
+                                      "Sometimes, sudoku can be very hard to " +
+                                      "generate. Feel free to cancel and try " +
+                                      "a new one.";
+            $scope.$apply();
+          }
+        }, 2000);
+      }
     };
-    
+
     $scope.autoGenerate = function () {
       if ($scope.autoPencil) {
         $scope.autoPencil = false;
@@ -111,7 +135,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
         $scope.generatePencils();
       }
     };
-    
+
     $scope.generatePencils = function () {
       $scope.board.generatePencilMarks(function (success) {
         if (success) {
@@ -137,7 +161,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       $scope.messages = [];
       $scope.board.humanSolve(
         function (success, messages) {
-          if (success) { 
+          if (success) {
             $scope.$apply($scope.messages = messages);
           }
         },
@@ -165,7 +189,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       window.setTimeout(function () {
         $scope.$apply($scope.checked = false);
       }, 1500);
-      
+
     };
 
     $scope.setSelected = function (row, column) {
@@ -176,7 +200,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.setValueOfCell = function (value) {
       var cellVal = $scope.board.getCell($scope.selectedRow, $scope.selectedCol),
         pencilMarks = $scope.board.getPencilMarks($scope.selectedRow, $scope.selectedCol);
-      
+
       if (!$scope.autoPencil) {
         if (cellVal === value) {
           $scope.board.setCell($scope.selectedRow, $scope.selectedCol, 0);
@@ -235,7 +259,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.hideWon = function () {
       $scope.show.won = false;
     };
-    
+
     $scope.rate = function () {
       $scope.board.rate(function (e) {
         $scope.rating = e;
@@ -246,7 +270,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
         $scope.$apply();
       });
     };
-    
+
     if ($scope.params.board) {
       $scope.board.generate(null, null, sudoku.utils.load($scope.params.board));
     } else {

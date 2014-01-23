@@ -151,6 +151,27 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
 
     }
   };
+  
+  Board.prototype.newGame = function (args) {
+    var row, col, 
+        self = this,
+        board = args.board, 
+        correct = args.correctBoard;
+
+    self.board = board;
+    self.correctBoard = correct;
+    for (row = 0; row < 9; row++) {
+      self.originalBoard[row] = self.board[row].slice(0);
+    }
+    
+    self.cache = [];
+    self.futurecache = [];
+    for (row = 0; row < 9; row++) {
+      for (col = 0; col < 9; col++) {
+        self.pencilMarks[row][col] = [];
+      }
+    }
+  };
 
   Board.prototype.rate = function (callback) {
     var self = this;
