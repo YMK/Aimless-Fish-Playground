@@ -64,7 +64,12 @@
                 Difficulty <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="d in difficulties" ng-click="setDifficulty(d.value)"><a href="">{{d.name}}</a></li>
+                <li ng-repeat="d in difficulties" ng-click="setDifficulty(d.value)">
+                  <a href="" class="difficulty">
+                    <span class="pull-left">{{d.name}}</span> 
+                    <i class="fa fa-check pull-right" ng-show="difficulty.value === d.value"></i>
+                  </a>
+                </li>
               </ul>
             </div>
             
