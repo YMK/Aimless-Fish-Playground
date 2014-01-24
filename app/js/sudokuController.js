@@ -281,7 +281,17 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.rate = function () {
       $scope.board.rate(function (e) {
         if (e !== false) {
-          $scope.rating = e;
+          if (e === 0) {
+            $scope.rating = "Very Easy";
+          } else if (e < 0) {
+            $scope.rating = "Very Hard";
+          } else if (e < 30) {
+            $scope.rating = "Easy";
+          } else if (e < 40) {
+            $scope.rating = "Medium";
+          } else if (e >= 40) {
+            $scope.rating = "Hard";
+          }
           $scope.rated = true;
           window.setTimeout(function () {
             $scope.$apply($scope.rated = false);
