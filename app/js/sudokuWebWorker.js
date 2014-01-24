@@ -180,7 +180,13 @@ require(
     
     self.generateLots = function () {
       while (true) {
-        postMessage(self.generate(10));
+        var message = self.generate(10),
+            rateBoard = [];
+        for (var i = 0; i < 9; i++) {
+          rateBoard[i] = message.board[i].slice();
+        }
+        message.rating = self.rate(rateBoard, message.correctBoard);
+        postMessage(message);
       }
     };
 

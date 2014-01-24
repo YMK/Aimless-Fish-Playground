@@ -5,6 +5,8 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
   'use strict';
 
   function SudokuController($scope, $routeParams, $location) {
+    var NUMBER_OF_WEB_WORKERS = 5;
+    
     $scope.identity = angular.identity;
     if ($scope.info) {
       $scope.info.active = "sudoku";
@@ -23,17 +25,17 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.rating = 0;
     $scope.rated = false;
     $scope.difficulties = [
-      {name: "Very Easy", value: 15},
-      {name: "Easy", value: 30},
-      {name: "Medium", value: 40},
-      {name: "Hard", value: 50},
-      {name: "Very hard", value: 60}
+      {name: "Very Easy", value: 0},
+      {name: "Easy", value: 1},
+      {name: "Medium", value: 2},
+      {name: "Hard", value: 3},
+      {name: "Very hard", value: 4}
     ];
     $scope.show = {"won": true};
     $scope.difficulty = $scope.difficulties[2];
     $scope.params = $routeParams || {};
     
-    $scope.boardCache = [];
+    $scope.boardCache = [[], [], [], [], []];
     $scope.workers = {};
     
     $scope.createWebWorker = function (i) {
@@ -42,14 +44,30 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
         if (e.data === "Ready") {
           $scope.workers[i].postMessage({"command": "generateLots"});
         } else {
-          $scope.boardCache.push(e.data);
+          if (e.data.rating === 0) {
+            $scope.boardCache[0].push(e.data);
+          } else if (e.data.rating < 0) {
+            $scope.boardCache[4].push(e.data);
+          } else if (e.data.rating < 30) {
+            $scope.boardCache[1].push(e.data);
+          } else if (e.data.rating < 40) {
+            $scope.boardCache[2].push(e.data);
+          } else if (e.data.rating >= 40) {
+            $scope.boardCache[3].push(e.data);
+          }
+          console.log(e.data.rating);
+          console.table($scope.boardCache);
         }
       });
-    }
+    };
     
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < NUMBER_OF_WEB_WORKERS; i++) {
       $scope.createWebWorker(i);
     }
+    
+    $scope.setDifficulty = function (x) {
+      $scope.difficulty = $scope.difficulties[x];
+    };
     
     $scope.saveBoard = function () {
       $location.path("/sudoku/" + sudoku.utils.save($scope.board.getBoard()));
@@ -101,8 +119,8 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       $scope.show.won = true;
       $scope.error.generating = "";
       
-      if ($scope.boardCache.length > 0) {
-        $scope.board.newGame($scope.boardCache.pop());
+      if ($scope.boardCache[$scope.difficulty.value].length > 0) {
+        $scope.board.newGame($scope.boardCache[$scope.difficulty.value].pop());
         $scope.inProgress.generating = false;
       } else {
         $scope.board.generate($scope.difficulty.value, function (success) {
@@ -262,12 +280,14 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
 
     $scope.rate = function () {
       $scope.board.rate(function (e) {
-        $scope.rating = e;
-        $scope.rated = true;
-        window.setTimeout(function () {
-          $scope.$apply($scope.rated = false);
-        }, 1500);
-        $scope.$apply();
+        if (e !== false) {
+          $scope.rating = e;
+          $scope.rated = true;
+          window.setTimeout(function () {
+            $scope.$apply($scope.rated = false);
+          }, 1500);
+          $scope.$apply();
+        }
       });
     };
 
