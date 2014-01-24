@@ -55,8 +55,6 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
           } else if (e.data.rating >= 40) {
             $scope.boardCache[3].push(e.data);
           }
-          console.log(e.data.rating);
-          console.table($scope.boardCache);
         }
       });
     };
