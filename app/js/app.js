@@ -64,6 +64,11 @@ define(['require', 'jquery',
         controller: 'PkmnCtrl',
         controllerAs: 'pkmn'
       }).
+      when('/spinners', {
+        templateUrl: 'partials/spinners.html',
+        controller: 'SpinnerCtrl',
+        controllerAs: 'spinners'
+      }).
       otherwise({
         redirectTo: '/sudoku'
       });

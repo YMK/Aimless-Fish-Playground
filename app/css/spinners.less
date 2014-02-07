@@ -1,0 +1,398 @@
+/*
+ * This is a fully css/html based spinner. No javascript used. It is also
+ * really easy to integrate into existing things.
+ * 
+ * 
+ * To use create a div with the class "spinner" and also one of the 
+ * following classes:
+ * 
+ * "spinner1"
+ * "spinner2"
+ * "spinner3"
+ * 
+ * Create 1 empty div inside that, and then set the font-size of .spinner to
+ * be the width of the bounding box. Sorted :-)
+ * 
+ * Note that this isn't responsive fully. Currently, there is no way to
+ * set a box-shadow based on anything other than px or em, so I had to use em
+ * to make it semi-responsive, however if you set font-size to be vh/vw, then
+ * it will only update on a refresh.
+ * 
+ * This work was inspired by this http://codepen.io/Zeaklous/details/lmbJy 
+ * by Zach Saucier.
+ * 
+ * It uses the same technique, but adds a few other features and 
+ * makes it really easy to integrate into existing sites.
+ * 
+ */
+
+/*------------------------------------*\
+    $CONTENTS
+\*------------------------------------*/
+/**
+ * CONTENTS............You’re reading it!
+ * BASE................
+ * VARIABLES...........
+ * SPINNERS............
+ * SPINANDENLARGE......
+ * SPINANDEXPAND.......
+ * STATICENLARGE.......
+ * STATICJUMP..........
+ * STATICJUMPSPIN......
+ */
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $BASE
+\*------------------------------------*/
+
+body{
+  margin: 0;
+  overflow:hidden;
+}
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $VARIABLES
+\*------------------------------------*/
+
+@number: 5;
+
+@colour7: #6cce74; @colour8: #c18d46;
+@colour9: #c14745; @colour10: #2e1e5b;
+@colour11: #9c37a6; @colour12: #76bdd1;
+@onecolour: #000000;
+
+@colour1: @onecolour; @colour2: @onecolour;
+@colour3: @onecolour; @colour4: @onecolour;
+@colour5: @onecolour; @colour6: @onecolour;
+
+@increase: 0.04em;
+@default: 
+    -0.14em -0.25em 0 @increase @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $SPINNERS
+\*------------------------------------*/
+.spinnerContainer {
+  display: flex;
+  flex-flow: wrap;
+}
+
+.spinner{
+  font-size: 100vh/@number;
+  @media (max-aspect-ratio: 1/1) and (min-aspect-ratio: 1/2){
+    font-size: 100vw/ceil(sqrt(@number));
+  }
+  @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 2/1) {
+    font-size: 100vh/ceil(sqrt(@number));
+  }
+  @media (min-aspect-ratio: 2/1) {
+    font-size: 100vw/@number;
+  }
+  @media (min-aspect-ratio: @number/1) {
+    font-size: 100vh;
+  }
+  @media (max-aspect-ratio: 1/@number) {
+    font-size: 100vw;
+  }
+  height: 1em;
+  width: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  
+  :first-child{
+    border-radius:50%;
+    height:0.2em; width:0.2em;
+    margin-top:-1px; margin-left:-1px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $SPINANDENLARGE
+\*------------------------------------*/
+
+.spinner1 :first-child{
+  box-shadow:
+    -0.14em -0.25em 0 0.04em @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+  animation:rotate 2s infinite linear;
+  -webkit-animation:rotate 2s infinite linear; 
+}
+
+.generate-frames-rotate(@n, @i: 1) when (@i <= @n) {
+  @test2: (100% / @n) * @i;
+  @{test2} {
+    box-shadow:
+    -0.14em -0.25em 0 unit(`@{i} == 6? 0.04: 0`, em) @colour1,
+    0.14em -0.25em 0 unit(`@{i} == 1? 0.04: 0`, em) @colour2,
+    0.3em 0 0 unit(`@{i} == 2? 0.04: 0`, em) @colour3,
+    0.14em 0.25em 0 unit(`@{i} == 3? 0.04: 0`, em) @colour4,
+    -0.14em 0.25em 0 unit(`@{i} == 4? 0.04: 0`, em) @colour5,
+    -0.3em 0 0 unit(`@{i} == 5? 0.04: 0`, em) @colour6;
+  }
+  .generate-frames-rotate(@n, (@i + 1));
+}
+
+.generate-frames-rotate(@n, 6) {
+  @test3: 100%;
+  @{test3} {
+    transform:rotate(-360deg);
+    -webkit-transform:rotate(-360deg);
+    box-shadow:
+    -0.14em -0.25em 0 0.04em @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+  }
+}
+
+@keyframes rotate {
+  .generate-frames-rotate(6);
+}
+
+@-webkit-keyframes rotate {
+  .generate-frames-rotate(6);
+}
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $SPINANDEXPAND
+\*------------------------------------*/
+
+.spinner2 :first-child{
+  box-shadow: none;
+  animation:rotate2 1.5s infinite linear; 
+  -webkit-animation:rotate2 1.5s infinite linear; 
+}
+
+
+@keyframes rotate2 {
+  50%   { 
+    box-shadow:
+    0.14em -0.25em 0 0 @colour1,
+    0.3em 0 0 0 @colour2,
+    0.14em 0.25em 0 0 @colour3,
+    -0.14em 0.25em 0 0 @colour4,
+    -0.3em 0 0 0 @colour5,
+    -0.14em -0.25em 0 0em @colour6;
+  }
+  100% {
+    transform:rotate(-360deg);
+    box-shadow: none;
+  }
+}
+
+
+@-webkit-keyframes rotate2 {
+  50%   { 
+    box-shadow:
+    0.14em -0.25em 0 0 @colour1,
+    0.3em 0 0 0 @colour2,
+    0.14em 0.25em 0 0 @colour3,
+    -0.14em 0.25em 0 0 @colour4,
+    -0.3em 0 0 0 @colour5,
+    -0.14em -0.25em 0 0em @colour6;
+  }
+  100% {
+    -webkit-transform:rotate(-360deg);
+    box-shadow: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $STATICENLARGE
+\*------------------------------------*/
+
+.spinner3 :first-child{
+  box-shadow:
+    -0.14em -0.25em 0 0.04em @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+  animation: nonRotatingSpinner 2s infinite linear; 
+  -webkit-animation: nonRotatingSpinner 2s infinite linear; 
+}
+
+.generate-frames(@n, @i: 1) when (@i <= @n) {
+  @test: (100% / @n) * @i;
+  @{test} {
+    box-shadow:
+    -0.14em -0.25em 0 unit(`@{i} == 6? 0.04: 0`, em) @colour1,
+    0.14em -0.25em 0 unit(`@{i} == 1? 0.04: 0`, em) @colour2,
+    0.3em 0 0 unit(`@{i} == 2? 0.04: 0`, em) @colour3,
+    0.14em 0.25em 0 unit(`@{i} == 3? 0.04: 0`, em) @colour4,
+    -0.14em 0.25em 0 unit(`@{i} == 4? 0.04: 0`, em) @colour5,
+    -0.3em 0 0 unit(`@{i} == 5? 0.04: 0`, em) @colour6;
+  }
+  .generate-frames(@n, (@i + 1));
+}
+
+@keyframes nonRotatingSpinner {
+  .generate-frames(6);
+}
+
+@-webkit-keyframes nonRotatingSpinner {
+  .generate-frames(6);
+}
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $STATICJUMP
+\*------------------------------------*/
+
+@mult: 1.25;
+.spinner4 :first-child{
+  box-shadow:
+    (-0.14em * @mult) (-0.25em * @mult) 0 0 @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+  animation: jumpingSpinner 1s infinite linear; 
+  -webkit-animation: jumpingSpinner 1s infinite linear; 
+}
+
+.generate-jumping-spinner(@n, @i: 1) when (@i <= @n) {
+  @test: (100% / @n) * @i;
+  @1: `@{i} == 1? @{mult}: 1`; @2: `@{i} == 2? @{mult}: 1`;
+  @3: `@{i} == 3? @{mult}: 1`; @4: `@{i} == 4? @{mult}: 1`;
+  @5: `@{i} == 5? @{mult}: 1`; @6: `@{i} == 6? @{mult}: 1`;
+  @{test} {
+    box-shadow:
+    (-0.14em * @6) (-0.25em * @6) 0 0 @colour1,
+    (0.14em * @1) (-0.25em * @1) 0 0 @colour2,
+    (0.3em * @2) 0 0 0 @colour3,
+    (0.14em * @3) (0.25em * @3) 0 0 @colour4,
+    (-0.14em * @4) (0.25em * @4) 0 0 @colour5,
+    (-0.3em * @5) 0 0 0 @colour6;
+  }
+  .generate-jumping-spinner(@n, (@i + 1));
+}
+
+@keyframes jumpingSpinner {
+  .generate-jumping-spinner(6);
+}
+
+@-webkit-keyframes jumpingSpinner {
+  .generate-jumping-spinner(6);
+}
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $STATICJUMPSPIN
+\*------------------------------------*/
+
+@mult: 1.25;
+.spinner5 :first-child{
+  box-shadow:
+    (-0.14em * @mult) (-0.25em * @mult) 0 0 @colour1,
+    0.14em -0.25em 0 0 @colour2,
+    0.3em 0 0 0 @colour3,
+    0.14em 0.25em 0 0 @colour4,
+    -0.14em 0.25em 0 0 @colour5,
+    -0.3em 0 0 0 @colour6;
+  -webkit-animation: jumpingSpinningSpinner 1s infinite linear; 
+}
+
+.generate-jumping-spinning-spinner(@n, @i: 1) when (@i <= @n) {
+  @test: (100% / @n) * @i;
+  @1: `@{i} == 1? @{mult}: 1`; @2: `@{i} == 2? @{mult}: 1`;
+  @3: `@{i} == 3? @{mult}: 1`; @4: `@{i} == 4? @{mult}: 1`;
+  @5: `@{i} == 5? @{mult}: 1`; @6: `@{i} == 6? @{mult}: 1`;
+  @{test} {
+    box-shadow:
+    (0.14em * @1) (-0.25em * @1) 0 0 @colour2,
+    (0.3em * @2) 0 0 0 @colour3,
+    (0.14em * @3) (0.25em * @3) 0 0 @colour4,
+    (-0.14em * @4) (0.25em * @4) 0 0 @colour5,
+    (-0.3em * @5) 0 0 0 @colour6,
+    (-0.14em * @6) (-0.25em * @6) 0 0 @colour1;
+  }
+  .generate-jumping-spinning-spinner(@n, (@i + 1));
+}
+
+@keyframes jumpingSpinningSpinner {
+  .generate-jumping-spinning-spinner(6);
+}
+
+@-webkit-keyframes jumpingSpinningSpinner {
+  .generate-jumping-spinning-spinner(6);
+}
