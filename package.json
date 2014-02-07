@@ -6,5 +6,9 @@
     "phantomjs": "~1.9",
     "karma": "~0.10.4",
     "grunt": "~0.4.2"
+  },
+  "compilyai": {
+    "less": "app/css/app.less",
+    "compress": false
   }
 }

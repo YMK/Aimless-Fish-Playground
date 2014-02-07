@@ -1,0 +1,287 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'c:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'pty.js' ]
+2 info using npm@1.3.14
+3 info using node@v0.10.22
+4 verbose cache add [ 'pty.js', null ]
+5 verbose cache add name=undefined spec="pty.js" args=["pty.js",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'pty.js',
+6 verbose parsed url   path: 'pty.js',
+6 verbose parsed url   href: 'pty.js' }
+7 silly lockFile 97a5cb65-pty-js pty.js
+8 verbose lock pty.js C:\dev\npm-cache\97a5cb65-pty-js.lock
+9 silly lockFile 97a5cb65-pty-js pty.js
+10 silly lockFile 97a5cb65-pty-js pty.js
+11 verbose addNamed [ 'pty.js', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile ffa6d130-pty-js pty.js@
+14 verbose lock pty.js@ C:\dev\npm-cache\ffa6d130-pty-js.lock
+15 silly addNameRange { name: 'pty.js', range: '*', hasData: false }
+16 verbose url raw pty.js
+17 verbose url resolving [ 'https://registry.npmjs.org/', './pty.js' ]
+18 verbose url resolved https://registry.npmjs.org/pty.js
+19 info trying registry request attempt 1 at 15:37:37
+20 http GET https://registry.npmjs.org/pty.js
+21 http 200 https://registry.npmjs.org/pty.js
+22 silly registry.get cb [ 200,
+22 silly registry.get   { date: 'Fri, 07 Feb 2014 15:37:37 GMT',
+22 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B)',
+22 silly registry.get     etag: '"3FW1SV1NGAYSANO0GO8YWNJ5Z"',
+22 silly registry.get     'content-type': 'application/json',
+22 silly registry.get     via: '1.1 varnish',
+22 silly registry.get     'cache-control': 'max-age=1',
+22 silly registry.get     'content-length': '23870',
+22 silly registry.get     'accept-ranges': 'bytes',
+22 silly registry.get     age: '137943',
+22 silly registry.get     'x-served-by': 'cache-v42-ASH, cache-lcy1135-LCY',
+22 silly registry.get     'x-cache': 'HIT, MISS',
+22 silly registry.get     'x-cache-hits': '1, 0',
+22 silly registry.get     'x-timer': 'S1391786743.525243759,VS0,VS42,VE150,VE714020',
+22 silly registry.get     vary: 'Accept',
+22 silly registry.get     'keep-alive': 'timeout=10, max=50',
+22 silly registry.get     connection: 'Keep-Alive' } ]
+23 silly addNameRange number 2 { name: 'pty.js', range: '*', hasData: true }
+24 silly addNameRange versions [ 'pty.js',
+24 silly addNameRange   [ '0.0.1',
+24 silly addNameRange     '0.0.2',
+24 silly addNameRange     '0.0.3',
+24 silly addNameRange     '0.0.4',
+24 silly addNameRange     '0.0.5',
+24 silly addNameRange     '0.0.6',
+24 silly addNameRange     '0.0.6-1',
+24 silly addNameRange     '0.0.7',
+24 silly addNameRange     '0.0.8',
+24 silly addNameRange     '0.0.9',
+24 silly addNameRange     '0.1.0',
+24 silly addNameRange     '0.1.1',
+24 silly addNameRange     '0.1.2',
+24 silly addNameRange     '0.1.3',
+24 silly addNameRange     '0.2.0',
+24 silly addNameRange     '0.2.1',
+24 silly addNameRange     '0.2.2',
+24 silly addNameRange     '0.2.3' ] ]
+25 verbose addNamed [ 'pty.js', '0.2.3' ]
+26 verbose addNamed [ '0.2.3', '0.2.3' ]
+27 silly lockFile 5b565c06-pty-js-0-2-3 pty.js@0.2.3
+28 verbose lock pty.js@0.2.3 C:\dev\npm-cache\5b565c06-pty-js-0-2-3.lock
+29 silly lockFile 5b565c06-pty-js-0-2-3 pty.js@0.2.3
+30 silly lockFile 5b565c06-pty-js-0-2-3 pty.js@0.2.3
+31 silly lockFile ffa6d130-pty-js pty.js@
+32 silly lockFile ffa6d130-pty-js pty.js@
+33 silly resolved [ { name: 'pty.js',
+33 silly resolved     description: 'Pseudo terminals for node.',
+33 silly resolved     author: { name: 'Christopher Jeffrey' },
+33 silly resolved     version: '0.2.3',
+33 silly resolved     main: './index.js',
+33 silly resolved     repository: { type: 'git', url: 'git://github.com/chjj/pty.js.git' },
+33 silly resolved     homepage: 'https://github.com/chjj/pty.js',
+33 silly resolved     bugs: { url: 'https://github.com/chjj/pty.js/issues' },
+33 silly resolved     keywords: [ 'pty', 'tty', 'terminal' ],
+33 silly resolved     scripts:
+33 silly resolved      { test: 'NODE_ENV=test mocha -R spec',
+33 silly resolved        install: 'node-gyp rebuild' },
+33 silly resolved     tags: [ 'pty', 'tty', 'terminal' ],
+33 silly resolved     devDependencies: { mocha: '~1.7.1' },
+33 silly resolved     gypfile: true,
+33 silly resolved     readme: '# pty.js\n\n`forkpty(3)` bindings for node.js. This allows you to fork processes with pseudo\nterminal file descriptors. It returns a terminal object which allows reads\nand writes.\n\nThis is useful for:\n\n- Writing a terminal emulator.\n- Getting certain programs to *think* you\'re a terminal. This is useful if\n  you need a program to send you control sequences.\n\n## Example Usage\n\n``` js\nvar pty = require(\'pty.js\');\n\nvar term = pty.spawn(\'bash\', [], {\n  name: \'xterm-color\',\n  cols: 80,\n  rows: 30,\n  cwd: process.env.HOME,\n  env: process.env\n});\n\nterm.on(\'data\', function(data) {\n  console.log(data);\n});\n\nterm.write(\'ls\\r\');\nterm.resize(100, 40);\nterm.write(\'ls /\\r\');\n\nconsole.log(term.process);\n```\n\n## Todo\n\n- Add tcsetattr(3), tcgetattr(3).\n- Add a way of determining the current foreground job for platforms other\n  than Linux and OSX/Darwin.\n\n## License\n\nCopyright (c) 2012, Christopher Jeffrey (MIT License).\n',
+33 silly resolved     readmeFilename: 'README.md',
+33 silly resolved     _id: 'pty.js@0.2.3',
+33 silly resolved     _from: 'pty.js@' } ]
+34 info install pty.js@0.2.3 into C:\dev\npm
+35 info installOne pty.js@0.2.3
+36 info C:\dev\npm\node_modules\pty.js unbuild
+37 verbose tar unpack C:\dev\npm-cache\pty.js\0.2.3\package.tgz
+38 silly lockFile 6f299d18-ar-C-dev-npm-node-modules-pty-js tar://C:\dev\npm\node_modules\pty.js
+39 verbose lock tar://C:\dev\npm\node_modules\pty.js C:\dev\npm-cache\6f299d18-ar-C-dev-npm-node-modules-pty-js.lock
+40 silly lockFile ef675d26-m-cache-pty-js-0-2-3-package-tgz tar://C:\dev\npm-cache\pty.js\0.2.3\package.tgz
+41 verbose lock tar://C:\dev\npm-cache\pty.js\0.2.3\package.tgz C:\dev\npm-cache\ef675d26-m-cache-pty-js-0-2-3-package-tgz.lock
+42 silly gunzTarPerm modes [ '755', '644' ]
+43 silly gunzTarPerm extractEntry package.json
+44 silly gunzTarPerm modified mode [ 'package.json', 438, 420 ]
+45 silly gunzTarPerm extractEntry .npmignore
+46 silly gunzTarPerm modified mode [ '.npmignore', 438, 420 ]
+47 silly gunzTarPerm extractEntry README.md
+48 silly gunzTarPerm modified mode [ 'README.md', 438, 420 ]
+49 silly gunzTarPerm extractEntry LICENSE
+50 silly gunzTarPerm modified mode [ 'LICENSE', 438, 420 ]
+51 silly gunzTarPerm extractEntry index.js
+52 silly gunzTarPerm modified mode [ 'index.js', 438, 420 ]
+53 silly gunzTarPerm extractEntry lib/pty.js
+54 silly gunzTarPerm modified mode [ 'lib/pty.js', 438, 420 ]
+55 silly gunzTarPerm extractEntry lib/pty_win.js
+56 silly gunzTarPerm modified mode [ 'lib/pty_win.js', 438, 420 ]
+57 silly gunzTarPerm extractEntry binding.gyp
+58 silly gunzTarPerm modified mode [ 'binding.gyp', 438, 420 ]
+59 silly gunzTarPerm extractEntry Makefile
+60 silly gunzTarPerm modified mode [ 'Makefile', 438, 420 ]
+61 silly gunzTarPerm extractEntry deps/winpty/LICENSE
+62 silly gunzTarPerm modified mode [ 'deps/winpty/LICENSE', 438, 420 ]
+63 silly gunzTarPerm extractEntry deps/winpty/Makefile
+64 silly gunzTarPerm modified mode [ 'deps/winpty/Makefile', 438, 420 ]
+65 silly gunzTarPerm extractEntry deps/winpty/configure
+66 silly gunzTarPerm modified mode [ 'deps/winpty/configure', 438, 420 ]
+67 silly gunzTarPerm extractEntry deps/winpty/include/winpty.h
+68 silly gunzTarPerm modified mode [ 'deps/winpty/include/winpty.h', 438, 420 ]
+69 silly gunzTarPerm extractEntry deps/winpty/libwinpty/Makefile
+70 silly gunzTarPerm modified mode [ 'deps/winpty/libwinpty/Makefile', 438, 420 ]
+71 silly gunzTarPerm extractEntry deps/winpty/libwinpty/winpty.cc
+72 silly gunzTarPerm modified mode [ 'deps/winpty/libwinpty/winpty.cc', 438, 420 ]
+73 silly gunzTarPerm extractEntry deps/winpty/agent/EventLoop.h
+74 silly gunzTarPerm modified mode [ 'deps/winpty/agent/EventLoop.h', 438, 420 ]
+75 silly gunzTarPerm extractEntry deps/winpty/agent/Agent.cc
+76 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Agent.cc', 438, 420 ]
+77 silly gunzTarPerm extractEntry deps/winpty/agent/AgentAssert.cc
+78 silly gunzTarPerm modified mode [ 'deps/winpty/agent/AgentAssert.cc', 438, 420 ]
+79 silly gunzTarPerm extractEntry deps/winpty/agent/AgentAssert.h
+80 silly gunzTarPerm modified mode [ 'deps/winpty/agent/AgentAssert.h', 438, 420 ]
+81 silly gunzTarPerm extractEntry deps/winpty/agent/ConsoleInput.cc
+82 silly gunzTarPerm modified mode [ 'deps/winpty/agent/ConsoleInput.cc', 438, 420 ]
+83 silly gunzTarPerm extractEntry deps/winpty/agent/ConsoleInput.h
+84 silly gunzTarPerm modified mode [ 'deps/winpty/agent/ConsoleInput.h', 438, 420 ]
+85 silly gunzTarPerm extractEntry deps/winpty/agent/Coord.cc
+86 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Coord.cc', 438, 420 ]
+87 silly gunzTarPerm extractEntry deps/winpty/agent/Coord.h
+88 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Coord.h', 438, 420 ]
+89 silly gunzTarPerm extractEntry deps/winpty/agent/DsrSender.h
+90 silly gunzTarPerm modified mode [ 'deps/winpty/agent/DsrSender.h', 438, 420 ]
+91 silly gunzTarPerm extractEntry deps/winpty/agent/EventLoop.cc
+92 silly gunzTarPerm modified mode [ 'deps/winpty/agent/EventLoop.cc', 438, 420 ]
+93 silly gunzTarPerm extractEntry deps/winpty/agent/Agent.h
+94 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Agent.h', 438, 420 ]
+95 silly gunzTarPerm extractEntry deps/winpty/agent/main.cc
+96 silly gunzTarPerm modified mode [ 'deps/winpty/agent/main.cc', 438, 420 ]
+97 silly gunzTarPerm extractEntry deps/winpty/agent/Makefile
+98 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Makefile', 438, 420 ]
+99 silly gunzTarPerm extractEntry deps/winpty/agent/NamedPipe.cc
+100 silly gunzTarPerm modified mode [ 'deps/winpty/agent/NamedPipe.cc', 438, 420 ]
+101 silly gunzTarPerm extractEntry deps/winpty/agent/NamedPipe.h
+102 silly gunzTarPerm modified mode [ 'deps/winpty/agent/NamedPipe.h', 438, 420 ]
+103 silly gunzTarPerm extractEntry deps/winpty/agent/SmallRect.cc
+104 silly gunzTarPerm modified mode [ 'deps/winpty/agent/SmallRect.cc', 438, 420 ]
+105 silly gunzTarPerm extractEntry deps/winpty/agent/SmallRect.h
+106 silly gunzTarPerm modified mode [ 'deps/winpty/agent/SmallRect.h', 438, 420 ]
+107 silly gunzTarPerm extractEntry deps/winpty/agent/Terminal.cc
+108 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Terminal.cc', 438, 420 ]
+109 silly gunzTarPerm extractEntry deps/winpty/agent/Terminal.h
+110 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Terminal.h', 438, 420 ]
+111 silly gunzTarPerm extractEntry deps/winpty/agent/Win32Console.cc
+112 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Win32Console.cc', 438, 420 ]
+113 silly gunzTarPerm extractEntry deps/winpty/agent/Win32Console.h
+114 silly gunzTarPerm modified mode [ 'deps/winpty/agent/Win32Console.h', 438, 420 ]
+115 silly gunzTarPerm extractEntry deps/winpty/config.mk
+116 silly gunzTarPerm modified mode [ 'deps/winpty/config.mk', 438, 420 ]
+117 silly gunzTarPerm extractEntry deps/winpty/misc/UnixEcho.cc
+118 silly gunzTarPerm modified mode [ 'deps/winpty/misc/UnixEcho.cc', 438, 420 ]
+119 silly gunzTarPerm extractEntry deps/winpty/misc/build_win32.sh
+120 silly gunzTarPerm modified mode [ 'deps/winpty/misc/build_win32.sh', 438, 420 ]
+121 silly gunzTarPerm extractEntry deps/winpty/misc/DebugServer.py
+122 silly gunzTarPerm modified mode [ 'deps/winpty/misc/DebugServer.py', 438, 420 ]
+123 silly gunzTarPerm extractEntry deps/winpty/misc/FormatChar.h
+124 silly gunzTarPerm modified mode [ 'deps/winpty/misc/FormatChar.h', 438, 420 ]
+125 silly gunzTarPerm extractEntry deps/winpty/misc/SelectAllTest.cc
+126 silly gunzTarPerm modified mode [ 'deps/winpty/misc/SelectAllTest.cc', 438, 420 ]
+127 silly gunzTarPerm extractEntry deps/winpty/misc/ShowArgv.cc
+128 silly gunzTarPerm modified mode [ 'deps/winpty/misc/ShowArgv.cc', 438, 420 ]
+129 silly gunzTarPerm extractEntry deps/winpty/misc/ShowConsoleInput.cc
+130 silly gunzTarPerm modified mode [ 'deps/winpty/misc/ShowConsoleInput.cc', 438, 420 ]
+131 silly gunzTarPerm extractEntry deps/winpty/misc/Spew.py
+132 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Spew.py', 438, 420 ]
+133 silly gunzTarPerm extractEntry deps/winpty/misc/DebugClient.py
+134 silly gunzTarPerm modified mode [ 'deps/winpty/misc/DebugClient.py', 438, 420 ]
+135 silly gunzTarPerm extractEntry deps/winpty/misc/VkEscapeTest.cc
+136 silly gunzTarPerm modified mode [ 'deps/winpty/misc/VkEscapeTest.cc', 438, 420 ]
+137 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Echo1.cc
+138 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Echo1.cc', 438, 420 ]
+139 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Echo2.cc
+140 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Echo2.cc', 438, 420 ]
+141 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Test1.cc
+142 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Test1.cc', 438, 420 ]
+143 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Test2.cc
+144 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Test2.cc', 438, 420 ]
+145 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Test3.cc
+146 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Test3.cc', 438, 420 ]
+147 silly gunzTarPerm extractEntry deps/winpty/misc/Win32Write1.cc
+148 silly gunzTarPerm modified mode [ 'deps/winpty/misc/Win32Write1.cc', 438, 420 ]
+149 silly gunzTarPerm extractEntry deps/winpty/Notes.txt
+150 silly gunzTarPerm modified mode [ 'deps/winpty/Notes.txt', 438, 420 ]
+151 silly gunzTarPerm extractEntry deps/winpty/README.rst
+152 silly gunzTarPerm modified mode [ 'deps/winpty/README.rst', 438, 420 ]
+153 silly gunzTarPerm extractEntry deps/winpty/shared/AgentMsg.h
+154 silly gunzTarPerm modified mode [ 'deps/winpty/shared/AgentMsg.h', 438, 420 ]
+155 silly gunzTarPerm extractEntry deps/winpty/shared/Buffer.h
+156 silly gunzTarPerm modified mode [ 'deps/winpty/shared/Buffer.h', 438, 420 ]
+157 silly gunzTarPerm extractEntry deps/winpty/shared/c99_snprintf.h
+158 silly gunzTarPerm modified mode [ 'deps/winpty/shared/c99_snprintf.h', 438, 420 ]
+159 silly gunzTarPerm extractEntry deps/winpty/shared/DebugClient.cc
+160 silly gunzTarPerm modified mode [ 'deps/winpty/shared/DebugClient.cc', 438, 420 ]
+161 silly gunzTarPerm extractEntry deps/winpty/shared/DebugClient.h
+162 silly gunzTarPerm modified mode [ 'deps/winpty/shared/DebugClient.h', 438, 420 ]
+163 silly gunzTarPerm extractEntry deps/winpty/unix-adapter/main.cc
+164 silly gunzTarPerm modified mode [ 'deps/winpty/unix-adapter/main.cc', 438, 420 ]
+165 silly gunzTarPerm extractEntry deps/winpty/unix-adapter/Makefile
+166 silly gunzTarPerm modified mode [ 'deps/winpty/unix-adapter/Makefile', 438, 420 ]
+167 silly gunzTarPerm extractEntry deps/winpty/unix-adapter/Shared.cc
+168 silly gunzTarPerm modified mode [ 'deps/winpty/unix-adapter/Shared.cc', 438, 420 ]
+169 silly gunzTarPerm extractEntry deps/winpty/winpty.gyp
+170 silly gunzTarPerm modified mode [ 'deps/winpty/winpty.gyp', 438, 420 ]
+171 silly gunzTarPerm extractEntry src/unix/pty.cc
+172 silly gunzTarPerm modified mode [ 'src/unix/pty.cc', 438, 420 ]
+173 silly gunzTarPerm extractEntry src/win/pty.cc
+174 silly gunzTarPerm modified mode [ 'src/win/pty.cc', 438, 420 ]
+175 silly gunzTarPerm extractEntry wscript
+176 silly gunzTarPerm modified mode [ 'wscript', 438, 420 ]
+177 silly lockFile 6f299d18-ar-C-dev-npm-node-modules-pty-js tar://C:\dev\npm\node_modules\pty.js
+178 silly lockFile 6f299d18-ar-C-dev-npm-node-modules-pty-js tar://C:\dev\npm\node_modules\pty.js
+179 silly lockFile ef675d26-m-cache-pty-js-0-2-3-package-tgz tar://C:\dev\npm-cache\pty.js\0.2.3\package.tgz
+180 silly lockFile ef675d26-m-cache-pty-js-0-2-3-package-tgz tar://C:\dev\npm-cache\pty.js\0.2.3\package.tgz
+181 info preinstall pty.js@0.2.3
+182 verbose readDependencies using package.json deps
+183 verbose readDependencies using package.json deps
+184 silly resolved []
+185 verbose about to build C:\dev\npm\node_modules\pty.js
+186 info build C:\dev\npm\node_modules\pty.js
+187 verbose linkStuff [ true,
+187 verbose linkStuff   'C:\\dev\\npm\\node_modules',
+187 verbose linkStuff   true,
+187 verbose linkStuff   'C:\\dev\\npm\\node_modules' ]
+188 info linkStuff pty.js@0.2.3
+189 verbose linkBins pty.js@0.2.3
+190 verbose linkMans pty.js@0.2.3
+191 verbose rebuildBundles pty.js@0.2.3
+192 info install pty.js@0.2.3
+193 verbose unsafe-perm in lifecycle true
+194 info pty.js@0.2.3 Failed to exec install script
+195 info C:\dev\npm\node_modules\pty.js unbuild
+196 info preuninstall pty.js@0.2.3
+197 info uninstall pty.js@0.2.3
+198 verbose true,C:\dev\npm\node_modules,C:\dev\npm\node_modules unbuild pty.js@0.2.3
+199 info postuninstall pty.js@0.2.3
+200 error pty.js@0.2.3 install: `node-gyp rebuild`
+200 error Exit status 1
+201 error Failed at the pty.js@0.2.3 install script.
+201 error This is most likely a problem with the pty.js package,
+201 error not with npm itself.
+201 error Tell the author that this fails on your system:
+201 error     node-gyp rebuild
+201 error You can get their info via:
+201 error     npm owner ls pty.js
+201 error There is likely additional logging output above.
+202 error System Windows_NT 6.2.9200
+203 error command "c:\\Program Files\\nodejs\\node.exe" "c:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "-g" "pty.js"
+204 error cwd c:\amckinlay\html5experiments
+205 error node -v v0.10.22
+206 error npm -v 1.3.14
+207 error code ELIFECYCLE
+208 verbose exit [ 1, true ]

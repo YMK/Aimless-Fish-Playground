@@ -1,3 +1,4 @@
+// out: app.css
 @charset 'utf-8';
 
 /*------------------------------------*\
@@ -16,6 +17,7 @@
  * MESSAGES............
  * PKMNMAIN............
  * PKMNCARDS...........
+ * SPINNERS............
  */
 
 
@@ -509,3 +511,61 @@ td, th, .ff-fix {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $SPINNERS
+\*------------------------------------*/
+.spinnerContainer {
+  display: flex;
+  flex-flow: wrap;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  font-size: 130%;
+}
+
+.spinners{
+  width : 200px;
+}
+
+figure.spinnerBox {
+  margin-top: 10px;
+  width: 100%;
+  border: 1px solid black;
+  
+  figCaption {
+    border-top: 1px solid black;
+    text-align: center;
+  }
+}
+
+.spinner {
+  font-size: 200px;
+}
+
+pre{
+  align-self: center;
+  width: 50%;
+}
+
+//@colour1: @colour7;
+//@colour2: @colour8;
+//@colour3: @colour9;
+//@colour4: @colour10;
+//@colour5: @colour11;
+//@colour6: @colour12;

@@ -1,21 +1,73 @@
-<div class="spinnerContainer">
-  <div class="spinner spinner1">
-  <div></div>
-  </div>
-
-  <div class="spinner spinner2">
-  <div></div>
-  </div>
-  
-  <div class="spinner spinner3">
-  <div></div>
-  </div>
-  
-  <div class="spinner spinner4">
-  <div></div>
-  </div>
-  
-  <div class="spinner spinner5">
-  <div></div>
-  </div>
+<div class="container">
+  <section class="spinnerContainer">
+    <section class="spinners">
+      <figure class="spinnerBox">
+        <div class="spinner spinner1">
+        <div></div>
+        </div>
+        <figcaption>Spinner 1</figcaption>
+      </figure>
+      <figure class="spinnerBox">
+        <div class="spinner spinner2">
+        <div></div>
+        </div>
+        <figcaption>Spinner 2</figcaption>
+      </figure>
+      <figure class="spinnerBox">
+        <div class="spinner spinner3">
+        <div></div>
+        </div>
+        <figcaption>Spinner 3</figcaption>
+      </figure>
+      <figure class="spinnerBox">
+        <div class="spinner spinner4">
+        <div></div>
+        </div>
+        <figcaption>Spinner 4</figcaption>
+      </figure>
+      <figure class="spinnerBox">
+        <div class="spinner spinner5">
+        <div></div>
+        </div>
+        <figcaption>Spinner 5</figcaption>
+      </figure>
+    </section>
+    
+    <main>
+      <h2>CSS Based Spinners</h2>
+      <br />
+      <p>These are some fully CSS based spinners. No JavaScript is needed to run them. 
+        They were created using box-shadows and animating them over different places. 
+        They should be really easy to integrate into your project.</p>
+      <br />
+      <h3>Usage:</h3>
+      <p>To add them to your site, create an element with 2 classes. 
+        The first is <code>spinner</code> and the second <code>spinnerX</code> where
+        X is the number of spinner (shown on the right hand side.
+        Then create one empty div inside.</p>
+      <br />
+      <pre>
+<code>&lt;div class="spinner spinner1 mycustomclassforfunsies"&gt;
+  &lt;div&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+      
+      <br />
+      <p>Finally, to set the size of the spinner, set the font-size (I can explain why).
+        The spinner will always be in a square bounding box the size of whatever you set 
+        the font size to be.</p>
+      <br />
+      <pre>
+<code>.mycustomclassforfunsies {
+  font-size: 100px;
+}
+</code></pre>
+      
+      <br />
+      <p>You can either use the file as a plain CSS file and include it in your project, or 
+        it also comes as a less file which can be used to modify the colours.
+        To set all of the circles to be the same colour, use the less variable <code>@onecolour</code>, otherwise 
+        set the variables <code>@colour1</code> to <code>@colour6</code>.</p>
+    </main>
+  </section>
 </div>
