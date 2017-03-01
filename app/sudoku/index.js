@@ -37,7 +37,7 @@ define(['require', 'angular', './sudokuController', 'jquery'], function (require
         }
       };
     })
-    .config(function ($routeProvider, $locationProvider) {
+    .config(function ($routeProvider) {
       $routeProvider.
         when('/sudoku/:board', {
           templateUrl: 'sudoku/sudoku.html',

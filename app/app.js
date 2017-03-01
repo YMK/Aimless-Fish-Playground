@@ -60,33 +60,6 @@ define(['require', 'jquery',
     };
   });
 
-  experimentApp.config(function ($routeProvider, $locationProvider) {
-    $routeProvider.
-      when('/sudoku/:board', {
-        templateUrl: 'sudoku/sudoku.html',
-        controller: 'SudokuCtrl',
-        controllerAs: 'sudoku'
-      }).
-      when('/sudoku', {
-        templateUrl: 'sudoku/sudoku.html',
-        controller: 'SudokuCtrl',
-        controllerAs: 'sudoku'
-      }).
-      when('/draftlocke', {
-        templateUrl: 'pkmn/pkmn.html',
-        controller: 'PkmnCtrl',
-        controllerAs: 'pkmn'
-      }).
-      when('/spinners', {
-        templateUrl: 'spinners/spinners.html',
-        controller: 'SpinnerCtrl',
-        controllerAs: 'spinners'
-      }).
-      otherwise({
-        redirectTo: '/sudoku'
-      });
-  });
-
   ng.bootstrap(document, ['experimentApp']);
 
   var html = document.getElementsByTagName('html')[0];
