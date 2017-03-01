@@ -42,7 +42,8 @@ define(['require', 'jquery',
         'bootstrap.collapse',
         'sudoku/index',
         'spinners/index',
-        'pkmn/index'
+        'pkmn/index',
+        'charts/index'
       ], function (require, $, ng) {
   'use strict';
 
@@ -50,7 +51,8 @@ define(['require', 'jquery',
     'ngRoute', 'ngTouch', 'ui.bootstrap',
     'ymk.sudoku',
     'ymk.spinners',
-    'ymk.pkmn'
+    'ymk.pkmn',
+    'ymk.charts'
   ]);
 
   experimentApp.controller('MainCtrl', function ($scope) {
