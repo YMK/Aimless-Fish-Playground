@@ -8,7 +8,7 @@ require.config({
     "ngtouch": "../lib/angular-touch/angular-touch.min",
     "ngbootstrap": "../lib/angular-bootstrap/ui-bootstrap.min",
     "ngbootstrap-tpls": "../lib/angular-bootstrap/ui-bootstrap-tpls.min",
-    "jquery": "../lib/jquery/jquery",
+    "jquery": "../lib/jquery/dist/jquery",
     "bootstrap.modal": "../lib/bootstrap/js/modal",
     "bootstrap.collapse": "../lib/bootstrap/js/collapse",
     "kudoku": "../lib/kudoku",
@@ -41,7 +41,7 @@ define(['require', 'jquery',
         'bootstrap.collapse',
         'controllers', 'directives'], function (require, $, ng) {
   'use strict';
-          
+
   var experimentApp = ng.module('experimentApp', [
     'ngRoute', 'ngTouch', 'ui.bootstrap',
     'experimentControllers', 'custom.sudoku'
@@ -85,6 +85,6 @@ define(['require', 'jquery',
       type: 'loadamd'
     }, '*');
   }
-   
+
   FastClick.attach(document.body);
 });
