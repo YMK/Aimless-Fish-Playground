@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, Worker */
 
-define(['require', 'sudokuUtils'], function (require, sudoku) {
+define(['require', './sudokuUtils'], function (require, sudoku) {
   'use strict';
   function Board() {
     var self = this,
@@ -32,7 +32,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   Board.prototype.mistakes = function () {
     return this.utils.compare(this.board, this.correctBoard);
   };
-  
+
   Board.prototype.setCell = function (row, column, number) {
     var array = [], i;
     for (i = this.board.length - 1; i >= 0; i--) {
@@ -51,7 +51,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       this.pencilMarks[row][col].push(num);
     }
   };
-  
+
   Board.prototype.removePencilMark = function (row, col, num) {
     var index = this.pencilMarks[row][col].indexOf(num);
     if (index > -1) {
@@ -67,7 +67,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       }
     }
   };
-  
+
   Board.prototype.getPencilMarks = function (row, col) {
     return this.pencilMarks[row][col];
   };
@@ -118,7 +118,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       callback(false);
     } else {
       if (!board){
-        self.gworker = new Worker("js/sudokuWebWorker.js");
+        self.gworker = new Worker("sudoku/sudokuWebWorker.js");
         self.gworker.addEventListener("message", function (e) {
           if (e.data === "Ready") {
             self.gworker.postMessage({"command": "generate"});
@@ -140,7 +140,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
           self.originalBoard[row] = self.board[row].slice(0);
         }
       }
-      
+
       this.cache = [];
       this.futurecache = [];
       for (row = 0; row < 9; row++) {
@@ -151,11 +151,11 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
 
     }
   };
-  
+
   Board.prototype.newGame = function (args) {
-    var row, col, 
+    var row, col,
         self = this,
-        board = args.board, 
+        board = args.board,
         correct = args.correctBoard;
 
     self.board = board;
@@ -163,7 +163,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     for (row = 0; row < 9; row++) {
       self.originalBoard[row] = self.board[row].slice(0);
     }
-    
+
     self.cache = [];
     self.futurecache = [];
     for (row = 0; row < 9; row++) {
@@ -175,11 +175,11 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
 
   Board.prototype.rate = function (callback) {
     var self = this;
-    
+
     if (self.rworker !== undefined) {
       callback(false);
     } else {
-      self.rworker = new Worker("js/sudokuWebWorker.js");
+      self.rworker = new Worker("sudoku/sudokuWebWorker.js");
       self.rworker.addEventListener("message", function (e) {
         if (e.data === "Ready") {
           self.rworker.postMessage({"command": "rate", "board" : self.board, "original" : self.correctBoard});
@@ -191,7 +191,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       });
     }
   };
-  
+
   Board.prototype.generatePencilMarks = function (callback) {
     var col, row,
       self = this;
@@ -199,7 +199,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     if (self.gworker !== undefined) {
       callback(false);
     } else {
-      self.gworker = new Worker("js/sudokuWebWorker.js");
+      self.gworker = new Worker("sudoku/sudokuWebWorker.js");
       self.gworker.addEventListener("message", function (e) {
         if (e.data === "Ready") {
           self.gworker.postMessage({"command": "possibilities",
@@ -221,7 +221,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
   Board.prototype.getBoard = function (board) {
     return this.board;
   };
-  
+
   Board.prototype.getOrigBoard = function (board) {
     return this.originalBoard;
   };
@@ -233,7 +233,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       return;
     }
 
-    self.sworker = new Worker("js/sudokuWebWorker.js");
+    self.sworker = new Worker("sudoku/sudokuWebWorker.js");
     self.sworker.addEventListener("message", function (e) {
       if (e.data === "Ready") {
         self.sworker.postMessage({"command": "humanSolve", "board": self.board, "original" : self.correctBoard});
@@ -256,7 +256,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
       return;
     }
 
-    self.sworker = new Worker("js/sudokuWebWorker.js");
+    self.sworker = new Worker("sudoku/sudokuWebWorker.js");
     self.sworker.addEventListener("message", function (e) {
       if (e.data === "Ready") {
         self.sworker.postMessage({"command": "solve", "board": self.board});
@@ -274,7 +274,7 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     for (row = 0; row < 9; row++) {
       this.board[row] = this.originalBoard[row].slice(0);
     }
-    
+
     for (row = 0; row < 9; row++) {
       for (col = 0; col < 9; col++) {
         this.pencilMarks[row][col] = [];
@@ -287,13 +287,13 @@ define(['require', 'sudokuUtils'], function (require, sudoku) {
     for (row = 0; row < 9; row++) {
       this.board[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
-    
+
     for (row = 0; row < 9; row++) {
       this.originalBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.correctBoard[row] = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
-    
-    
+
+
     for (row = 0; row < 9; row++) {
       for (col = 0; col < 9; col++) {
         this.pencilMarks[row][col] = [];

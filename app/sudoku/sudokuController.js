@@ -1,12 +1,12 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window, Worker */
 
-define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (Board, angular, sudoku, $, pantry) {
+define(['./sudokuBoard', 'angular', './sudokuUtils', 'jquery', './boards'], function (Board, angular, sudoku, $, pantry) {
   'use strict';
 
   function SudokuController($scope, $routeParams, $location) {
     var NUMBER_OF_WEB_WORKERS = 5;
-    
+
     $scope.identity = angular.identity;
     if ($scope.info) {
       $scope.info.active = "sudoku";
@@ -34,12 +34,12 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
     $scope.show = {"won": true};
     $scope.difficulty = $scope.difficulties[2];
     $scope.params = $routeParams || {};
-    
+
     $scope.boardCache = [[], [], [], [], []];
     $scope.workers = {};
-    
+
     $scope.createWebWorker = function (i) {
-      $scope.workers[i] = new Worker("js/sudokuWebWorker.js");
+      $scope.workers[i] = new Worker("sudoku/sudokuWebWorker.js");
       $scope.workers[i].addEventListener("message", function (e) {
         if (e.data === "Ready") {
           $scope.workers[i].postMessage({"command": "generateLots"});
@@ -58,15 +58,15 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
         }
       });
     };
-    
+
     for (var i = 0; i < NUMBER_OF_WEB_WORKERS; i++) {
       $scope.createWebWorker(i);
     }
-    
+
     $scope.setDifficulty = function (x) {
       $scope.difficulty = $scope.difficulties[x];
     };
-    
+
     $scope.saveBoard = function () {
       $location.path("/sudoku/" + sudoku.utils.save($scope.board.getBoard()));
     };
@@ -116,7 +116,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
       $scope.inProgress.generating = true;
       $scope.show.won = true;
       $scope.error.generating = "";
-      
+
       if ($scope.boardCache[$scope.difficulty.value].length > 0) {
         $scope.board.newGame($scope.boardCache[$scope.difficulty.value].pop());
         $scope.inProgress.generating = false;
@@ -129,7 +129,7 @@ define(['sudokuBoard', 'angular', 'sudokuUtils', 'jquery', 'boards'], function (
             }
           }
         });
-  
+
         setTimeout(function () {
           if ($scope.inProgress.generating) {
             $scope.error.generating = "Generation seems to be taking a while." +

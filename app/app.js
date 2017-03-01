@@ -2,6 +2,7 @@
 /*global require, define, document, top, window, FastClick */
 
 require.config({
+  urlArgs: "bust=" + (new Date()).getTime(),
   paths: {
     "angular": "../lib/angular/angular",
     "ngroute": "../lib/angular-route/angular-route",
@@ -39,33 +40,45 @@ define(['require', 'jquery',
         'angular', 'ngroute', 'ngtouch',
         'ngbootstrap', 'ngbootstrap-tpls',
         'bootstrap.collapse',
-        'controllers', 'directives'], function (require, $, ng) {
+        'sudoku/index',
+        'spinners/index',
+        'pkmn/index'
+      ], function (require, $, ng) {
   'use strict';
 
   var experimentApp = ng.module('experimentApp', [
     'ngRoute', 'ngTouch', 'ui.bootstrap',
-    'experimentControllers', 'custom.sudoku'
+    'ymk.sudoku',
+    'ymk.spinners',
+    'ymk.pkmn'
   ]);
+
+  experimentApp.controller('MainCtrl', function ($scope) {
+    $scope.info = {
+      "title": "Html 5 Experiments",
+      "active": ""
+    };
+  });
 
   experimentApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider.
       when('/sudoku/:board', {
-        templateUrl: 'partials/sudoku.html',
+        templateUrl: 'sudoku/sudoku.html',
         controller: 'SudokuCtrl',
         controllerAs: 'sudoku'
       }).
       when('/sudoku', {
-        templateUrl: 'partials/sudoku.html',
+        templateUrl: 'sudoku/sudoku.html',
         controller: 'SudokuCtrl',
         controllerAs: 'sudoku'
       }).
       when('/draftlocke', {
-        templateUrl: 'partials/pkmn.html',
+        templateUrl: 'pkmn/pkmn.html',
         controller: 'PkmnCtrl',
         controllerAs: 'pkmn'
       }).
       when('/spinners', {
-        templateUrl: 'partials/spinners.html',
+        templateUrl: 'spinners/spinners.html',
         controller: 'SpinnerCtrl',
         controllerAs: 'spinners'
       }).

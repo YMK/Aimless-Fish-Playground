@@ -4,7 +4,7 @@
 define(['angular', 'jquery'], function (angular, $) {
   'use strict';
 
-  function PkmnController($scope, $http) {
+  function PkmnController($scope, $http, $sce) {
     $scope.identity = angular.identity;
     $scope.info.active = "pkmn";
     $scope.info.title = "DraftLocke Generator";
@@ -15,7 +15,7 @@ define(['angular', 'jquery'], function (angular, $) {
     $scope.selected = [];
     $scope.allowLeg = false;
     $scope.allowDupes = true;
-    
+
     $scope.selectGen = function (gen) {
       var index = $scope.selectedGens.indexOf(gen);
       if (index > -1 ) {
@@ -27,13 +27,13 @@ define(['angular', 'jquery'], function (angular, $) {
 
     $scope.setUp = function () {
       $http({
-        url: "https://spreadsheets.google.com/feeds/list/0Avn9MFfjzXYodDF5MWRZQVA3MGVnaXF6R1dYRlJoTVE/od6/public/values?alt=json-in-script&callback=JSON_CALLBACK",
+        url: $sce.trustAsResourceUrl("https://spreadsheets.google.com/feeds/list/0Avn9MFfjzXYodDF5MWRZQVA3MGVnaXF6R1dYRlJoTVE/od6/public/values?alt=json-in-script"),
         method: "JSONP"
-      }).success(function (data) {
-        $scope.pkmn = data.feed.entry;
+      }).then(function (res) {
+        $scope.pkmn = res.data.feed.entry;
       });
     };
-    
+
     $scope.pick = function () {
       $scope.selected = [];
       for (var i = 0; i < 6; i++) {
@@ -51,16 +51,16 @@ define(['angular', 'jquery'], function (angular, $) {
         }
       }
     };
-    
+
     $scope.getSprite = function (id, callback) {
       $http({
-        url: "http://pokeapi.co/api/v1/sprite/" + id + "?callback=JSON_CALLBACK",
+        url: "http://pokeapi.co/api/v1/sprite/" + id,
         method: "JSONP"
-      }).success(function (data) {
-        callback("http://pokeapi.co" + data.image, data.id);
+      }).then(function (res) {
+        callback("http://pokeapi.co" + res.data.image, data.id);
       });
     };
-    
+
     $scope.setUp();
   }
 
