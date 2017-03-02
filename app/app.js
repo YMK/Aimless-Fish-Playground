@@ -14,7 +14,27 @@ require.config({
     "bootstrap.collapse": "../lib/bootstrap/js/collapse",
     "kudoku": "../lib/kudoku",
     "sheetrock": "../lib/jquery-sheetrock/src/jquery.sheetrock",
-    "underscore": "../lib/underscore/underscore-min"
+    "underscore": "../lib/underscore/underscore-min",
+    "d3": "../lib/d3/d3",
+    "d3-array": "../lib/d3-array/build/d3-array",
+    "d3-collection": "../lib/d3-collection/build/d3-collection",
+    "d3-color": "../lib/d3-color/build/d3-color",
+    "d3-dispatch": "../lib/d3-dispatch/build/d3-dispatch",
+    "d3-dsv": "../lib/d3-dsv/build/d3-dsv",
+    "d3-ease": "../lib/d3-ease/build/d3-ease",
+    "d3-format": "../lib/d3-format/build/d3-format",
+    "d3-interpolate": "../lib/d3-interpolate/build/d3-interpolate",
+    "d3-path": "../lib/d3-path/build/d3-path",
+    "d3-random": "../lib/d3-random/build/d3-random",
+    "d3-request": "../lib/d3-request/build/d3-request",
+    "d3-scale": "../lib/d3-scale/build/d3-scale",
+    "d3-selection": "../lib/d3-selection/build/d3-selection",
+    "d3-shape": "../lib/d3-shape/build/d3-shape",
+    "d3-time": "../lib/d3-time/build/d3-time",
+    "d3-time-format": "../lib/d3-time-format/build/d3-time-format",
+    "d3-timer": "../lib/d3-timer/build/d3-timer",
+    "d3-transition": "../lib/d3-transition/build/d3-transition",
+    "d3fc": "../lib/d3fc"
   },
 
   shim: {
@@ -32,7 +52,11 @@ require.config({
     },
     "underscore": {
       exports: "_"
-    }
+    },
+    "d3": {
+      exports: "d3"
+    },
+    "d3fc": ['d3']
   }
 });
 
