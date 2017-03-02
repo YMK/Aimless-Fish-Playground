@@ -9,15 +9,15 @@ for (file in window.__karma__.files) {
 }
 
 require.config({
-  baseUrl: "/base/app/js",
+  baseUrl: "/base/app/",
 
   paths: {
-    "angular": "../lib/angular/angular",
-    "ngroute": "../lib/angular-route/angular-route",
-    "jquery": "../lib/jquery/jquery",
-    'ngmocks': '../lib/angular-mocks/angular-mocks',
-    "kudoku": "../lib/kudoku",
-    "underscore": "../lib/underscore/underscore-min"
+    "angular": "lib/angular/angular",
+    "ngroute": "lib/angular-route/angular-route",
+    "jquery": "lib/jquery/dist/jquery",
+    "ngmocks": "lib/angular-mocks/angular-mocks",
+    "kudoku": "lib/kudoku",
+    "underscore": "lib/underscore/underscore-min"
   },
 
   shim: {

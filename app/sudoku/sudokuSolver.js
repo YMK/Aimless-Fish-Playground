@@ -1,11 +1,11 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, Worker */
 
-define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
+define(['require', './sudokuUtils', 'underscore'], function (require, sudoku, _) {
   'use strict';
   function Solver(board, correct) {
     var self = this;
-    
+
     self.board = board;
     self.correct = correct;
     self.rating = 0;
@@ -21,10 +21,10 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         givenUp = false,
         rating = 0,
         pencils = sudoku.utils.generatePencils(board);
-    
+
     while (!solved && !givenUp) {
       var row, column, i, j, lastrating = rating, simple = true;
-      
+
       // Check for each cell, and pass it through to remove singles (which sets the cell if there is only 1 pencil)
       while (simple) {
         var simplerating = rating;
@@ -37,7 +37,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           simple = false;
         }
       }
-      
+
       // Send each row to hidden singles
       for (row = 0; row < 9; row++) {
         var rowSingles = self.utils.hiddenSingle(pencils[row]);
@@ -49,15 +49,15 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each column to hidden singles
       for (column = 0; column < 9; column++) {
         var colSingles, columns = [];
-        
+
         for (row = 0; row < 9; row++) {
           columns.push(board[row][column]);
         }
-        
+
         colSingles = self.utils.hiddenSingle(columns);
         for (var m = 0; m < colSingles.length; m++) {
           if (pencils[colSingles[m].index][column].length > 1) {
@@ -67,18 +67,18 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each box to hidden singles
       for (i = 0; i < 9; i = i + 3) {
         for (j = 0; j < 9; j = j + 3) {
           var boxSingles, box = [];
-          
+
           for (row = i; row < i + 3; row++) {
             for (column = j; column < j + 3; column++) {
               box.push(pencils[row][column]);
             }
           }
-          
+
           boxSingles = self.utils.hiddenSingle(box);
           for (var n = 0; n < boxSingles.length; n++) {
             var index = boxSingles[n].index, xcol = Math.floor(index/3)+i, yrow = (index%3)+j;
@@ -87,10 +87,10 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
               pencils[Math.floor(index/3)+i][(index%3)+j] = [boxSingles[n].number];
               rating = rating + (self.removeSingles(board, pencils, Math.floor(index/3)+i, (index%3)+j, messageCallback) * 1.5);
             }
-          } 
+          }
         }
       }
-      
+
       // Send each row to naked pairs
       for (row = 0; row < 9; row++) {
         var nrow = pencils[row], rowPairs = self.utils.nakedPair(nrow);
@@ -107,17 +107,17 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each column to naked pairs
       for (column = 0; column < 9; column++) {
         var colPairs, cols = [];
-        
+
         for (row = 0; row < 9; row++) {
           cols.push(pencils[row][column]);
         }
-        
+
         colPairs = self.utils.nakedPair(cols);
-        
+
         for (var q = 0; q < colPairs.members.length; q++) {
           for (var r = 0; r < cols.length; r++) {
             if (colPairs.not.indexOf(r) === -1) {
@@ -131,18 +131,18 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each box to naked pairs
       for (i = 0; i < 9; i = i + 3) {
         for (j = 0; j < 9; j = j + 3) {
           var boxPairs, pbox = [];
-          
+
           for (row = i; row < i + 3; row++) {
             for (column = j; column < j + 3; column++) {
               pbox.push(pencils[row][column]);
             }
           }
-          
+
           boxPairs = self.utils.nakedPair(pbox);
           for (var w = 0; w < boxPairs.members.length; w++) {
             for (var z = 0; z < pbox.length; z++){
@@ -155,10 +155,10 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
                 }
               }
             }
-          } 
+          }
         }
       }
-      
+
       // Send each row to naked triples
       for (row = 0; row < 9; row++) {
         var trow = pencils[row], rowTriples = self.utils.nakedTriple(trow);
@@ -175,17 +175,17 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each column to naked triples
       for (column = 0; column < 9; column++) {
         var colTriples, col = [];
-        
+
         for (row = 0; row < 9; row++) {
           col.push(pencils[row][column]);
         }
-        
+
         colTriples = self.utils.nakedTriple(col);
-        
+
         for (var u = 0; u < colTriples.members.length; u++) {
           for (var v = 0; v < col.length; v++) {
             if (colTriples.not.indexOf(v) === -1) {
@@ -199,18 +199,18 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each box to naked triples
       for (i = 0; i < 9; i = i + 3) {
         for (j = 0; j < 9; j = j + 3) {
           var boxTriples, tbox = [];
-          
+
           for (row = i; row < i + 3; row++) {
             for (column = j; column < j + 3; column++) {
               tbox.push(pencils[row][column]);
             }
           }
-          
+
           boxTriples = self.utils.nakedTriple(tbox);
           for (var w1 = 0; w1 < boxTriples.members.length; w1++) {
             for (var z1 = 0; z1 < tbox.length; z1++){
@@ -223,10 +223,10 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
                 }
               }
             }
-          } 
+          }
         }
       }
-      
+
       // Send each row to hidden pairs
       for (row = 0; row < 9; row++) {
         var hrow = pencils[row], rowHPairs = self.utils.hiddenPair(hrow);
@@ -240,17 +240,17 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each column to hidden pairs
       for (column = 0; column < 9; column++) {
         var colHPairs, colh = [];
-        
+
         for (row = 0; row < 9; row++) {
           colh.push(pencils[row][column]);
         }
-        
+
         colHPairs = self.utils.hiddenPair(colh);
-        
+
         for (var r1 = 0; r1 < colh.length; r1++) {
           if (colHPairs.not.indexOf(r1) > -1) {
             messageCallback("Remove everything other than " + colHPairs.members + " from " + column + "," + r1);
@@ -261,18 +261,18 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each box to hidden pairs
       for (i = 0; i < 9; i = i + 3) {
         for (j = 0; j < 9; j = j + 3) {
           var boxHPairs, hbox = [];
-          
+
           for (row = i; row < i + 3; row++) {
             for (column = j; column < j + 3; column++) {
               hbox.push(pencils[row][column]);
             }
           }
-          
+
           boxHPairs = self.utils.hiddenPair(hbox);
           for (var z2 = 0; z2 < hbox.length; z2++){
             if (boxHPairs.not.indexOf(z2) > -1) {
@@ -284,7 +284,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each row to hidden triples
       for (row = 0; row < 9; row++) {
         var htrow = pencils[row], rowHTriples = self.utils.hiddenTriple(htrow);
@@ -299,17 +299,17 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each column to hidden triples
       for (column = 0; column < 9; column++) {
         var colHTriples, colht = [];
-        
+
         for (row = 0; row < 9; row++) {
           colht.push(pencils[row][column]);
         }
-        
+
         colHTriples = self.utils.hiddenTriple(colht);
-        
+
         for (var v1 = 0; v1 < colht.length; v1++) {
           if (colHTriples.not.indexOf(v1) > -1) {
             for (var u1 = 0; u1 < pencils[v1][column].length; u1++){
@@ -321,18 +321,18 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // Send each box to hidden triples
       for (i = 0; i < 9; i = i + 3) {
         for (j = 0; j < 9; j = j + 3) {
           var boxHTriples, thbox = [];
-          
+
           for (row = i; row < i + 3; row++) {
             for (column = j; column < j + 3; column++) {
               thbox.push(pencils[row][column]);
             }
           }
-          
+
           boxHTriples = self.utils.hiddenTriple(thbox);
           for (var z3 = 0; z3 < thbox.length; z3++) {
             if (boxHTriples.not.indexOf(z3) > -1) {
@@ -343,10 +343,10 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
                 }
               }
             }
-          } 
+          }
         }
       }
-      
+
       // Check if board is done. It's only done if nothing is 0
       solved = true;
       for (row = 0; row < 9; row++) {
@@ -356,7 +356,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           }
         }
       }
-      
+
       // If we haven't done anything this time around, we need to try guessing
       if (!solved && rating === lastrating) {
         // Send each row to naked pairs and guess one
@@ -365,7 +365,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         if (rating === lastrating) {
           rating = self.colGuess(pencils, board, correct, rating, messageCallback);
         }
-        
+
         // If we still haven't done anything, there ain't no way we solving this. Give up
         if (rating === lastrating) {
           messageCallback("Nothing else I can do. Either unsolvable, or something I don't have rules for.");
@@ -373,11 +373,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         }
       }
     }
-    
+
     if (solved) {
       messageCallback("Solved.");
     }
-    
+
     // Return the final rating or board, depending on what is requested
     if (rate) {
       return rating;
@@ -385,11 +385,11 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
       return board;
     }
   };
-        
+
   Solver.prototype.rate = function (board, original) {
     var self = this;
     var rating, defaultNum = 0;
-    
+
     for (var x = 0; x < 9; x++) {
       for (var y = 0; y < 9; y++) {
         if (board[x][y] > 0) {
@@ -397,15 +397,15 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         }
       }
     }
-    
-    rating = self.humanSolve({board: board, 
+
+    rating = self.humanSolve({board: board,
                               correct: original,
                               rate: true});
     rating = (rating + defaultNum) - 81;
-    
+
     return rating;
   };
-  
+
   Solver.prototype.rowGuess = function (pencils, board, original, rating, messageCallback) {
     var i, self = this;
     for (i = 0; i < 9; i++) {
@@ -427,17 +427,17 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return rating;
   };
-  
+
   Solver.prototype.colGuess = function (pencils, board, original, rating, messageCallback) {
     var column, row, self = this;
     for (column = 0; column < 9; column++) {
       var colPairs, cols = [];
-      
+
       for (row = 0; row < 9; row++) {
         cols.push(pencils[row][column]);
       }
       colPairs = self.utils.nakedPair(cols);
-      
+
       for (row = 0; row < cols.length; row++) {
         if (colPairs.not.indexOf(row) > -1) {
           board[row][column] = pencils[row][column][0];
@@ -445,7 +445,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
             board[row][column] = pencils[row][column][1];
           }
           messageCallback("Cell " + column + "," + row + " is correct as " + board[row][column]);
-          
+
           pencils[row][column] = [board[row][column]];
           board[row][column] = 0;
           rating = rating + (self.removeSingles(board, pencils, row, column, messageCallback) * 2);
@@ -455,14 +455,14 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return rating;
   };
-  
+
   Solver.prototype.removeSingles = function (board, pencils, x, y, messageCallback) {
     var index, x2, y2, rating = 0, self = this;
     if (board[x][y] === 0 && pencils[x][y].length === 1) {
       messageCallback("Cell " + y + "," + x + " can only be " + pencils[x][y][0]);
       board[x][y] = pencils[x][y][0];
       rating++;
-      
+
       for (x2 = (x + 1) % 9; x2 !== x; x2 = (x2 + 1) % 9) {
         index = pencils[x2][y].indexOf(pencils[x][y][0]);
         if (index > -1){
@@ -470,7 +470,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           rating = rating + self.removeSingles(board, pencils, x2, y, messageCallback);
         }
       }
-      
+
       for (y2 = (y + 1) % 9; y2 !== y; y2 = (y2 + 1) % 9) {
         index = pencils[x][y2].indexOf(pencils[x][y][0]);
         if (index > -1){
@@ -478,7 +478,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
           rating = rating + self.removeSingles(board, pencils, x, y2, messageCallback);
         }
       }
-      
+
       var a = 0, b = 0;
       if (x > 5) {
         a = 6;
@@ -498,16 +498,16 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
             rating = rating + self.removeSingles(board, pencils, x2, y2, messageCallback);
           }
         }
-      }  
+      }
     }
-    
+
     return rating;
   };
-  
+
   // Utility functions for finding out information, they don't actually change anything
-  
+
   Solver.prototype.utils = {};
-  
+
   Solver.prototype.utils.hiddenSingle = function (array) {
     var uniques = [];
     for (var i = 0; i < array.length; i++) {
@@ -523,15 +523,15 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
         }
       }
     }
-    
+
     return uniques;
   };
-  
+
   Solver.prototype.utils.nakedPair = function (array) {
     var pairs = {}, pairMembers = {members: [], not: []};
     for (var i = 0; i < array.length; i++) {
       for (var j = i + 1; j < array.length; j++) {
-        if (_.union(array[i], array[j]).length === 2 && 
+        if (_.union(array[i], array[j]).length === 2 &&
             array[j].length > 1 && array[i].length > 1) {
           pairs[_.union(array[i], array[j])] = [i, j];
         }
@@ -550,20 +550,20 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return pairMembers;
   };
-  
+
   Solver.prototype.utils.nakedTriple = function (array) {
     var triples = {}, tripleMembers = {members: [], not: []};
     for (var i = 0; i < array.length; i++) {
       for (var j = i + 1; j < array.length; j++) {
         for (var k = j + 1; k < array.length; k++) {
-          if (_.union(array[i], array[j], array[k]).length === 3 && 
+          if (_.union(array[i], array[j], array[k]).length === 3 &&
               !_.isEmpty(array[k]) && !_.isEmpty(array[j]) && !_.isEmpty(array[i])) {
             triples[_.union(array[i], array[j], array[k])] = [i, j, k];
           }
         }
       }
     }
-    
+
     for (var p in triples) {
       var temp = p.split(",");
       for (var l = 0; l < temp.length; l++) {
@@ -575,7 +575,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return tripleMembers;
   };
-  
+
   Solver.prototype.utils.hiddenPair = function (array) {
     var pairs = {}, pairMembers = {members: [], not: []};
     for (var i = 0; i < array.length; i++) {
@@ -608,7 +608,7 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return pairMembers;
   };
-  
+
   Solver.prototype.utils.hiddenTriple = function (array) {
     var pairs = {}, pairMembers = {members: [], not: []};
     for (var i = 0; i < array.length; i++) {
@@ -643,6 +643,6 @@ define(['require', 'sudokuUtils', 'underscore'], function (require, sudoku, _) {
     }
     return pairMembers;
   };
-  
+
   return Solver;
 });

@@ -15,15 +15,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'test/unit/test-main.js',
-      {pattern: 'app/js/*.js', included: false},
-      {pattern: 'app/lib/**/*.js', included: false},
+      {pattern: 'app/**/*.js', included: false},
       {pattern: 'test/**/*.js', included: false}
     ],
 
 
     // list of files to exclude (mainly your bootstrap file)
     exclude: [
-      'app/js/app.js'
+      'app/app.js'
     ],
 
 

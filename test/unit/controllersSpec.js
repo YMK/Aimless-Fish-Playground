@@ -1,9 +1,9 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, describe, beforeEach, it, inject, expect */
 
-define(['angular', 'ngmocks', 'sudokuController'], function (ng, mocks, controller) {
+define(['angular', 'ngmocks', 'sudoku/sudokuController'], function (ng, mocks, controller) {
   'use strict';
-  
+
   describe('Sudoku controller', function () {
     var scope, ctrl;
 
@@ -14,6 +14,7 @@ define(['angular', 'ngmocks', 'sudokuController'], function (ng, mocks, controll
 
 
     it('should create "board" model with 10 by 10', function () {
+      console.log(scope);
       expect(scope.board.getBoard().length).toBe(9);
       expect(scope.board.getBoard()[0].length).toBe(9);
     });
