@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window */
 
-define(['angular', 'd3fc', 'd3', './initialChart'], function (angular, fc, d3, initialChart) {
+define(['angular', 'd3fc', 'd3', './initialChart', './lineChart'], function (angular, fc, d3, initialChart, lineChart) {
   'use strict';
 
   function ChartsController($scope) {
@@ -11,6 +11,7 @@ define(['angular', 'd3fc', 'd3', './initialChart'], function (angular, fc, d3, i
     $scope.test = "Welcome to the ChartShow";
 
     initialChart();
+    lineChart();
   }
 
   ChartsController.$inject = ['$scope'];
