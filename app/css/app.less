@@ -18,6 +18,7 @@
  * PKMNMAIN............
  * PKMNCARDS...........
  * SPINNERS............
+ * CHARTS..............For the charts
  */
 
 
@@ -29,7 +30,7 @@
 
 
 
- 
+
 /*------------------------------------*\
     $BASE
 \*------------------------------------*/
@@ -40,7 +41,7 @@
 @grid-columns: 24;
 @screen-sm: 700px;
 .nav, .pagination, .carousel a { cursor: pointer; }
-html {  
+html {
   -ms-touch-action: none;
   touch-action: none;
 }
@@ -63,7 +64,7 @@ body {
 
 
 
- 
+
 /*------------------------------------*\
     $HEADER
 \*------------------------------------*/
@@ -71,8 +72,8 @@ body {
 header{
   .navbar-header{
     .make-sm-column(@grid-columns / 2);
-  }  
-  
+  }
+
   nav{
     .pull-right;
     .make-sm-column(@grid-columns / 2);
@@ -80,7 +81,7 @@ header{
 }
 
 
-  
+
 
 
 
@@ -143,7 +144,7 @@ header{
   float: left;
   position: relative;
   height: 500px;
-  
+
   @media (max-width: 699px){
     left: 50%;
   }
@@ -152,24 +153,24 @@ header{
 .table-sudoku{
   .sudoku-styles;
   position: relative;
-  
+
   @media (max-width: 699px){
     left: -50%;
   }
-  
+
   td.cell:hover:not(.faded){
     background-color: #F5F6CE;
   }
-  
+
   .wrong{
     background-color: red!important;
     border: 1px solid red;
   }
-  
+
   .row2, .row5{
     border-bottom: 2px solid black;
   }
-  
+
   .col2, .col5{
     border-right: 2px solid black;
   }
@@ -205,7 +206,7 @@ td, th, .ff-fix {
     position: static;
   }
 }
-  
+
 
 .sudoku-styles{
   .table;
@@ -236,15 +237,15 @@ td, th, .ff-fix {
       color: black;
       background-color: black;
     }
-    
+
     &.highlighted{
       background-color: yellow;
-    }    
-    
+    }
+
     &.semiHighlighted:not(.faded){
       background-color: rgba(255, 255, 178, 0.6);
     }
-    
+
     &.semiHighlighted.faded{
       background-color: rgba(209, 209, 120, 0.3);
     }
@@ -274,11 +275,11 @@ td, th, .ff-fix {
   .make-md-column(@grid-columns / 3);
   .make-md-column-offset(@grid-columns / 6);
   .controlPanel;
-  
+
   button{
     .btn-default;
   }
-  
+
   padding-left: 7px;
   padding-right: 7px;
 }
@@ -288,15 +289,15 @@ td, th, .ff-fix {
   .make-sm-column(@grid-columns / 1.5);
   .make-md-column(@grid-columns / 3);
   .controlPanel;
-  
+
   button{
     .btn-default;
   }
-  
+
   @media (max-width: 991px) and (min-width: 700px){
     margin-top: 20px;
   }
-  
+
   padding-left: 7px;
   padding-right: 7px;
 }
@@ -321,7 +322,7 @@ td, th, .ff-fix {
   max-width:150%;
   height: 100%;
   margin: -6px;
-  
+
   td{
     height: 33%;
     line-height: 15px;
@@ -362,17 +363,17 @@ td, th, .ff-fix {
   vertical-align: middle;
   padding: 10px;
   overflow: auto;
-  
+
   @media (max-width: 455px){
     width: 100%;
 //    border-style: none;
   }
-  
+
   .half{
     margin-bottom: -100px;
     height: 50%;
   }
-  
+
   h3 span{
     cursor: pointer;
   }
@@ -404,19 +405,19 @@ td, th, .ff-fix {
 .statusText{
   overflow: hidden;
   text-align: center;
-  
+
   .half{
     display: hidden;
   }
-  
+
   @media (min-width: 700px) {
     .make-sm-column(@grid-columns / 1.5);
     .make-md-column-offset(@grid-columns / 6);
   }
-  
+
   @media (max-width: 699px) {
     .table-overlay;
-  
+
     .half{
       display: auto;
     }
@@ -491,19 +492,19 @@ td, th, .ff-fix {
   .make-md-column(@grid-columns / 3);
   float: left;
   padding: 5px;
-  
-  .panel{ 
+
+  .panel{
     height: 200px;
     padding: 10px;
-    
+
     .name{
       float: right;
     }
-    
+
     .num{
       float: left;
     }
-    
+
     .sprite{
       width: 50%;
       float: right;
@@ -547,7 +548,7 @@ figure.spinnerBox {
   margin-top: 10px;
   width: 100%;
   border: 1px solid black;
-  
+
   figCaption {
     border-top: 1px solid black;
     text-align: center;
@@ -569,3 +570,65 @@ pre{
 //@colour4: @colour10;
 //@colour5: @colour11;
 //@colour6: @colour12;
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------*\
+    $CHARTS
+\*------------------------------------*/
+
+.chart-label {
+  font-size: 1.5em;
+  line-height: normal;
+  color: black;
+}
+
+.chart {
+  margin: 10px 0;
+  width: 100%;
+  height: 250px;
+}
+
+.chart svg {
+  overflow: visible !important;
+}
+
+.chart.large {
+  height: 400px;
+}
+
+.plot-area {
+  background-color: white;
+}
+
+.y-axis-label {
+  white-space: nowrap;
+}
+.bar {
+  fill: #9cf;
+  stroke-width: 0;
+}
+
+.plot-area {
+  background-color: white;
+}
+
+d3fc-svg svg {
+  overflow: visible !important;
+}
+
+.annotation-line > line {
+  fill-opacity: 0;
+  stroke: #999;
+  stroke-width: 1;
+  stroke-dasharray: 3, 3;
+}

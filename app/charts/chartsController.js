@@ -1,7 +1,7 @@
 /*jslint plusplus: true, indent: 2, maxerr: 500 */
 /*global define, setTimeout, window */
 
-define(['angular'], function (angular) {
+define(['angular', 'd3fc', 'd3', './initialChart'], function (angular, fc, d3, initialChart) {
   'use strict';
 
   function ChartsController($scope) {
@@ -9,6 +9,8 @@ define(['angular'], function (angular) {
     $scope.info.active = "charts";
     $scope.info.title = "Charts";
     $scope.test = "Welcome to the ChartShow";
+
+    initialChart();
   }
 
   ChartsController.$inject = ['$scope'];
