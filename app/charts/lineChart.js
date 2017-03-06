@@ -4,6 +4,14 @@
 define(['d3fc', 'd3'], function (fc, d3) {
   'use strict';
 
+  var savedData = [];
+  var savedIndex = 0;
+
+  function lineChart() {
+    return generateChart()
+      .then(() => setInterval(generateChart, 500));
+  }
+
   function generateChart() {
     return getData()
       .then(displayInitialChart);
@@ -11,14 +19,18 @@ define(['d3fc', 'd3'], function (fc, d3) {
 
   function getData() {
     return new Promise((res, rej) => {
-      var generator = fc.randomGeometricBrownianMotion().steps(10);
+      var generator = fc.randomGeometricBrownianMotion().steps(0);
 
-      var data = generator(1).map(function(d, i) {
+      var data = savedData.concat(generator(1).map(function(d, i) {
         return {
-          month: i,
+          month: savedIndex++,
           sales: Math.random() * (12 - 0) + 0
         };
-      });
+      }));
+      if (data.length > 11) {
+        data.shift();
+      }
+      savedData = data;
       res(data);
     });
   }
@@ -51,5 +63,5 @@ define(['d3fc', 'd3'], function (fc, d3) {
         .call(chart);
   }
 
-  return generateChart;
+  return lineChart;
 });
