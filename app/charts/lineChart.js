@@ -18,7 +18,7 @@ define(['d3fc', 'd3'], function (fc, d3) {
   }
 
   function getData() {
-    return fetch('http://localhost:8081/twitter/followers')
+    return fetch('twitter/followers')
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
