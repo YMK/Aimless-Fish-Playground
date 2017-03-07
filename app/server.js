@@ -57,6 +57,6 @@ const getFollowersFromFile = () => {
 
 getFollowersFromFile()
   .then(updateTwitterFollowers)
-  .then(() => setInterval(updateTwitterFollowers, 60000));
+  .then(() => setInterval(updateTwitterFollowers, 900000));
 
 app.listen(8081, () => console.log('Server started'));
